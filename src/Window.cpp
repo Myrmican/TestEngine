@@ -138,14 +138,16 @@ namespace Window {
             });
         QObject::connect(closeBtn, &QPushButton::clicked, window, &QMainWindow::close);
 
-        /*QObject::connect(window->windowHandle(), &QWindow::windowStateChanged, [&](Qt::WindowState state) {
-            if (state & Qt::WindowMinimized) {
-                maxBtn->setText("\uE923");
-            }
-            else {
-                maxBtn->setText("\uE922");
-            }
-            });*/
+        if (QWindow* nativeWindow = window->windowHandle()) {
+            QObject::connect(nativeWindow, &QWindow::windowStateChanged, maxBtn, [maxBtn](Qt::WindowState state) {
+                if (state & Qt::WindowMaximized) {
+                    maxBtn->setText("\uE923");
+                }
+                else {
+                    maxBtn->setText("\uE922");
+                }
+                });
+        }
 
         window->setMenuWidget(titleBarPanel);
         window->setCentralWidget(workspaceStack);

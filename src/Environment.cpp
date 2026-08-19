@@ -2,6 +2,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QUrl>
+#include <QEventLoop>
 
 namespace System {
 
@@ -12,12 +13,17 @@ namespace System {
 	}
 
 	bool IsConnectedToNetwork() {
+		QNetworkAccessManager manager;
 		QNetworkRequest request(QUrl("http://cp.cloudflare.com/generate_204"));
 
-		QNetworkReply* reply = QNetworkAccessManager().get(request);
+		QNetworkReply* reply = manager.get(request);
 
-		bool online = (reply->error() == QNetworkReply::NoError);
+		QEventLoop loop;
+		QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+		loop.exec();
+
+		bool connected = (reply->error() == QNetworkReply::NoError);
 		reply->deleteLater();
-		return online;
+		return connected;
 	}
 }

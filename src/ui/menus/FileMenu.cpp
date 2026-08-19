@@ -1,11 +1,11 @@
 #include <ui/menus/FileMenu.h>
-#include <Environment.h>
 #include <QApplication>
 #include <project/Project.h>
 #include <project/EditorWindow.h>
 #include <ui/ProjectLoadingDialog.h>
-#include <core/settings/GameSettings.h>
-#include <core/settings/StudioSettings.h>
+#include <core/settings/game/GameSettings.h>
+#include <core/settings/studio/StudioSettings.h>
+#include <project/saving/SaveProject.h>
 #include <QMainWindow>
 #include <QMenuBar>
 #include <QTimer>
@@ -47,10 +47,7 @@ FileMenu::FileMenu(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* works
             QAction* saveAction = fileMenu->addAction("Save", [editorPage]() {
                 Project* activeProject = ProjectManager::getProject(editorPage);
 
-                if (!System::IsConnectedToNetwork()) {
-                    activeProject->logger->Error("You are not connected to the internet.");
-                    return;
-                }
+                SaveProject::initSave(activeProject);
 
                 });
             saveAction->setShortcut(QKeySequence("Ctrl+S"));
@@ -61,14 +58,15 @@ FileMenu::FileMenu(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* works
             QAction* publishAction = fileMenu->addAction("Publish", [editorPage]() {
                 Project* activeProject = ProjectManager::getProject(editorPage);
 
-                if (!System::IsConnectedToNetwork()) {
-                    activeProject->logger->Error("You are not connected to the internet.");
-                    return;
-                }
+                
 
                 });
             publishAction->setShortcut(QKeySequence("Alt+P"));
             publishAction->setShortcutContext(Qt::WindowShortcut);
+
+            fileMenu->addSeparator();
+
+            fileMenu->addAction("Download a copy");
 
             fileMenu->addSeparator();
 
