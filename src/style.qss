@@ -1,0 +1,89 @@
+QMainWindow {
+    background-color: #1a1a1a;
+}
+
+QWidget#TitleBarPanel {
+    background-color: #1a1a1a;
+}
+
+QPushButton#minButton, QPushButton#maxButton, QPushButton#closeButton {
+    background-color: transparent;
+    border: none;
+    color: #FFFFFF;
+}
+
+QPushButton#minButton:hover, QPushButton#maxButton:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+QPushButton#minButton:pressed, QPushButton#maxButton:pressed {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+QPushButton#closeButton:hover {
+    background-color: #E81123;
+    color: #FFFFFF;
+}
+
+QPushButton#closeButton:pressed {
+    background-color: #F1707A;
+    color: #000000;
+}
+
+QMenuBar#TitleMenuBar {
+    background-color: transparent;
+    border: none;
+    color: #FFFFFF;
+}
+
+QMenuBar#TitleMenuBar::item {
+    background-color: transparent;
+    padding: 5px 10px;
+    margin: 0px;
+    color: #FFFFFF;
+}
+
+QMenuBar#TitleMenuBar::item:selected {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+QMenu {
+    background-color: #272930;
+    border: 1px solid #3C3C3C;
+    color: #FFFFFF;
+    padding: 4px;
+    border-radius: 0px !important;
+    outline: none;
+}
+
+QMenu QAbstractItemView {
+    border-radius: 0px !important;
+    border: none;
+    background: transparent;
+}
+
+QMenu#UserProfileMenu:selected {
+    background: transparent;
+    border: none;
+}
+
+QMenu QAbstractScrollArea {
+    border-radius: 0px;
+}
+
+QMenu::item {
+    padding: 6px 24px 6px 20px;
+    background-color: transparent;
+}
+
+QMenu::item:selected {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 0px
+}
+
+QComboBox {
+    background-color: #1F1F1F;
+    color: #FFFFFF;
+    padding: 4px 8px;
+}

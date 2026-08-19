@@ -1,0 +1,27 @@
+QDialog {
+    background-color: #1a1a1a;
+}
+
+QLineEdit, QComboBox {
+    padding: 0px 10px;
+    min-height: 30px;
+}
+
+QDialogButtonBox QPushButton#saveButton {
+    background-color: #00b170;
+    color: white;
+    padding: 6px 24px;
+    font-weight: bold;
+}
+
+QDialogButtonBox QPushButton#cancelButton {
+    background-color: #2c2f3a;
+    color: white;
+    padding: 6px 18px;
+    font-weight: normal;
+}
+
+QPushButton {
+    font-size: 12px;
+    padding: 6px 13px;
+}

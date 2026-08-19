@@ -1,0 +1,10 @@
+<!DOCTYPE RCC><RCC version="1.0">
+	<qresource prefix="/">
+		<file>style.qss</file>
+		<file alias="styles.qss">project/styles.qss</file>
+		<file alias="settings.qss">core/settings/settings.qss</file>
+		<file>../assets/icons/bell.png</file>
+		<file>../assets/icons/profileTest.png</file>
+		<file>../assets/icons/MoveTool.png</file>
+	</qresource>
+</RCC>
