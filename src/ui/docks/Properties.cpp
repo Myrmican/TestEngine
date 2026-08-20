@@ -66,6 +66,8 @@ Properties::Properties(QMainWindow* window, Project* project)
     : QObject(window) {
 
     auto* propertiesDock = new QDockWidget("Properties", window);
+    propertiesDock->setWindowFlags(Qt::SubWindow);
+    propertiesDock->setObjectName("PropertiesDock");
 
     auto* containerWidget = new QWidget(propertiesDock);
     auto* layout = new QVBoxLayout(containerWidget);

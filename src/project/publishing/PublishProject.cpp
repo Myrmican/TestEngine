@@ -1,0 +1,5 @@
+namespace PublishProject {
+	void initPublish() {
+
+	}
+}

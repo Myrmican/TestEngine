@@ -1,8 +1,9 @@
 #include <ui/menus/TestMenu.h>
+#include <ui/MenuManager.h>
 
 TestMenu::TestMenu(QMenuBar* menuBar) {
-    QMenu* testMenu = menuBar->addMenu("Test");
-    QMenu* startTestMenu = testMenu->addMenu("Start Test");
+    QMenu* testMenu = Menu::create(menuBar, "Test");
+    QMenu* startTestMenu = Menu::create(testMenu, "Start Test");
 
 	startTestMenu->addAction("Play");
 

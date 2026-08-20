@@ -18,6 +18,8 @@ Output::Output(QMainWindow* window, Project* project)
     : QObject(window) {
 
     auto* outputDock = new QDockWidget("Output", window);
+    outputDock->setWindowFlags(Qt::SubWindow);
+    outputDock->setObjectName("OutputDock");
 
     auto* outputLog = new QTextEdit(outputDock);
     outputLog->setReadOnly(true);

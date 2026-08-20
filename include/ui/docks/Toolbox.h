@@ -11,7 +11,6 @@ class Toolbox : public QObject {
 
 public:
     QDockWidget* dockWidget;
-	QTreeWidget* treeWidget;
 
     Toolbox(QMainWindow* window, Project* project);
 

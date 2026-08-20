@@ -6,14 +6,18 @@
 #include <core/settings/game/GameSettings.h>
 #include <core/settings/studio/StudioSettings.h>
 #include <project/saving/SaveProject.h>
+#include <project/publishing/PublishProject.h>
+#include <ui/MenuManager.h>
 #include <QMainWindow>
 #include <QMenuBar>
 #include <QTimer>
+#include <QPalette>
+#include <QStyleFactory>
 
 FileMenu::FileMenu(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage) {
-    QMenu* fileMenu = menuBar->addMenu("File");
+    QMenu* fileMenu = Menu::create(menuBar, "File");
 
-    QObject::connect(fileMenu, &QMenu::aboutToShow, fileMenu, [fileMenu, window, workspaceStack, editorPage]() {
+    QObject::connect(fileMenu, &QMenu::aboutToShow, fileMenu, [fileMenu, window, workspaceStack, editorPage, menuBar]() {
         fileMenu->clear();
 
         fileMenu->addAction("New", [window, workspaceStack, editorPage]() {
@@ -36,7 +40,7 @@ FileMenu::FileMenu(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* works
 
         fileMenu->addAction("Open", [window]() { ProjectManager::onOpenProject(window); });
 
-        QMenu* fileRecentMenu = fileMenu->addMenu("Recent");
+        QMenu* fileRecentMenu = Menu::create(fileMenu, "Recents");
         fileRecentMenu->setObjectName("RecentOpenProjects");
 
         fileMenu->addSeparator();
@@ -48,7 +52,6 @@ FileMenu::FileMenu(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* works
                 Project* activeProject = ProjectManager::getProject(editorPage);
 
                 SaveProject::initSave(activeProject);
-
                 });
             saveAction->setShortcut(QKeySequence("Ctrl+S"));
             saveAction->setShortcutContext(Qt::WindowShortcut);
@@ -58,8 +61,7 @@ FileMenu::FileMenu(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* works
             QAction* publishAction = fileMenu->addAction("Publish", [editorPage]() {
                 Project* activeProject = ProjectManager::getProject(editorPage);
 
-                
-
+                PublishProject::initPublish();
                 });
             publishAction->setShortcut(QKeySequence("Alt+P"));
             publishAction->setShortcutContext(Qt::WindowShortcut);

@@ -1,4 +1,10 @@
 ﻿cmake_minimum_required(VERSION 3.25...3.31)
+
+if(NOT CMAKE_PREFIX_PATH AND NOT Qt6_DIR)
+    set(CMAKE_PREFIX_PATH "C:/Qt/6.11.2/msvc2022_64")
+endif()
+
+
 project("TestEngine" LANGUAGES CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -19,7 +25,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_PREFIX_PATH "C:/Qt/6.11.0/msvc2022_64")
 set(QWINDOWKIT_BUILD_WIDGETS ON CACHE BOOL "" FORCE)
 
 include(FetchContent)
@@ -54,11 +59,9 @@ FetchContent_Declare(
     DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
 
-FetchContent_MakeAvailable(wasmtime)
+find_package(Qt6 REQUIRED COMPONENTS Widgets OpenGLWidgets PrintSupport Network)
 
 FetchContent_MakeAvailable(qscintilla qwindowkit yaml-cpp wasmtime)
-
-find_package(Qt6 REQUIRED COMPONENTS Widgets OpenGLWidgets PrintSupport Network)
 
 if(WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(QSCI_TARGET_NAME qscintilla2_qt6d)
@@ -133,7 +136,11 @@ add_executable(TestEngine
     "include/project/saving/SaveProject.h"
     "src/ui/docks/Toolbox.cpp"
     "include/ui/docks/Toolbox.h"
-)
+    "src/project/publishing/PublishProject.cpp"
+    "include/project/publishing/PublishProject.h"
+    "src/ui/MenuManager.cpp"
+    "include/ui/MenuManager.h"
+ )
 
 target_compile_features(TestEngine PUBLIC cxx_std_20)
 
@@ -196,7 +203,7 @@ if(WIN32)
             "$<TARGET_FILE_DIR:TestEngine>"
 
         # 4. Deploy Qt runtime components
-        COMMAND "C:/Qt/6.11.0/msvc2022_64/bin/windeployqt.exe" --no-compiler-runtime "$<TARGET_FILE:TestEngine>"
+        COMMAND "${CMAKE_PREFIX_PATH}/bin/windeployqt.exe" --no-compiler-runtime "$<TARGET_FILE:TestEngine>"
         
         WORKING_DIRECTORY "$<TARGET_FILE_DIR:TestEngine>"
         COMMENT "Copying JVM toolchain, DLLs, and running windeployqt"

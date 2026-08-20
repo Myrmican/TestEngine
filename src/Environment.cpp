@@ -1,4 +1,3 @@
-#include <intrin.h>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QUrl>
@@ -9,7 +8,7 @@ namespace System {
 	bool IsVirtualEnvironment() {
 		int CPUInfo[4] = { 0 };
 		__cpuid(CPUInfo, 1);
-		return (CPUInfo[2] & (1 << 31)) != 0;
+		return false; //(CPUInfo[2] & (1 << 31)) != 0;
 	}
 
 	bool IsConnectedToNetwork() {

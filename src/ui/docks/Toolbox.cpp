@@ -130,9 +130,11 @@ namespace {
 Toolbox::Toolbox(QMainWindow* window, Project* project)
     : QObject(window) {
 
-    auto* ToolboxDock = new QDockWidget("Toolbox", window);
+    auto* toolboxDock = new QDockWidget("Toolbox", window);
+    toolboxDock->setWindowFlags(Qt::SubWindow);
+    toolboxDock->setObjectName("ToolboxDock");
 
-    auto* containerWidget = new QWidget(ToolboxDock);
+    auto* containerWidget = new QWidget(toolboxDock);
     auto* layout = new QVBoxLayout(containerWidget);
     layout->setContentsMargins(4, 4, 4, 4);
     layout->setSpacing(4);
@@ -153,26 +155,19 @@ Toolbox::Toolbox(QMainWindow* window, Project* project)
         "}"
     );
 
-    dockWidget = ToolboxDock;
-    ToolboxDock->setWidget(containerWidget);
+    dockWidget = toolboxDock;
+    toolboxDock->setWidget(containerWidget);
 
     layout->addWidget(searchBar);
 
-    QTimer::singleShot(0, window, [window, ToolboxDock]() {
-        window->resizeDocks({ ToolboxDock }, { 400 }, Qt::Horizontal);
+    
+
+    QTimer::singleShot(0, window, [window, toolboxDock]() {
+        window->resizeDocks({ toolboxDock }, { 400 }, Qt::Horizontal);
         });
 }
 
 bool Toolbox::eventFilter(QObject* watched, QEvent* event) {
-    if (treeWidget && watched == treeWidget->viewport()) {
-        if (event->type() == QEvent::MouseButtonPress) {
-            auto* mouseEvent = static_cast<QMouseEvent*>(event);
-
-            if (!treeWidget->itemAt(mouseEvent->pos())) {
-                treeWidget->clearSelection();
-                treeWidget->setCurrentItem(nullptr);
-            }
-        }
-    }
+    
     return QObject::eventFilter(watched, event);
 }

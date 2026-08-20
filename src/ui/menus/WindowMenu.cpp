@@ -1,7 +1,8 @@
 #include <ui/menus/WindowMenu.h>
+#include <ui/MenuManager.h>
 
 WindowMenu::WindowMenu(QMenuBar* menuBar) {
-    QMenu* windowMenu = menuBar->addMenu("Window");
+    QMenu* windowMenu = Menu::create(menuBar, "Window");
     
 
     QMenu* windowScriptMenu = windowMenu->addMenu("Script");

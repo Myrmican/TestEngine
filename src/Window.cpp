@@ -53,7 +53,7 @@ void createLeftDropdownsMain(QMenuBar* menuBar, QMainWindow* window, QStackedWid
 void createLeftDropdownsEditor(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage) {
     new FileMenu(menuBar, window, workspaceStack, editorPage);
     new EditMenu(menuBar);
-    new ViewMenu(menuBar);
+    new ViewMenu(menuBar, window);
     new PluginsMenu(menuBar);
 	new TestMenu(menuBar);
     new WindowMenu(menuBar);

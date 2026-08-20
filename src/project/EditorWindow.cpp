@@ -22,6 +22,7 @@
 #include <ui/docks/Explorer.h>
 #include <ui/docks/Properties.h>
 #include <ui/docks/Output.h>
+#include <ui/docks/Toolbox.h>
 
 QAction* createToolAction(const QIcon& icon, const QString& text, QObject* parent) {
     QAction* action = new QAction(icon, text, parent);
@@ -203,10 +204,16 @@ namespace EditorWindow {
         Explorer* explorerDock = new Explorer(window, project);
 		Properties* propertiesDock = new Properties(window, project);
 		Output* outputDock = new Output(window, project);
+        Toolbox* toolboxDock = new Toolbox(window, project);
+
+        toolboxDock->dockWidget->setVisible(false);
+
+        window->setDockNestingEnabled(true);
 
         window->addDockWidget(Qt::RightDockWidgetArea, explorerDock->dockWidget);
         window->addDockWidget(Qt::LeftDockWidgetArea, propertiesDock->dockWidget);
         window->addDockWidget(Qt::BottomDockWidgetArea, outputDock->dockWidget);
+        window->addDockWidget(Qt::LeftDockWidgetArea, toolboxDock->dockWidget);
 
         const int projectTabIndex = documentTabs->addTab(placeView, project->name);
 

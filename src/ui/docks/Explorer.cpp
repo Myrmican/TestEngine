@@ -131,6 +131,8 @@ namespace {
 				}
 
                 QAction* addInstanceAction = contextMenu.addAction("Add Instance");
+                addInstanceAction->setShortcut(QKeySequence("Ctrl+I"));
+                addInstanceAction->setShortcutContext(Qt::WindowShortcut);
 
                 QAction* selectedAction = contextMenu.exec(explorerTree->viewport()->mapToGlobal(pos));
 
@@ -179,6 +181,8 @@ Explorer::Explorer(QMainWindow* window, Project* project)
     : QObject(window) {
 
     auto* explorerDock = new QDockWidget("Explorer", window);
+    explorerDock->setWindowFlags(Qt::SubWindow);
+    explorerDock->setObjectName("ExplorerDock");
 
     auto* containerWidget = new QWidget(explorerDock);
     auto* layout = new QVBoxLayout(containerWidget);
