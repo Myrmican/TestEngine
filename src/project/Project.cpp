@@ -20,7 +20,6 @@ using namespace std;
 
 Project::Project(const std::string& projectName) {
     name = QString::fromStdString(projectName);
-    //this->projectPath = projectPath;
     savingInCloud = false;  
 }
 
@@ -47,41 +46,6 @@ namespace ProjectManager {
 
         formLayout->addRow("Project Name", nameEdit);
 
-        //QHBoxLayout* checkboxLayout = new QHBoxLayout();
-        //checkboxLayout->setSpacing(15);
-
-        //Project save location
-
-        //QCheckBox* saveButtonCloud = new QCheckBox("Cloud");
-        //QCheckBox* saveButtonLocal = new QCheckBox("Local");
-
-        //QButtonGroup* optionsGroup = new QButtonGroup(&dialog);
-        //optionsGroup->setExclusive(true);
-
-        //optionsGroup->addButton(saveButtonCloud);
-        //optionsGroup->addButton(saveButtonLocal);
-
-        //saveButtonLocal->setChecked(true);
-
-        //checkboxLayout->addWidget(saveButtonCloud);
-        //checkboxLayout->addWidget(saveButtonLocal);
-        //checkboxLayout->addStretch();
-
-        //formLayout->addRow("Save location", checkboxLayout);
-
-        //QWidget* pathContainer = new QWidget(&dialog);
-        //QHBoxLayout* pathLayout = new QHBoxLayout(pathContainer);
-        //pathLayout->setContentsMargins(0, 0, 0, 0);
-        //pathLayout->setSpacing(0);
-
-        //QLineEdit* pathEdit = new QLineEdit(QDir::homePath());
-        //QPushButton* browseButton = new QPushButton("Browse...");
-
-        //pathLayout->addWidget(pathEdit);
-        //pathLayout->addWidget(browseButton);
-
-       // formLayout->addRow("Project Path", pathContainer);
-
         QHBoxLayout* languageLayout = new QHBoxLayout();
         languageLayout->setSpacing(10);
 
@@ -102,17 +66,6 @@ namespace ProjectManager {
         languageLayout->addStretch();
 
         formLayout->addRow("Language", languageLayout);
-
-        /*QObject::connect(browseButton, &QPushButton::clicked, &dialog, [pathEdit, &dialog]() {
-            QString dir = QFileDialog::getExistingDirectory(&dialog, "Select Project Directory", pathEdit->text());
-            if (!dir.isEmpty()) {
-                pathEdit->setText(dir);
-            }
-        });
-
-        QObject::connect(saveButtonLocal, &QCheckBox::toggled, &dialog, [formLayout, pathContainer](bool checked) {
-            formLayout->setRowVisible(pathContainer, checked);
-        });*/
 
         QComboBox* dimensionBox = new QComboBox();
         dimensionBox->addItem("3D");
