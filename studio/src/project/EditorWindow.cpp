@@ -217,7 +217,7 @@ namespace EditorWindow {
 
         const int projectTabIndex = documentTabs->addTab(placeView, project->name);
 
-        QObject::connect(documentTabs, &QTabWidget::tabCloseRequested, [documentTabs, projectTabIndex, editorPage, window, mainToolBar](int index) {
+        QObject::connect(documentTabs, &QTabWidget::tabCloseRequested, [documentTabs, projectTabIndex, editorPage, window, mainToolBar, project](int index) {
             QWidget* w = documentTabs->widget(index);
             documentTabs->removeTab(index);
             delete w;
@@ -236,6 +236,11 @@ namespace EditorWindow {
                 delete mainToolBar;
 
                 workspaceStack->setCurrentIndex(0);
+                if (project->projectFile) {
+                    project->projectFile->close();
+                }
+
+                delete project;
             }
             });
 

@@ -7,12 +7,14 @@
 #include <core/Logger.h>
 
 class QMainWindow;
+class QFile;
 
 class Project : public QObject {
     Q_OBJECT
 public:
     QString name;
     std::string projectPath;
+    QFile* projectFile;
     bool savingInCloud = false;
 	std::string primaryLanguage = "Kotlin";
 	Logger* logger = nullptr;

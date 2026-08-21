@@ -51,7 +51,7 @@ FileMenu::FileMenu(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* works
             QAction* saveAction = fileMenu->addAction("Save", [editorPage]() {
                 Project* activeProject = ProjectManager::getProject(editorPage);
 
-                SaveProject::initSave(activeProject);
+                SaveProject::initSave(activeProject, editorPage);
                 });
             saveAction->setShortcut(QKeySequence("Ctrl+S"));
             saveAction->setShortcutContext(Qt::WindowShortcut);

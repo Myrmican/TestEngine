@@ -115,9 +115,9 @@ namespace ProjectManager {
     }
 
 	void onOpenProject(QMainWindow* parent) {
-		QString downloadsPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+		QString path = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
 
-		QString dir = QFileDialog::getOpenFileName(parent, "Open Project", downloadsPath, "Engine Files (*.xml)");
+		QString dir = QFileDialog::getOpenFileName(parent, "Open Project", path, "Engine Files (*.xml)");
 		
 	}
 

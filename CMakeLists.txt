@@ -4,8 +4,11 @@ if(NOT CMAKE_PREFIX_PATH AND NOT Qt6_DIR)
     set(CMAKE_PREFIX_PATH "C:/Qt/6.11.2/msvc2022_64")
 endif()
 
-
 project("TestEngine" LANGUAGES CXX)
+
+if(MSVC)
+    add_compile_options(/external:W0 /external:anglebrackets)
+endif()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5 CACHE STRING "Minimum policy version")
@@ -75,137 +78,5 @@ configure_file(
     COPYONLY
 )
 
-# Add source files
-add_executable(TestEngine
-    "src/main.cpp"
-    "include/TestEngine.h"
-    "src/Environment.cpp"
-    "include/Environment.h"
-    "src/style.qss"
-    "src/project/styles.qss"
-    "src/resources.qrc"
-    "src/Window.cpp"
-    "include/Window.h"
-    "src/project/Project.cpp"
-    "include/project/Project.h"
-    "include/project/EditorWindow.h"
-    "src/project/EditorWindow.cpp"
-    "src/project/CodeEditor.cpp"
-    "include/project/CodeEditor.h"
-    "src/core/Logger.cpp"
-    "include/core/Logger.h"
-    "src/util/Languages.cpp"
-    "include/util/Languages.h"
-    "include/ui/ProjectLoadingDialog.h"
-    "src/core/script/WebAssembly.cpp"
-    "src/core/settings/studio/StudioSettings.cpp"
-    "src/core/settings/game/GameSettings.cpp"
-    "src/core/settings/settings.qss"
-    "include/core/settings/studio/StudioSettings.h"
-    "include/core/settings/game/GameSettings.h"
-    "include/util/Asset.h"
-    "src/util/Asset.cpp" 
-    "src/ui/docks/Explorer.cpp"
-    "include/ui/docks/Explorer.h"
-    "src/ui/docks/Properties.cpp"
-    "include/ui/docks/Properties.h"
-    "include/ui/docks/Output.h"
-    "src/ui/docks/Output.cpp"
-    "src/core/script/external/OpenEditor.cpp"
-    "src/ui/menus/FileMenu.cpp"
-    "include/ui/menus/FileMenu.h"
-    "src/ui/menus/PluginsMenu.cpp"
-    "include/ui/menus/PluginsMenu.h"
-    "src/ui/menus/HelpMenu.cpp"
-    "include/ui/menus/HelpMenu.h"
-    "src/ui/menus/ViewMenu.cpp"
-    "include/ui/menus/ViewMenu.h"
-    "src/ui/menus/EditMenu.cpp"
-    "include/ui/menus/EditMenu.h"
-    "src/ui/menus/TestMenu.cpp"
-    "include/ui/menus/TestMenu.h"
-    "src/ui/menus/WindowMenu.cpp"
-    "include/ui/menus/WindowMenu.h"
-    "src/core/settings/game/tabs/GeneralTab.cpp"
-    "include/core/settings/game/tabs/GeneralTab.h"
-    "src/core/settings/game/tabs/AnticheatTab.cpp"
-    "include/core/settings/game/tabs/AnticheatTab.h"
-    "src/core/settings/game/tabs/TechnicalTab.cpp"
-    "include/core/settings/game/tabs/TechnicalTab.h"
-    "src/project/saving/SaveProject.cpp"
-    "include/project/saving/SaveProject.h"
-    "src/ui/docks/Toolbox.cpp"
-    "include/ui/docks/Toolbox.h"
-    "src/project/publishing/PublishProject.cpp"
-    "include/project/publishing/PublishProject.h"
-    "src/ui/MenuManager.cpp"
-    "include/ui/MenuManager.h"
- )
-
-target_compile_features(TestEngine PUBLIC cxx_std_20)
-
-target_compile_definitions(TestEngine PRIVATE
-    -DUNICODE
-    -D_UNICODE
-    LANGUAGES_YML_PATH="${CMAKE_CURRENT_BINARY_DIR}/assets/util/ProgrammingLanguages.yml"
-)
-
-target_include_directories(TestEngine PRIVATE 
-    "${CMAKE_CURRENT_SOURCE_DIR}/include" 
-    "${CMAKE_CURRENT_SOURCE_DIR}/external/velopack_libc_1.2.0/include"
-    "${qscintilla_SOURCE_DIR}/src"
-    "${qscintilla_SOURCE_DIR}/scintilla/include"
-    "${qscintilla_SOURCE_DIR}/scintilla/src"
-    "${wasmtime_SOURCE_DIR}/include"
-)
-
-target_link_libraries(TestEngine PRIVATE 
-    "${CMAKE_CURRENT_SOURCE_DIR}/external/velopack_libc_1.2.0/lib-static/velopack_libc_win_x64_msvc.lib"
-    "${wasmtime_SOURCE_DIR}/lib/wasmtime.dll.lib"
-    ws2_32
-    bcrypt
-    ntdll
-    Qt6::Widgets
-    Qt6::Network
-    Qt6::OpenGLWidgets
-    Qt6::PrintSupport
-    QWindowKit::Widgets
-    ${QSCI_TARGET_NAME}
-    yaml-cpp::yaml-cpp
-)
-
-if(MSVC)
-    set_target_properties(TestEngine PROPERTIES 
-        LINK_FLAGS "/ENTRY:mainCRTStartup"
-    )
-endif()
-
-if(WIN32)
-    add_custom_command(TARGET TestEngine POST_BUILD
-
-        # 1. Copy QWindowKit Core DLL
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "$<TARGET_FILE:QWindowKit::Core>"
-            "$<TARGET_FILE_DIR:TestEngine>"
-        
-        # 2. Copy QWindowKit Widgets DLL
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "$<TARGET_FILE:QWindowKit::Widgets>"
-            "$<TARGET_FILE_DIR:TestEngine>"
-
-        # 3. Copy QScintilla DLL automatically if built dynamically
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "$<TARGET_FILE:${QSCI_TARGET_NAME}>"
-            "$<TARGET_FILE_DIR:TestEngine>"
-            
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${wasmtime_SOURCE_DIR}/lib/wasmtime.dll"
-            "$<TARGET_FILE_DIR:TestEngine>"
-
-        # 4. Deploy Qt runtime components
-        COMMAND "${CMAKE_PREFIX_PATH}/bin/windeployqt.exe" --no-compiler-runtime "$<TARGET_FILE:TestEngine>"
-        
-        WORKING_DIRECTORY "$<TARGET_FILE_DIR:TestEngine>"
-        COMMENT "Copying JVM toolchain, DLLs, and running windeployqt"
-    )
-endif()
+add_subdirectory(engine)
+add_subdirectory(studio)
