@@ -7,7 +7,7 @@
 #include <core/settings/studio/StudioSettings.h>
 #include <project/saving/SaveProject.h>
 #include <project/publishing/PublishProject.h>
-#include <ui/MenuManager.h>
+#include <ui/menus/MenuManager.h>
 #include <QMainWindow>
 #include <QMenuBar>
 #include <QTimer>
@@ -16,6 +16,7 @@
 
 FileMenu::FileMenu(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage) {
     QMenu* fileMenu = Menu::create(menuBar, "File");
+    menuBar->addMenu(fileMenu);
 
     QObject::connect(fileMenu, &QMenu::aboutToShow, fileMenu, [fileMenu, window, workspaceStack, editorPage, menuBar]() {
         fileMenu->clear();
@@ -41,6 +42,7 @@ FileMenu::FileMenu(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* works
         fileMenu->addAction("Open", [window]() { ProjectManager::onOpenProject(window); });
 
         QMenu* fileRecentMenu = Menu::create(fileMenu, "Recents");
+        fileMenu->addMenu(fileRecentMenu);
         fileRecentMenu->setObjectName("RecentOpenProjects");
 
         fileMenu->addSeparator();
@@ -56,7 +58,7 @@ FileMenu::FileMenu(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* works
             saveAction->setShortcut(QKeySequence("Ctrl+S"));
             saveAction->setShortcutContext(Qt::WindowShortcut);
 
-            fileMenu->addSeparator();
+            //fileMenu->addSeparator();
 
             QAction* publishAction = fileMenu->addAction("Publish", [editorPage]() {
                 Project* activeProject = ProjectManager::getProject(editorPage);

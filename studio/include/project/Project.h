@@ -1,9 +1,9 @@
 #pragma once
 
 #include <string>
-#include <memory>
 #include <QString>
 #include <QObject>
+#include <QFile>
 #include <core/Logger.h>
 
 class QMainWindow;

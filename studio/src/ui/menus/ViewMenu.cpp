@@ -1,6 +1,6 @@
 #include <ui/menus/ViewMenu.h>
 #include <ui/docks/Explorer.h>
-#include <ui/MenuManager.h>
+#include <ui/menus/MenuManager.h>
 #include <project/Project.h>
 #include <QDockWidget>
 #include <iostream>
@@ -20,6 +20,8 @@ void ToggleVisibility(std::string dockName, QMainWindow* window) {
 
 ViewMenu::ViewMenu(QMenuBar* menuBar, QMainWindow* window) {
     QMenu* viewMenu = Menu::create(menuBar, "View");
+    menuBar->addMenu(viewMenu);
+
     viewMenu->addAction("Toolbox", [window] {
         ToggleVisibility("ToolboxDock", window);
         });

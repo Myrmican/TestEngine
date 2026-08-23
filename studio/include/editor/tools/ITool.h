@@ -1,0 +1,3 @@
+class ITool {
+	void OnActivate();
+};

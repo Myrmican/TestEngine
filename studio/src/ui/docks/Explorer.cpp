@@ -12,6 +12,7 @@
 #include <project/Project.h>
 #include <project/CodeEditor.h>
 #include <util/Languages.h>
+#include <ui/menus/MenuManager.h>
 #include <ui/docks/Explorer.h>
 
 namespace {
@@ -99,42 +100,42 @@ namespace {
 					currentIteratedItem = currentIteratedItem->parent();
 				}
 
-                QMenu contextMenu(explorerTree);
+                QMenu* contextMenu = Menu::create(explorerTree);
 
                 QAction* openAction = nullptr;
                 QMenu* openWithMenu = nullptr;
 
                 if (FilesAllowed) {
-					openAction = contextMenu.addAction("Open");
-					openWithMenu = contextMenu.addMenu("Open With");
+					openAction = contextMenu->addAction("Open");
+					openWithMenu = contextMenu->addMenu("Open With");
 
 					openWithMenu->addAction("Default Editor");
 
-                    contextMenu.addSeparator();
+                    contextMenu->addSeparator();
                 }
 
-                QAction* cutAction = contextMenu.addAction("Cut");
-                QAction* copyAction = contextMenu.addAction("Copy");
-                QAction* pasteAction = contextMenu.addAction("Paste");
+                QAction* cutAction = contextMenu->addAction("Cut");
+                QAction* copyAction = contextMenu->addAction("Copy");
+                QAction* pasteAction = contextMenu->addAction("Paste");
 
-                contextMenu.addSeparator();
+                contextMenu->addSeparator();
 
-                QAction* duplicateAction = contextMenu.addAction("Duplicate");
-                QAction* deleteAction = contextMenu.addAction("Delete");
-                QAction* renameAction = contextMenu.addAction("Rename");
+                QAction* duplicateAction = contextMenu->addAction("Duplicate");
+                QAction* deleteAction = contextMenu->addAction("Delete");
+                QAction* renameAction = contextMenu->addAction("Rename");
 
-                contextMenu.addSeparator();
+                contextMenu->addSeparator();
 
                 QAction* addFileAction = nullptr;
 				if (FilesAllowed) {
-					addFileAction = contextMenu.addAction("Add File");
+					addFileAction = contextMenu->addAction("Add File");
 				}
 
-                QAction* addInstanceAction = contextMenu.addAction("Add Instance");
+                QAction* addInstanceAction = contextMenu->addAction("Add Instance");
                 addInstanceAction->setShortcut(QKeySequence("Ctrl+I"));
                 addInstanceAction->setShortcutContext(Qt::WindowShortcut);
 
-                QAction* selectedAction = contextMenu.exec(explorerTree->viewport()->mapToGlobal(pos));
+                QAction* selectedAction = contextMenu->exec(explorerTree->viewport()->mapToGlobal(pos));
 
                 if (selectedAction == cutAction) {
                     qDebug() << "Cut requested for item:" << item->text(0);

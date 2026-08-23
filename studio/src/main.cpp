@@ -6,7 +6,6 @@
 #include <QMainWindow>
 
 int main(int argc, char *argv[]) {
-	qDebug() << "Test";
 	vpkc_app_run(nullptr);
 
 	if (System::IsVirtualEnvironment()) {
