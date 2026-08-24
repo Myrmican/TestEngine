@@ -10,7 +10,7 @@
 #include <QMouseEvent>
 #include <QHeaderView>
 #include <project/Project.h>
-#include <project/CodeEditor.h>
+#include <editor/CodeEditor.h>
 #include <util/Languages.h>
 #include <ui/menus/MenuManager.h>
 #include <ui/docks/Explorer.h>

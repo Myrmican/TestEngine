@@ -1,7 +1,7 @@
 #include <ui/menus/FileMenu.h>
 #include <QApplication>
 #include <project/Project.h>
-#include <project/EditorWindow.h>
+#include <editor/EditorWindow.h>
 #include <ui/ProjectLoadingDialog.h>
 #include <core/settings/game/GameSettings.h>
 #include <core/settings/studio/StudioSettings.h>

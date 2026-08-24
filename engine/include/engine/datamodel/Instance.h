@@ -1,54 +1,87 @@
 #pragma once
 
+#include <scripting/WasmRuntime.h>
+
+#include <vector>
 #include <string>
+#include "boost/weak_ptr.hpp"
+#include "boost/shared_ptr.hpp"
+#include "boost/enable_shared_from_this.hpp"
+#include <boost/static_assert.hpp>
+#include <boost/flyweight.hpp>
 
-class Instance;
+class WasmRuntime;
 
-struct ChildAdded {
+using namespace boost;
 
-public:
-	shared_ptr<Instance> const child;
-	ChildAdded(Instance* child);
-	ChildAdded(const ChildAdded& event);
-};
+namespace Engine {
 
-class Instance {
-private:
-	std::string name;
-	Instance* parent;
-protected:
-	Instance();
-	Instance(const char* name);
+	class Instance;
 
-	virtual ~Instance();
+	struct ChildAdded {
 
-public:
-	void destroy();
-	void removeAllChildren();
+	public:
+		std::shared_ptr<Instance> const child;
+		ChildAdded(Instance* child);
+		ChildAdded(const ChildAdded& event);
+	};
 
-	std::string getPath() const;
+	typedef std::vector<shared_ptr<Instance> > Instances;
 
-	Instance* getParent() { return parent; }
-	const Instance* getParent() { return parent; }
+	class Instance {
+	private:
+		boost::flyweight<std::string> name;
 
-	void setParent(Instance* instance) { setParentInternal(instance) };
+		shared_ptr<Instances> children;
+		Instance* parent;
+	protected:
+		Instance();
+		Instance(const char* name);
 
-	shared_ptr<Instance> getChildren() const { return children; }
+		virtual ~Instance();
 
-	bool isAncestorOf(const Instance* descendant) const {
-		if (descendant == NULL) {
-			return false;
+	public:
+		virtual void destroy();
+		void remove();
+		void removeAllChildren();
+
+		std::string getPath() const;
+
+		Instance* getParent() { return parent; }
+		const Instance* getParent() const { return parent; }
+
+		void setParent(Instance* instance) { setParentInternal(instance); }
+
+		const std::string& getName() const { return name.get(); }
+		virtual void setName(const std::string& value);
+
+		shared_ptr<Instances> getChildren() const { return children; }
+
+		bool isAncestorOf(const Instance* descendant) const {
+			if (descendant == NULL) {
+				return false;
+			}
+			else if (descendant->getParent() == this) {
+				return true;
+			}
+			else {
+				return isAncestorOf(descendant->getParent());
+			}
 		}
-		else if (descendant->getParent() == this) {
-			return true;
-		}
-		else {
-			return descendant->isAncestorOf(descendant->getParent());
-		}
-	}
 
-	shared_ptr<Instance> clone();
+		bool isDescendantOf(const Instance* ancestor) {
+			if (ancestor == NULL) {
+				return false;
+			}
+			else if (ancestor->getParent() == this) {
+				return true;
+			}
+		}
 
-private:
-	bool setParentInternal(Instance* instance);
-};
+		shared_ptr<Instance> clone();
+
+		static void BindAPI(WasmRuntime& wasm);
+	private:
+		bool setParentInternal(Instance* instance);
+	};
+}

@@ -19,6 +19,7 @@ target_compile_definitions(TestEngine PRIVATE
 
 target_include_directories(TestEngine PRIVATE 
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
+    "${CMAKE_SOURCE_DIR}/external"
     "${CMAKE_SOURCE_DIR}/external/velopack_libc_1.2.0/include"
     "${qscintilla_SOURCE_DIR}/src"
     "${qscintilla_SOURCE_DIR}/scintilla/include"
