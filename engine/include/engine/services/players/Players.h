@@ -1,8 +1,8 @@
 #include <datamodel/Instance.h>
 
 namespace Engine {
-	class Client : public Instance {
+	class Players : public Instance {
 	public:
-		Client();
+		Players();
 	};
 }
