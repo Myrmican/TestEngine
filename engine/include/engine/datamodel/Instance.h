@@ -58,24 +58,14 @@ namespace Engine {
 		shared_ptr<Instances> getChildren() const { return children; }
 
 		bool isAncestorOf(const Instance* descendant) const {
-			if (descendant == NULL) {
-				return false;
-			}
-			else if (descendant->getParent() == this) {
-				return true;
-			}
-			else {
-				return isAncestorOf(descendant->getParent());
-			}
+			if (!descendant) return false;
+			else if (descendant->getParent() == this) return true;
+
+			return isAncestorOf(descendant->getParent());
 		}
 
 		bool isDescendantOf(const Instance* ancestor) {
-			if (ancestor == NULL) {
-				return false;
-			}
-			else if (ancestor->getParent() == this) {
-				return true;
-			}
+			
 		}
 
 		shared_ptr<Instance> clone();
@@ -84,4 +74,15 @@ namespace Engine {
 	private:
 		bool setParentInternal(Instance* instance);
 	};
+
+	namespace InstanceUtil {
+		int32_t Register(Instance* inst) {
+			int32_t handle = static_cast<int32_t>(reinterpret_cast<intptr_t>(inst));
+			return handle;
+		}
+
+		Instance* Resolve(int32_t handle) {
+			return reinterpret_cast<Instance*>(static_cast<intptr_t>(handle));
+		}
+	}
 }

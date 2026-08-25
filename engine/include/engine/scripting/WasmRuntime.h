@@ -14,7 +14,7 @@ public:
 			m_store,
 			moduleName,
 			funcName,
-			wasmtime::Func::wrap<DecayedFunc>(m_store, std::forward<Func>(func))
+			wasmtime::Func::wrap(m_store, std::forward<Func>(func))
 		);
 	}
 

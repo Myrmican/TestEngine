@@ -17,14 +17,19 @@ namespace Engine {
 	}
 
 	void Instance::BindAPI(WasmRuntime& wasm) {
-		wasm.registerFunction("Instance_IsAncestorOf", [](Instance* self, Instance* descendant) -> bool {
-			if (!self) return false;
-			return self->isAncestorOf(descendant);
+		wasm.registerFunction("Instance_IsAncestorOf", [](int32_t selfHandle, int32_t descendantHandle) -> int32_t {
+			Instance* self = InstanceUtil::Resolve(selfHandle);
+			Instance* descendant = InstanceUtil::Resolve(descendantHandle);
+			if (!self) return 0;
+
+			return self->isAncestorOf(descendant) ? 1 : 0;
 			});
 
-		wasm.registerFunction("Instance_GetPath", [](Instance* self) -> std::string {
-			if (!self) return "";
+		wasm.registerFunction("Instance_GetPath", [](int32_t selfHandle) -> /* something wasm can consume */ {
+			Instance* self = InstanceUtil::Resolve(selfHandle);
+			if (!self) return;
+
 			return self->getPath();
-			});
+		});
 	}
 }
