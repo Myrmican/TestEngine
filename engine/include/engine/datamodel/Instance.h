@@ -30,7 +30,7 @@ namespace Engine {
 
 	class Instance {
 	private:
-		boost::flyweight<std::string> name;
+		flyweight<std::string> name;
 
 		shared_ptr<Instances> children;
 		Instance* parent;
@@ -81,15 +81,4 @@ namespace Engine {
 	public:
 		Createable(const std::string name);
 	};
-
-	namespace InstanceUtil {
-		int32_t Register(Instance* inst) {
-			int32_t handle = static_cast<int32_t>(reinterpret_cast<intptr_t>(inst));
-			return handle;
-		}
-
-		Instance* Resolve(int32_t handle) {
-			return reinterpret_cast<Instance*>(static_cast<intptr_t>(handle));
-		}
-	}
 }
