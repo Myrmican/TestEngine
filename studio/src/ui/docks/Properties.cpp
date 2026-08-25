@@ -11,7 +11,6 @@
 #include <QHeaderView>
 #include <QLabel>
 #include <project/Project.h>
-#include <project/CodeEditor.h>
 #include <util/Languages.h>
 #include <ui/docks/Properties.h>
 

@@ -261,9 +261,9 @@ void Explorer::AddItem(QTreeWidgetItem* parentItem, const QString& itemName, con
 
         QTabWidget* documentTabs = mainWindow->findChild<QTabWidget*>("DocumentTabs");
 
-        auto* codeEditor = CodeEditor::createEditor(documentTabs);
+        CodeEditor* codeEditor = new CodeEditor(documentTabs);
 
-        int newTabIndex = documentTabs->addTab(codeEditor, itemName);
+        int newTabIndex = documentTabs->addTab(codeEditor->editor, itemName);
         documentTabs->setCurrentIndex(newTabIndex);
 	}
 }

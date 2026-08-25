@@ -1,7 +1,7 @@
 #include <datamodel/Instance.h>
 
 namespace Engine {
-	class Folder : public Instance {
+	class Folder : public Createable {
 	public:
 		Folder();
 	};

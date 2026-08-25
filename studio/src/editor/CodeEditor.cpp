@@ -1,21 +1,14 @@
 #pragma once
 
-#include <Qsci/qsciscintilla.h>
-#include <Qsci/qscilexerjava.h>
 #include <Qsci/qsciapis.h>
 #include <QWidget>
 #include <QFont>
 #include <QColor>
 #include <Qsci/qsciglobal.h>
+#include <editor/CodeEditor.h>
 
 //namespace CodeEditor {
 //    QWidget* createEditor(QTabWidget* parent = nullptr) {
-//        auto* editor = new QsciScintilla(parent);
-//        auto* lexer = new QsciLexerJava(editor);
-//
-//        QFont editorFont("Consolas", 10);
-//        editorFont.setStyleHint(QFont::Monospace);
-//        lexer->setFont(editorFont);
 //
 //        QColor darkBg("#2b2b2b");
 //        QColor defaultFg("#D4D4D4");
@@ -37,26 +30,9 @@
 //        lexer->setColor(QColor("#CE9178"), QsciLexerJava::DoubleQuotedString);
 //        lexer->setColor(QColor("#CE9178"), QsciLexerJava::SingleQuotedString);
 //
-//        editor->setLexer(lexer);
-//
 //        editor->setCaretForegroundColor(QColor("#AEAFAD"));
 //        editor->setCaretLineVisible(true);
 //        editor->setCaretLineBackgroundColor(QColor("#282828"));
-//
-//        editor->setAutoIndent(true);
-//        editor->setIndentationGuides(true);
-//        editor->setUtf8(true);
-//        editor->setIndentationsUseTabs(true);
-//        editor->setTabWidth(4);
-//
-//        editor->setMarginType(0, QsciScintilla::NumberMargin);
-//        editor->setMarginWidth(0, "0000");
-//        editor->setMarginsBackgroundColor(QColor("#252526"));
-//        editor->setMarginsForegroundColor(QColor("#858585"));
-//        editor->setMarginLineNumbers(0, true);
-//
-//        editor->setSelectionBackgroundColor(QColor("#264F78"));
-//        editor->resetSelectionForegroundColor();
 //
 //        editor->setCallTipsStyle(QsciScintilla::CallTipsContext);
 //        editor->setCallTipsPosition(QsciScintilla::CallTipsBelowText);
@@ -77,7 +53,7 @@
 //
 //        editor->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 //        editor->setScrollWidthTracking(true);
-//        editor->setScrollWidth(1);
+//		editor->setScrollWidth(1);
 //
 //		editor->setText("// Java code example\n"
 //			"public class HelloWorld {\n"
@@ -90,9 +66,36 @@
 //    }
 //}
 
-class CodeEditor : public QsciScintilla {
-    Q_OBJECT
+CodeEditor::CodeEditor(QWidget* parent) {
+	editor = new QsciScintilla(parent);
+	lexer = new QsciLexerJava(editor);
 
-public:
-    explicit CodeEditor(QWidget* parent = nullptr);
-};
+	QFont editorFont("Consolas", 10);
+	editorFont.setStyleHint(QFont::Monospace);
+	lexer->setFont(editorFont);
+
+	editor->setLexer(lexer);
+
+	editor->setAutoIndent(true);
+	editor->setIndentationGuides(true);
+	editor->setUtf8(true);
+	editor->setIndentationsUseTabs(true);
+	editor->setTabWidth(4);
+
+	editor->setMarginType(0, QsciScintilla::NumberMargin);
+	editor->setMarginWidth(0, "0000");
+	editor->setMarginsBackgroundColor(QColor("#252526"));
+	editor->setMarginsForegroundColor(QColor("#858585"));
+	editor->setMarginLineNumbers(0, true);
+
+	editor->setSelectionBackgroundColor(QColor("#264F78"));
+	editor->resetSelectionForegroundColor();
+
+	editor->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	editor->setScrollWidthTracking(true);
+	editor->setScrollWidth(1);
+
+	editor->setAutoCompletionSource(QsciScintilla::AcsAll);
+	editor->setAutoCompletionThreshold(1);
+	editor->setAutoCompletionReplaceWord(true);
+}

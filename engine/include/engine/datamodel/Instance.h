@@ -36,11 +36,13 @@ namespace Engine {
 		Instance* parent;
 	protected:
 		Instance();
-		Instance(const char* name);
+		Instance(std::string name);
 
 		virtual ~Instance();
 
 	public:
+		bool internalLocked = false;
+
 		virtual void destroy();
 		void remove();
 		void removeAllChildren();
@@ -73,6 +75,11 @@ namespace Engine {
 		static void BindAPI(WasmRuntime& wasm);
 	private:
 		bool setParentInternal(Instance* instance);
+	};
+
+	class Createable : public Instance {
+	public:
+		Createable(const std::string name);
 	};
 
 	namespace InstanceUtil {
