@@ -3,6 +3,9 @@
 #include <string.h>
 #include <tchar.h>
 
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 600
+
 static TCHAR szWindowClass[] = _T("DesktopApp");
 static TCHAR szTitle[] = _T("Test platform");
 
@@ -10,13 +13,9 @@ HINSTANCE hInst;
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
-int WINAPI WinMain(
-    _In_ HINSTANCE hInstance,
-    _In_opt_ HINSTANCE hPrevInstance,
-    _In_ LPSTR     lpCmdLine,
-    _In_ int       nCmdShow
-)
-{
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow) {
+    HBRUSH hBrush = CreateSolidBrush(RGB(200, 200, 200));
+
     WNDCLASSEX wcex;
 
     wcex.cbSize = sizeof(WNDCLASSEX);
@@ -27,7 +26,7 @@ int WINAPI WinMain(
     wcex.hInstance = hInstance;
     wcex.hIcon = LoadIcon(wcex.hInstance, IDI_APPLICATION);
     wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+    wcex.hbrBackground = hBrush;
     wcex.lpszMenuName = NULL;
     wcex.lpszClassName = szWindowClass;
     wcex.hIconSm = LoadIcon(wcex.hInstance, IDI_APPLICATION);
@@ -45,38 +44,27 @@ int WINAPI WinMain(
     hInst = hInstance;
 
     HWND hWnd = CreateWindowEx(
-        0,
-        szWindowClass,
-        szTitle,
-        WS_OVERLAPPEDWINDOW | WS_MAXIMIZE,
-        600, 300,
-        500, 500,
-        NULL,
-        NULL,
-        hInstance,
-        NULL
-    );
+        0, szWindowClass, szTitle, WS_OVERLAPPEDWINDOW | WS_MAXIMIZE,
+        600, 300, WINDOW_WIDTH, WINDOW_HEIGHT, NULL, NULL, hInstance,
+        NULL);
+
+    SetWindowLongPtr(hWnd, 0 * sizeof(void*), (LONG_PTR)hBrush);
 
     if (!hWnd)
     {
-        MessageBox(NULL,
-            _T("Call to CreateWindowEx failed!"),
-            _T("Windows Desktop Guided Tour"),
-            NULL);
-
         return 1;
     }
 
     ShowWindow(hWnd, SW_SHOWMAXIMIZED);
     UpdateWindow(hWnd);
 
-    // Main message loop:
     MSG msg;
     while (GetMessage(&msg, NULL, 0, 0))
     {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
+    DeleteObject(hBrush);
 
     return (int)msg.wParam;
 }
