@@ -2,6 +2,6 @@
 
 namespace Engine {
 	Audio::Audio() : Instance("Audio") {
-
+		internalLocked = true;
 	}
 }

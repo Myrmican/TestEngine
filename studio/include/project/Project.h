@@ -19,7 +19,7 @@ public:
 
     bool savingInCloud = false;
 	std::string primaryLanguage = "Kotlin";
-	Logger* logger = nullptr;
+    Logger* logger = nullptr;
 
     std::shared_ptr<Engine::Game> dataModel;
 

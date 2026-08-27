@@ -9,56 +9,23 @@
 #include <QTabWidget>
 #include <QMouseEvent>
 #include <QHeaderView>
+#include <string>
 #include <project/Project.h>
 #include <editor/CodeEditor.h>
 #include <util/Languages.h>
 #include <ui/menus/MenuManager.h>
 #include <ui/docks/Explorer.h>
+#include <engine/datamodel/instances/File.h>
+
+using namespace Engine;
+
+constexpr int InstancePointerRole = Qt::UserRole + 1;
 
 namespace {
-    struct NodeSpec {
-        QString name;
-        std::vector<NodeSpec> children = {};
-        Qt::ItemFlags flagsToEnable = Qt::ItemIsEditable;
-    };
-
-    void AssembleExplorerRoot(QTreeWidget* explorerTree) {
-        explorerTree->clear();
-
-        const std::vector<NodeSpec> treeStructure = {
-            { "World", { { "Camera" } } },
-            { "Players" },
-            { "Lighting" },
-            { "Client", { { "Assets" }, { "Src" } } },
-            { "Shared", { { "Assets" }, { "Src" } } },
-            { "Server", { { "Assets" }, { "Src" } } }
-        };
-
-        auto populateTree = [](auto& self, QTreeWidgetItem* parentItem, QTreeWidget* parentWidget, const std::vector<NodeSpec>& nodes) -> void {
-            for (const auto& node : nodes) {
-                QTreeWidgetItem* item = nullptr;
-
-                if (parentWidget) {
-                    item = new QTreeWidgetItem(parentWidget, QStringList() << node.name);
-                }
-                else if (parentItem) {
-                    item = new QTreeWidgetItem();
-                    item->setText(0, node.name);
-                    parentItem->addChild(item);
-                }
-
-                if (item) {
-                    item->setFlags(item->flags() | node.flagsToEnable);
-                    if (!node.children.empty()) {
-                        self(self, item, nullptr, node.children);
-                    }
-                }
-            }
-            };
-
-        const bool prevSignals = explorerTree->blockSignals(true);
-        populateTree(populateTree, nullptr, explorerTree, treeStructure);
-        explorerTree->blockSignals(prevSignals);
+    Instance* GetEngineInstance(QTreeWidgetItem* item) {
+        if (!item) return nullptr;
+        QVariant data = item->data(0, InstancePointerRole);
+        return static_cast<Instance*>(data.value<void*>());
     }
 
     void ConnectSearch(QLineEdit* searchBar, QTreeWidget* explorerTree) {
@@ -89,12 +56,12 @@ namespace {
                     return;
                 }
 
-                bool FilesAllowed = false;
+                bool filesAllowed = false;
 				QTreeWidgetItem* currentIteratedItem = item;
 
 				while (currentIteratedItem) {
 					if (currentIteratedItem->text(0) == "Src") {
-						FilesAllowed = true;
+						filesAllowed = true;
 						break;
 					}
 					currentIteratedItem = currentIteratedItem->parent();
@@ -105,7 +72,7 @@ namespace {
                 QAction* openAction = nullptr;
                 QMenu* openWithMenu = nullptr;
 
-                if (FilesAllowed) {
+                if (filesAllowed) {
 					openAction = contextMenu->addAction("Open");
 					openWithMenu = contextMenu->addMenu("Open With");
 
@@ -127,7 +94,7 @@ namespace {
                 contextMenu->addSeparator();
 
                 QAction* addFileAction = nullptr;
-				if (FilesAllowed) {
+				if (filesAllowed) {
 					addFileAction = contextMenu->addAction("Add File");
 				}
 
@@ -152,7 +119,7 @@ namespace {
                 else if (selectedAction == renameAction) {
                     explorerTree->editItem(item, 0);
                 }
-                else if (FilesAllowed && selectedAction == addFileAction) {
+                else if (filesAllowed && selectedAction == addFileAction) {
                     QStringList langExtensions = getExtensionsForLanguage(project->primaryLanguage);
                     QString finalExtension = langExtensions.isEmpty() ? ".txt" : langExtensions.first();
 
@@ -167,7 +134,11 @@ namespace {
                     );
 
                     if (ok && !fileName.isEmpty()) {
-                        self->AddItem(item, fileName, "File");
+                        File* file = new File();
+                        file->setName(fileName.toStdString());
+                        QTreeWidgetItem* insertedItem = self->AddItem(item, file);
+                        insertedItem->setSelected(true);
+                        self->treeWidget->scrollToItem(insertedItem);
                     }
                 }
                 else if (selectedAction == addInstanceAction) {
@@ -179,7 +150,7 @@ namespace {
 }
 
 Explorer::Explorer(QMainWindow* window, Project* project)
-    : QObject(window) {
+    : QObject(window), m_project(project) {
 
     auto* explorerDock = new QDockWidget("Explorer", window);
     explorerDock->setWindowFlags(Qt::SubWindow);
@@ -221,8 +192,6 @@ Explorer::Explorer(QMainWindow* window, Project* project)
         "}"
     );
 
-	AssembleExplorerRoot(explorerTree);
-
     dockWidget = explorerDock;
     treeWidget = explorerTree;
 
@@ -244,28 +213,71 @@ Explorer::Explorer(QMainWindow* window, Project* project)
 
     ConnectSearch(searchBar, explorerTree);
     ConnectContextMenu(explorerTree, window, project, this);
+    AssembleRoot();
 }
 
-void Explorer::AddItem(QTreeWidgetItem* parentItem, const QString& itemName, const std::string className) {
-    QMainWindow* mainWindow = qobject_cast<QMainWindow*>(treeWidget->window());
+QTreeWidgetItem* Explorer::AddItem(QTreeWidgetItem* parentItem, Instance* instance) {
+    Instance* parentInstance = GetEngineInstance(parentItem);
+    QString instanceName = QString::fromStdString(instance->getName());
+
+    if (!parentInstance) {
+        parentInstance = m_project->dataModel.get();
+    }
+
+    if (!parentInstance) return nullptr;
 
     QTreeWidgetItem* item = new QTreeWidgetItem();
-    item->setText(0, itemName);
-    parentItem->addChild(item);
+    item->setText(0, instanceName);
 
-    item->setSelected(true);
-    treeWidget->scrollToItem(item);
+    if (parentItem) {
+        parentItem->addChild(item);
+    }
+    else {
+        treeWidget->addTopLevelItem(item);
+    }
 
-	if (className == "File") {
+    item->setData(0, InstancePointerRole, QVariant::fromValue(static_cast<void*>(instance)));
+
+	if (instance->getClassName() == "File") {
         item->setFlags(item->flags() & ~Qt::ItemIsEditable);
 
+        QMainWindow* mainWindow = qobject_cast<QMainWindow*>(treeWidget->window());
         QTabWidget* documentTabs = mainWindow->findChild<QTabWidget*>("DocumentTabs");
 
         CodeEditor* codeEditor = new CodeEditor(documentTabs);
 
-        int newTabIndex = documentTabs->addTab(codeEditor->editor, itemName);
+        int newTabIndex = documentTabs->addTab(codeEditor->editor, instanceName);
         documentTabs->setCurrentIndex(newTabIndex);
 	}
+
+    return item;
+}
+
+void Explorer::AssembleRoot() {
+    auto it = m_project->dataModel->m_services.find("World");
+    Engine::Instance* worldPtr = (it != m_project->dataModel->m_services.end()) ? it->second.get() : nullptr;
+
+    AddItem(nullptr, worldPtr);
+
+    auto it2 = m_project->dataModel->m_services.find("Players");
+    Engine::Instance* playersPtr = (it2 != m_project->dataModel->m_services.end()) ? it2->second.get() : nullptr;
+
+    AddItem(nullptr, playersPtr);
+
+    auto it3 = m_project->dataModel->m_services.find("Client");
+    Engine::Instance* clientPtr = (it3 != m_project->dataModel->m_services.end()) ? it3->second.get() : nullptr;
+
+    AddItem(nullptr, clientPtr);
+
+    auto it4 = m_project->dataModel->m_services.find("Shared");
+    Engine::Instance* sharedPtr = (it4 != m_project->dataModel->m_services.end()) ? it4->second.get() : nullptr;
+
+    AddItem(nullptr, sharedPtr);
+
+    auto it5 = m_project->dataModel->m_services.find("Server");
+    Engine::Instance* serverPtr = (it5 != m_project->dataModel->m_services.end()) ? it5->second.get() : nullptr;
+
+    AddItem(nullptr, serverPtr);
 }
 
 bool Explorer::eventFilter(QObject* watched, QEvent* event) {

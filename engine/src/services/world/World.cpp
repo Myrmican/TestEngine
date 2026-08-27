@@ -2,6 +2,6 @@
 
 namespace Engine {
 	World::World() : Instance("World") {
-
+		internalLocked = true;
 	}
 }

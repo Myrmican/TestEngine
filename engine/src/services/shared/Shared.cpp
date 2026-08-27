@@ -2,6 +2,6 @@
 
 namespace Engine {
 	Shared::Shared() : Instance("Shared") {
-
+		internalLocked = true;
 	}
 }

@@ -7,7 +7,6 @@
 #include "boost/weak_ptr.hpp"
 #include "boost/shared_ptr.hpp"
 #include "boost/enable_shared_from_this.hpp"
-#include <boost/static_assert.hpp>
 #include <boost/flyweight.hpp>
 
 class WasmRuntime;
@@ -27,7 +26,7 @@ namespace Engine {
 		ChildAdded(const ChildAdded& event);
 	};
 
-	class Instance {
+	class Instance : public std::enable_shared_from_this<Instance> {
 	private:
 		boost::flyweight<std::string> name;
 
@@ -63,6 +62,8 @@ namespace Engine {
 		bool isDescendantOf(const Instance* ancestor);
 
 		std::shared_ptr<Instance> clone();
+
+		std::string getClassName() { return className; }
 
 		static void BindAPI(WasmRuntime& wasm);
 	private:

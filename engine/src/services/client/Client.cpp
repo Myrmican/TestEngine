@@ -2,6 +2,6 @@
 
 namespace Engine {
 	Client::Client() : Instance("Client") {
-
+		internalLocked = true;
 	}
 }

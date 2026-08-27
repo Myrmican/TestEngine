@@ -12,9 +12,8 @@ namespace Engine {
 	}
 
 	Instance::Instance(std::string name): parent(nullptr) {
-		className = name;
-
-		//setParent();
+		this->className = name;
+		this->name = name;
 	}
 
 	void Instance::setName(std::string_view value) {
@@ -50,6 +49,16 @@ namespace Engine {
 		else if (this->isAncestorOf(instance)) {
 			std::string message = std::format("Attempted to set a descendant of {} as its parent.", getName());
 			throw std::runtime_error(message);
+		}
+
+		Instance* oldParent = getParent();
+
+		this->parent = instance;
+
+		instance->children.push_back(shared_from_this());
+
+		if (oldParent) {
+			std::erase(oldParent->children, shared_from_this());
 		}
 	}
 

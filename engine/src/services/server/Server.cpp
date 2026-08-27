@@ -2,7 +2,7 @@
 
 namespace Engine {
 	Server::Server() : Instance("Server") {
-
+		internalLocked = true;
 	}
 
 	int Server::getPing() const {
