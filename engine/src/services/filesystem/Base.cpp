@@ -14,7 +14,7 @@ namespace Engine {
 			return nullptr;
 		}
 
-		const std::string Base::getDirectory() {
+		const std::string& Base::getDirectory() {
 			return "";
 		}
 

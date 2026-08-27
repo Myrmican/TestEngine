@@ -1,10 +1,8 @@
-#pragma once
-
 #include <datamodel/Instance.h>
 
 namespace Engine {
-	class Shared : public Instance {
+	class Entity : public Createable {
 	public:
-		Shared();
+		Entity();
 	};
 }

@@ -15,12 +15,15 @@
 #include <QPushButton>
 #include <QButtonGroup>
 #include <project/Project.h>
+#include <memory>
 
 using namespace std;
 
 Project::Project(const std::string& projectName) {
     name = QString::fromStdString(projectName);
-    savingInCloud = false;  
+    savingInCloud = false;
+
+    dataModel = std::make_shared<Engine::Game>();
 }
 
 Project::~Project() = default;

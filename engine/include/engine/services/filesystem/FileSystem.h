@@ -2,7 +2,7 @@
 
 namespace Engine {
 	namespace FileSystem {
-		std::string currentDirectory;
+		inline std::string currentDirectory;
 
 		static void changeDirectory(const std::string directoryPath);
 

@@ -12,11 +12,12 @@
 
 class WasmRuntime;
 
-using namespace boost;
-
 namespace Engine {
 
 	class Instance;
+
+	using InstancePtr = std::shared_ptr<Instance>;
+	using InstanceWeakPtr = std::weak_ptr<Instance>;
 
 	struct ChildAdded {
 
@@ -26,22 +27,20 @@ namespace Engine {
 		ChildAdded(const ChildAdded& event);
 	};
 
-	typedef std::vector<shared_ptr<Instance> > Instances;
-
 	class Instance {
 	private:
-		flyweight<std::string> name;
+		boost::flyweight<std::string> name;
 
-		shared_ptr<Instances> children;
+		std::vector<InstancePtr> children;
 		Instance* parent;
+
+		std::string className;
 	protected:
-		Instance();
 		Instance(std::string name);
-
-		virtual ~Instance();
-
 	public:
 		bool internalLocked = false;
+
+		virtual ~Instance() = default;
 
 		virtual void destroy();
 		void remove();
@@ -55,30 +54,24 @@ namespace Engine {
 		void setParent(Instance* instance) { setParentInternal(instance); }
 
 		const std::string& getName() const { return name.get(); }
-		virtual void setName(const std::string& value);
+		virtual void setName(std::string_view value);
 
-		shared_ptr<Instances> getChildren() const { return children; }
+		const std::vector<InstancePtr>& getChildren() const { return children; }
 
-		bool isAncestorOf(const Instance* descendant) const {
-			if (!descendant) return false;
-			else if (descendant->getParent() == this) return true;
+		bool isAncestorOf(const Instance* descendant) const;
 
-			return isAncestorOf(descendant->getParent());
-		}
+		bool isDescendantOf(const Instance* ancestor);
 
-		bool isDescendantOf(const Instance* ancestor) {
-			
-		}
-
-		shared_ptr<Instance> clone();
+		std::shared_ptr<Instance> clone();
 
 		static void BindAPI(WasmRuntime& wasm);
 	private:
-		bool setParentInternal(Instance* instance);
+		void setParentInternal(Instance* instance);
 	};
 
 	class Createable : public Instance {
 	public:
+
 		Createable(const std::string name);
 	};
 }

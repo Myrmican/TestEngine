@@ -1,5 +1,6 @@
 #include <datamodel/Instance.h>
 #include <scripting/WasmRuntime.h>
+#include "boost/shared_ptr.hpp"
 
 #include <format>
 #include <exception>
@@ -10,7 +11,33 @@ namespace Engine {
 		
 	}
 
-	bool Instance::setParentInternal(Instance* instance) {
+	Instance::Instance(std::string name): parent(nullptr) {
+		className = name;
+
+		//setParent();
+	}
+
+	void Instance::setName(std::string_view value) {
+		name = std::string(value);
+	}
+
+	void Instance::destroy() {
+		removeAllChildren();
+		setParent(nullptr);
+	}
+
+	void Instance::removeAllChildren() {
+		
+	}
+
+	std::string Instance::getPath() const {
+		if (parent) {
+			return parent->getPath() + "/" + getName();		 
+		}
+		return getName();
+	}
+
+	void Instance::setParentInternal(Instance* instance) {
 		if (internalLocked) {
 			std::string message = std::format("Attempted to set the parent of {}, but it was locked.", getName());
 			throw std::runtime_error(message);
@@ -24,5 +51,28 @@ namespace Engine {
 			std::string message = std::format("Attempted to set a descendant of {} as its parent.", getName());
 			throw std::runtime_error(message);
 		}
+	}
+
+	std::shared_ptr<Instance> Instance::clone() {
+		std::shared_ptr<Instance> instance = nullptr;
+		return instance;
+	}
+
+	bool Instance::isAncestorOf(const Instance* descendant) const {
+		if (!descendant) return false;
+		else if (descendant->getParent() == this) return true;
+
+		return isAncestorOf(descendant->getParent());
+	}
+
+	bool Instance::isDescendantOf(const Instance* ancestor) {
+		if (!ancestor) return false;
+		else if (getParent() == ancestor) return true;
+
+		return parent->isDescendantOf(ancestor);
+	}
+
+	void Instance::BindAPI(WasmRuntime& wasm) {
+
 	}
 }

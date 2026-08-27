@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QFile>
 #include <core/Logger.h>
+#include <engine/datamodel/Game.h>
 
 class QMainWindow;
 class QFile;
@@ -14,10 +15,13 @@ class Project : public QObject {
 public:
     QString name;
     std::string projectPath;
-    QFile* projectFile;
+    QFile* projectFile = nullptr;
+
     bool savingInCloud = false;
 	std::string primaryLanguage = "Kotlin";
 	Logger* logger = nullptr;
+
+    std::shared_ptr<Engine::Game> dataModel;
 
     Project(const std::string& projectName);
     ~Project();

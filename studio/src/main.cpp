@@ -4,20 +4,18 @@
 #include "Velopack.h"
 #include <QApplication>
 #include <QMainWindow>
+#include <engine/Engine.h>
 
 int main(int argc, char *argv[]) {
 	vpkc_app_run(nullptr);
 
-	if (System::IsVirtualEnvironment()) {
-		int errorBoxResult = MessageBox(
+	if (System::IsVirtualEnvironment())
+		return MessageBox(
 			NULL,
 			L"This program can not run in a virtual environment.",
 			L"System Error",
 			MB_ICONERROR | MB_OK
-		);
-
-		return 1;
-	}
+		), 1;
 
 	HRESULT comResult = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 	if (FAILED(comResult)) {
@@ -28,17 +26,19 @@ int main(int argc, char *argv[]) {
 
     QApplication app(argc, argv);
 
-    auto* window = new QMainWindow();
-    window->resize(1024, 768);
-    window->setWindowTitle("Test Engine");
+	Engine::initialize();
 
-	window->winId();
+    QMainWindow window;
+    window.resize(1024, 768);
+    window.setWindowTitle("Test Engine");
+	window.winId();
 
-	Window::initialize(window, app);
-
-    window->showMaximized();
+	Window::initialize(&window, app);
+    window.showMaximized();
 
 	app.exec();
+
+	Engine::shutdown();
 
 	CoUninitialize();
 

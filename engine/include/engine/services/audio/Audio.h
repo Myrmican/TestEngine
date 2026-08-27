@@ -1,10 +1,9 @@
-#pragma once
-
 #include <datamodel/Instance.h>
 
 namespace Engine {
-	class Shared : public Instance {
+	class Audio : public Instance {
 	public:
-		Shared();
+		Audio();
+
 	};
 }
