@@ -80,5 +80,6 @@ configure_file(
 
 add_subdirectory(engine)
 add_subdirectory(studio)
+add_subdirectory(client)
 
 include_directories(SYSTEM ${CMAKE_CURRENT_SOURCE_DIR}/external)
