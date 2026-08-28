@@ -3,12 +3,17 @@
 #include <QDockWidget>
 #include <QStackedWidget>
 #include <QMainWindow>
+#include <QTabBar>
 #include <QSplitter>
 #include <project/Project.h>
 #include <ui/TabManager.h>
 
 QTabWidget* TabManager::createWidget(QSplitter* parent) {
+
     QTabWidget* tabsWidget = new QTabWidget(parent);
+    QSize size = tabsWidget->sizeHint();
+    size.setHeight(45);
+    tabsWidget->setBaseSize(size);
     tabsWidget->setTabsClosable(true);
     tabsWidget->setMovable(true);
     tabsWidget->setObjectName("DocumentTabs");
@@ -76,6 +81,8 @@ void TabManager::handleTabClose(int index, int projectTabIndex, QTabWidget* tabs
         if (project->projectFile) {
             project->projectFile->close();
         }
+
+        window->setWindowTitle("Test Engine");
 
         delete project;
     }

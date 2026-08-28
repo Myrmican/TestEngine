@@ -2,6 +2,7 @@
 #include <scripting/WasmRuntime.h>
 #include "boost/shared_ptr.hpp"
 
+#include <iostream>
 #include <format>
 #include <exception>
 #include <string>
@@ -36,20 +37,21 @@ namespace Engine {
 		return getName();
 	}
 
-	void Instance::setParentInternal(Instance* instance) {
-		if (internalLocked) {
-			std::string message = std::format("Attempted to set the parent of {}, but it was locked.", getName());
-			throw std::runtime_error(message);
+	void Instance::setParentInternal(Instance* instance, bool ignoreLock) {
+		std::string message;
+
+		if (internalLocked && !ignoreLock) {
+			message = std::format("Attempted to set the parent of {}, but it was locked.", getName());
 		}
 		
 		if (instance == this) {
-			std::string message = std::format("Attempted to parent {} to itself.", getPath());
-			throw std::runtime_error(message);
+			message = std::format("Attempted to parent {} to itself.", getPath());
 		}
 		else if (this->isAncestorOf(instance)) {
-			std::string message = std::format("Attempted to set a descendant of {} as its parent.", getName());
-			throw std::runtime_error(message);
+			message = std::format("Attempted to set a descendant of {} as its parent.", getName());
 		}
+
+		if (!message.empty()) throw std::runtime_error(message);
 
 		Instance* oldParent = getParent();
 

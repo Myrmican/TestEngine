@@ -50,7 +50,8 @@ namespace Engine {
 		Instance* getParent() { return parent; }
 		const Instance* getParent() const { return parent; }
 
-		void setParent(Instance* instance) { setParentInternal(instance); }
+		void setParent(Instance* instance) { setParentInternal(instance, false); }
+		void setParent(Instance* instance, bool ignoreLock) { setParentInternal(instance, ignoreLock); }
 
 		const std::string& getName() const { return name.get(); }
 		virtual void setName(std::string_view value);
@@ -67,7 +68,7 @@ namespace Engine {
 
 		static void BindAPI(WasmRuntime& wasm);
 	private:
-		void setParentInternal(Instance* instance);
+		void setParentInternal(Instance* instance, bool ignoreLock);
 	};
 
 	class Createable : public Instance {

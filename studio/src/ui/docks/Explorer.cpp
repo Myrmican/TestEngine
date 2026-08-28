@@ -220,7 +220,7 @@ QTreeWidgetItem* Explorer::AddItem(QTreeWidgetItem* parentItem, Instance* instan
     Instance* parentInstance = GetEngineInstance(parentItem);
     QString instanceName = QString::fromStdString(instance->getName());
 
-    if (!parentInstance) {
+    if (!parentInstance && m_project->dataModel) {
         parentInstance = m_project->dataModel.get();
     }
 

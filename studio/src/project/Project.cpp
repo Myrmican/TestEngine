@@ -23,7 +23,12 @@ Project::Project(const std::string& projectName) {
     name = QString::fromStdString(projectName);
     savingInCloud = false;
 
-    dataModel = std::make_shared<Engine::Game>();
+    try {
+        dataModel = std::make_shared<Engine::Game>();
+    }
+    catch (const std::exception& e) {
+        qCritical() << "Failed to initialize Game engine:";
+    }
 }
 
 Project::~Project() = default;
@@ -106,10 +111,8 @@ namespace ProjectManager {
 
         if (dialog.exec() == QDialog::Accepted) {
             std::string projectName = nameEdit->text().toStdString();
-            //std::string projectPath = pathEdit->text().toStdString();
 
 			Project* newProject = new Project(projectName);
-			//newProject->savingInCloud = saveButtonCloud->isChecked();
 			newProject->primaryLanguage = javaButton->isChecked() ? "Java" : "Kotlin";
             return newProject;
         }

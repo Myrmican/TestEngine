@@ -30,6 +30,8 @@ namespace EditorWindow {
             project->setParent(editorPage);
         }
 
+        window->setWindowTitle(project->name + " - Test Engine");
+
         QToolBar* mainToolBar = Toolbar::create(window);
 
         auto* centerSplitter = new QSplitter(Qt::Vertical, editorPage);
@@ -75,6 +77,6 @@ namespace EditorWindow {
         }
 
         Logger* outputLogger = new Logger(windowDocks.output);
-		project->logger = outputLogger;
+	    project->logger = outputLogger;
 	}
 }
