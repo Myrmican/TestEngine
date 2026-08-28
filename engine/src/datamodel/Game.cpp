@@ -5,6 +5,7 @@
 #include <services/client/Client.h>
 #include <services/shared/Shared.h>
 #include <services/audio/Audio.h>
+#include <services/interface/Interface.h>
 #include <datamodel/instances/Folder.h>
 
 namespace Engine {
@@ -49,5 +50,8 @@ namespace Engine {
 
         auto clientSourceFolder = std::make_shared<Folder>();
         clientSourceFolder->setParent(clientService.get(), true);
+
+        auto interfaceService = std::make_shared<Interface>();
+        interfaceService->setParent(clientService.get(), true);
 	}
 }

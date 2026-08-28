@@ -192,6 +192,10 @@ Explorer::Explorer(QMainWindow* window, Project* project)
         "}"
     );
 
+    QPalette palette = explorerTree->palette();
+    palette.setColor(QPalette::Base, QColor(26, 26, 26));
+    explorerTree->setPalette(palette);
+
     dockWidget = explorerDock;
     treeWidget = explorerTree;
 
@@ -278,6 +282,11 @@ void Explorer::AssembleRoot() {
     Engine::Instance* serverPtr = (it5 != m_project->dataModel->m_services.end()) ? it5->second.get() : nullptr;
 
     AddItem(nullptr, serverPtr);
+
+    auto it6 = m_project->dataModel->m_services.find("Audio");
+    Engine::Instance* audioPtr = (it5 != m_project->dataModel->m_services.end()) ? it6->second.get() : nullptr;
+
+    AddItem(nullptr, audioPtr);
 }
 
 bool Explorer::eventFilter(QObject* watched, QEvent* event) {
