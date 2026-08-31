@@ -69,6 +69,14 @@ namespace Engine {
 		return instance;
 	}
 
+	const std::vector<InstancePtr>& Instance::getDescendants() {
+		return children;
+	}
+
+	const std::vector<InstancePtr>& Instance::getDescendants(std::string selector) {
+		return children;
+	}
+
 	bool Instance::isAncestorOf(const Instance* descendant) const {
 		if (!descendant) return false;
 		else if (descendant->getParent() == this) return true;
@@ -81,6 +89,17 @@ namespace Engine {
 		else if (getParent() == ancestor) return true;
 
 		return parent->isDescendantOf(ancestor);
+	}
+
+	void Instance::setAttribute(const std::string& name, bool value) {
+		attributes[name] = value;
+	}
+
+	bool Instance::getAttribute(const std::string& name) {
+		auto item = attributes.find(name);
+		if (item == attributes.end()) return false;
+
+		return item->second;
 	}
 
 	void Instance::BindAPI(WasmRuntime& wasm) {

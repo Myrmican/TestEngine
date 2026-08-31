@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <string>
+#include <map>
 #include "boost/weak_ptr.hpp"
 #include "boost/shared_ptr.hpp"
 #include "boost/enable_shared_from_this.hpp"
@@ -34,6 +35,7 @@ namespace Engine {
 		Instance* parent;
 
 		std::string className;
+		std::map<std::string, bool> attributes;
 	protected:
 		Instance(std::string name);
 	public:
@@ -57,12 +59,19 @@ namespace Engine {
 		virtual void setName(std::string_view value);
 
 		const std::vector<InstancePtr>& getChildren() const { return children; }
+		const std::vector<InstancePtr>& getDescendants();
+		const std::vector<InstancePtr>& getDescendants(std::string selector);
 
 		bool isAncestorOf(const Instance* descendant) const;
 
 		bool isDescendantOf(const Instance* ancestor);
 
 		std::shared_ptr<Instance> clone();
+
+		std::map<std::string, bool> getAttributes() { return attributes; }
+
+		void setAttribute(const std::string& name, bool value);
+		bool getAttribute(const std::string& name);
 
 		std::string getClassName() { return className; }
 

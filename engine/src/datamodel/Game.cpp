@@ -7,6 +7,7 @@
 #include <services/audio/Audio.h>
 #include <services/interface/Interface.h>
 #include <datamodel/instances/Folder.h>
+#include <datamodel/instances/PlayerTemplate.h>
 
 namespace Engine {
 	Game::Game() : Instance("DataModel") {
@@ -26,12 +27,12 @@ namespace Engine {
         sharedService->setParent(this, true);
         audioService->setParent(this, true);
 
-        m_services.emplace("World", worldService);
-        m_services.emplace("Players", playersService);
-        m_services.emplace("Server", serverService);
-        m_services.emplace("Client", clientService);
-        m_services.emplace("Shared", sharedService);
-        m_services.emplace("Audio", audioService);
+        m_services.emplace_back("World", worldService);
+        m_services.emplace_back("Players", playersService);
+        m_services.emplace_back("Server", serverService);
+        m_services.emplace_back("Client", clientService);
+        m_services.emplace_back("Shared", sharedService);
+        m_services.emplace_back("Audio", audioService);
 
         auto serverAssetsFolder = std::make_shared<Folder>();
         serverAssetsFolder->setParent(serverService.get(), true);
@@ -51,7 +52,10 @@ namespace Engine {
         auto clientSourceFolder = std::make_shared<Folder>();
         clientSourceFolder->setParent(clientService.get(), true);
 
-        auto interfaceService = std::make_shared<Interface>();
-        interfaceService->setParent(clientService.get(), true);
+        auto playerTemplate = std::make_shared<PlayerTemplate>();
+        playerTemplate->setParent(playersService.get(), true);
+
+        auto defaultInterface = std::make_shared<Interface>();
+        defaultInterface->setParent(playerTemplate.get(), true);
 	}
 }

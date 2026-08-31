@@ -24,8 +24,23 @@ constexpr int InstancePointerRole = Qt::UserRole + 1;
 namespace {
     Instance* GetEngineInstance(QTreeWidgetItem* item) {
         if (!item) return nullptr;
+
         QVariant data = item->data(0, InstancePointerRole);
         return static_cast<Instance*>(data.value<void*>());
+    }
+
+    QTreeWidgetItem* GetEngineInstance(QTreeWidget* treeWidget, Instance* instance) {
+        if (!treeWidget || !instance) return nullptr;
+        
+        QTreeWidgetItemIterator it(treeWidget);
+        while (*it) {
+            QVariant data = (*it)->data(0, InstancePointerRole);
+            if (static_cast<Instance*>(data.value<void*>()) == instance) {
+                return *it;
+            }
+            ++it;
+        }
+        return nullptr;
     }
 
     void ConnectSearch(QLineEdit* searchBar, QTreeWidget* explorerTree) {
@@ -183,7 +198,7 @@ Explorer::Explorer(QMainWindow* window, Project* project)
     explorerTree->setUniformRowHeights(true);
     explorerTree->setStyleSheet(
         "QTreeWidget { outline: 0; border-radius: 0px; }"
-        "QTreeView { show-decoration-selected: 0; }"
+        "QTreeWidget { show-decoration-selected: 0; }"
         "QTreeView::item {"
         "    font-size: 14px;"
         "    color: #f2f2f2;"
@@ -258,35 +273,19 @@ QTreeWidgetItem* Explorer::AddItem(QTreeWidgetItem* parentItem, Instance* instan
 }
 
 void Explorer::AssembleRoot() {
-    auto it = m_project->dataModel->m_services.find("World");
-    Engine::Instance* worldPtr = (it != m_project->dataModel->m_services.end()) ? it->second.get() : nullptr;
 
-    AddItem(nullptr, worldPtr);
+    for (auto& [name, service] : m_project->dataModel->m_services) {
+        AddItem(nullptr, service.get());
 
-    auto it2 = m_project->dataModel->m_services.find("Players");
-    Engine::Instance* playersPtr = (it2 != m_project->dataModel->m_services.end()) ? it2->second.get() : nullptr;
+        const auto children = service->getChildren();
+        if (children.empty() || !children.front()) continue;
 
-    AddItem(nullptr, playersPtr);
-
-    auto it3 = m_project->dataModel->m_services.find("Client");
-    Engine::Instance* clientPtr = (it3 != m_project->dataModel->m_services.end()) ? it3->second.get() : nullptr;
-
-    AddItem(nullptr, clientPtr);
-
-    auto it4 = m_project->dataModel->m_services.find("Shared");
-    Engine::Instance* sharedPtr = (it4 != m_project->dataModel->m_services.end()) ? it4->second.get() : nullptr;
-
-    AddItem(nullptr, sharedPtr);
-
-    auto it5 = m_project->dataModel->m_services.find("Server");
-    Engine::Instance* serverPtr = (it5 != m_project->dataModel->m_services.end()) ? it5->second.get() : nullptr;
-
-    AddItem(nullptr, serverPtr);
-
-    auto it6 = m_project->dataModel->m_services.find("Audio");
-    Engine::Instance* audioPtr = (it5 != m_project->dataModel->m_services.end()) ? it6->second.get() : nullptr;
-
-    AddItem(nullptr, audioPtr);
+        for (const auto& child : children) {
+            if (child) {
+                qDebug() << child.get();
+            }
+        }
+    }
 }
 
 bool Explorer::eventFilter(QObject* watched, QEvent* event) {
