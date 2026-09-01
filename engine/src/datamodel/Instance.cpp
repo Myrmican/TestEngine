@@ -6,6 +6,7 @@
 #include <format>
 #include <exception>
 #include <string>
+#include <vector>
 
 namespace Engine {
 	Createable::Createable(const std::string name) : Instance(name) {
@@ -17,10 +18,16 @@ namespace Engine {
 		this->name = name;
 	}
 
-	void Instance::setName(std::string_view value) {
-		name = std::string(value);
-	}
+	std::string_view Instance::setName(std::string_view value) {
+		if (name == value) return value;
 
+		if (value.size() > 100)
+			name = std::string(value.substr(0, 100));
+		else
+			name = std::string(value);
+		return name.get();
+	}
+	
 	void Instance::destroy() {
 		removeAllChildren();
 		setParent(nullptr);

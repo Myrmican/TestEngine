@@ -56,7 +56,7 @@ namespace Engine {
 		void setParent(Instance* instance, bool ignoreLock) { setParentInternal(instance, ignoreLock); }
 
 		const std::string& getName() const { return name.get(); }
-		virtual void setName(std::string_view value);
+		virtual std::string_view setName(std::string_view value);
 
 		const std::vector<InstancePtr>& getChildren() const { return children; }
 		const std::vector<InstancePtr>& getDescendants();

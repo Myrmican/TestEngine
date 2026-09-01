@@ -1,7 +1,7 @@
 #include <services/interface/Interface.h>
 
 namespace Engine {
-	Interface::Interface() : Instance("PlayerInterface") {
+	Interface::Interface() : Instance("Interface") {
 		internalLocked = true;
 		
 

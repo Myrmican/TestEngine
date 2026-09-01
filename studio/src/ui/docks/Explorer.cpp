@@ -15,7 +15,15 @@
 #include <util/Languages.h>
 #include <ui/menus/MenuManager.h>
 #include <ui/docks/Explorer.h>
+#include <ui/popups/InsertObject.h>
 #include <engine/datamodel/instances/File.h>
+
+#include <QString>
+#include <QStandardPaths>
+#include <QFileInfo>
+#include <QDir>
+#include <QSettings>
+#include <QProcessEnvironment>
 
 using namespace Engine;
 
@@ -75,7 +83,7 @@ namespace {
 				QTreeWidgetItem* currentIteratedItem = item;
 
 				while (currentIteratedItem) {
-					if (currentIteratedItem->text(0) == "Src") {
+					if (currentIteratedItem->text(0) == "Source") {
 						filesAllowed = true;
 						break;
 					}
@@ -86,12 +94,13 @@ namespace {
 
                 QAction* openAction = nullptr;
                 QMenu* openWithMenu = nullptr;
+                QAction* openWithCode = nullptr;
 
                 if (filesAllowed) {
 					openAction = contextMenu->addAction("Open");
 					openWithMenu = contextMenu->addMenu("Open With");
 
-					openWithMenu->addAction("Default Editor");
+					openWithCode = openWithMenu->addAction("Default Editor");
 
                     contextMenu->addSeparator();
                 }
@@ -119,17 +128,24 @@ namespace {
 
                 QAction* selectedAction = contextMenu->exec(explorerTree->viewport()->mapToGlobal(pos));
 
-                if (selectedAction == cutAction) {
-                    qDebug() << "Cut requested for item:" << item->text(0);
+                if (selectedAction == openWithCode) {
+                    
+                }
+                else if (selectedAction == cutAction) {
+                    
                 }
                 else if (selectedAction == copyAction) {
-                    qDebug() << "Copy requested for item:" << item->text(0);
+                    
                 }
                 else if (selectedAction == pasteAction) {
-                    qDebug() << "Paste requested for item:" << item->text(0);
+                    
                 }
                 else if (selectedAction == deleteAction) {
-                    qDebug() << "Delete requested for item:" << item->text(0);
+					Instance* instance = GetEngineInstance(item);
+					if (instance) {
+						instance->destroy();
+						delete item;
+					}
                 }
                 else if (selectedAction == renameAction) {
                     explorerTree->editItem(item, 0);
@@ -157,7 +173,9 @@ namespace {
                     }
                 }
                 else if (selectedAction == addInstanceAction) {
-                    qDebug() << "Add Instance requested for item:" << item->text(0);
+                    auto* popup = new Engine::InsertObjectPopup(window);
+                    popup->move(QCursor::pos());
+                    popup->show();
                 }
             }
         );
@@ -196,6 +214,9 @@ Explorer::Explorer(QMainWindow* window, Project* project)
     explorerTree->setHeaderHidden(true);
     explorerTree->setSelectionMode(QAbstractItemView::ExtendedSelection);
     explorerTree->setUniformRowHeights(true);
+    explorerTree->setDragEnabled(true);
+	explorerTree->setAcceptDrops(true);
+	explorerTree->setDropIndicatorShown(true);
     explorerTree->setStyleSheet(
         "QTreeWidget { outline: 0; border-radius: 0px; }"
         "QTreeWidget { show-decoration-selected: 0; }"
@@ -282,7 +303,16 @@ void Explorer::AssembleRoot() {
 
         for (const auto& child : children) {
             if (child) {
-                qDebug() << child.get();
+				AddItem(GetEngineInstance(treeWidget, service.get()), child.get());
+
+				const auto childChildren = child->getChildren();
+                if (children.empty() || !children.front()) continue;
+
+                for (const auto& child2 : childChildren) {
+                    if (child2) {
+                        AddItem(GetEngineInstance(treeWidget, child.get()), child2.get());
+                    }
+                }
             }
         }
     }

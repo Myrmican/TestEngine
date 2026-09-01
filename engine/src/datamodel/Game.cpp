@@ -7,6 +7,7 @@
 #include <services/audio/Audio.h>
 #include <services/interface/Interface.h>
 #include <datamodel/instances/Folder.h>
+#include <datamodel/instances/Part.h>
 #include <datamodel/instances/PlayerTemplate.h>
 
 namespace Engine {
@@ -35,21 +36,27 @@ namespace Engine {
         m_services.emplace_back("Audio", audioService);
 
         auto serverAssetsFolder = std::make_shared<Folder>();
+		serverAssetsFolder->setName("Assets");
         serverAssetsFolder->setParent(serverService.get(), true);
 
         auto serverSourceFolder = std::make_shared<Folder>();
+        serverSourceFolder->setName("Source");
         serverSourceFolder->setParent(serverService.get(), true);
 
         auto sharedAssetsFolder = std::make_shared<Folder>();
+        sharedAssetsFolder->setName("Assets");
         sharedAssetsFolder->setParent(sharedService.get(), true);
 
         auto sharedSourceFolder = std::make_shared<Folder>();
+        sharedSourceFolder->setName("Source");
         sharedSourceFolder->setParent(sharedService.get(), true);
 
         auto clientAssetsFolder = std::make_shared<Folder>();
+        clientAssetsFolder->setName("Assets");
         clientAssetsFolder->setParent(clientService.get(), true);
 
         auto clientSourceFolder = std::make_shared<Folder>();
+        clientSourceFolder->setName("Source");
         clientSourceFolder->setParent(clientService.get(), true);
 
         auto playerTemplate = std::make_shared<PlayerTemplate>();
@@ -57,5 +64,9 @@ namespace Engine {
 
         auto defaultInterface = std::make_shared<Interface>();
         defaultInterface->setParent(playerTemplate.get(), true);
+
+        auto baseplatePart = std::make_shared<Part>();
+		baseplatePart->setName("Baseplate");
+        baseplatePart->setParent(worldService.get(), true);
 	}
 }
