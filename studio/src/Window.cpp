@@ -68,6 +68,7 @@ namespace Window {
         auto* titleBarPanel = new QWidget(window);
         titleBarPanel->setObjectName("TitleBarPanel");
         titleBarPanel->setFixedHeight(30);
+		titleBarPanel->contentsMargins().setLeft(30);
 
         auto* titleLayout = new QHBoxLayout(titleBarPanel);
         titleLayout->setContentsMargins(30, 0, 0, 0);

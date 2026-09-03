@@ -10,7 +10,7 @@ namespace Engine {
 	class InsertObjectPopup : public QWidget {
 		Q_OBJECT
 	public:
-		InsertObjectPopup(QWidget* parent = nullptr, QTreeWidgetItem* item = nullptr);
+		InsertObjectPopup(QWidget* widgetParent = nullptr, QTreeWidgetItem* parentItem = nullptr);
 
 	private:
 		QLineEdit* searchBar;

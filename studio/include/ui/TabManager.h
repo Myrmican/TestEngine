@@ -1,10 +1,10 @@
 class QTabWidget;
 class QToolBar;
 class Project;
-class QSplitter;
+class QWidget;
 
 namespace TabManager {
-	QTabWidget* createWidget(QSplitter* parent);
+	QTabWidget* createWidget(QWidget* parent);
 
 	void handleTabClose(int index, int projectTabIndex, QTabWidget* documentTabs, QWidget* editorPage,
 		QMainWindow* window, QToolBar* mainToolBar, Project* project);

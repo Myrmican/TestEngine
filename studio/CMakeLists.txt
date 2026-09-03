@@ -17,7 +17,8 @@ target_compile_definitions(TestEngine PRIVATE
     LANGUAGES_YML_PATH="${CMAKE_BINARY_DIR}/assets/util/ProgrammingLanguages.yml"
 )
 
-target_include_directories(TestEngine PRIVATE 
+target_include_directories(TestEngine PRIVATE
+    "${Qt6_INCLUDE_DIRS}"
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
     "${CMAKE_SOURCE_DIR}/engine/include"
     "${CMAKE_SOURCE_DIR}/external"

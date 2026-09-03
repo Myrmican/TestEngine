@@ -1,5 +1,7 @@
 #include <ui/popups/InsertObject.h>
 #include <engine/core/Reflection.h>
+#include <ui/docks/Explorer.h>
+#include <datamodel/Instance.h>
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
@@ -8,7 +10,7 @@
 #include <QOBject>
 
 namespace Engine {
-	InsertObjectPopup::InsertObjectPopup(QWidget* parent, QTreeWidgetItem* item) : QWidget(parent) {
+	InsertObjectPopup::InsertObjectPopup(QWidget* widgetParent, QTreeWidgetItem* parentItem) : QWidget(widgetParent) {
         setWindowFlags(Qt::Popup | Qt::FramelessWindowHint);
         setAttribute(Qt::WA_DeleteOnClose);
 
@@ -46,5 +48,22 @@ namespace Engine {
                 item->setHidden(!matches);
             }
             });
+
+		QObject::connect(objectList, &QListWidget::itemPressed, this, [this, parentItem](QListWidgetItem* item) {
+			if (item) {
+                QTreeWidget* treeWidget = parentItem->treeWidget();
+
+				const auto explorer = treeWidget->parent()->findChild<Explorer*>();
+
+				QString className = item->text();
+                std::unique_ptr<Engine::Createable> newInstance = Engine::CreateInstance(className.toStdString());
+				close();
+
+				QTreeWidgetItem* treeItem = explorer->AddItem(parentItem, newInstance.get());
+
+                treeWidget->clearSelection();
+				treeWidget->setCurrentItem(treeItem);
+			}
+			});
 	}
 }

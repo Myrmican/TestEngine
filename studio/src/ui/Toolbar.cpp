@@ -63,6 +63,7 @@ QToolBar* Toolbar::create(QMainWindow* window) {
     mainToolBar->setMovable(false);
     mainToolBar->setIconSize(QSize(32, 32));
     mainToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+	mainToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
     window->addToolBar(Qt::TopToolBarArea, mainToolBar);
 
     QWidget* spacer = new QWidget(mainToolBar);
@@ -89,7 +90,6 @@ QToolBar* Toolbar::create(QMainWindow* window) {
 
     mainToolBar->setStyleSheet(
         "QToolBar {"
-        "    background-color: #1a1a1a;"
         "    border: none;"
         "    border-bottom: 1px solid #252525;"
         "    padding-top: 7px;"

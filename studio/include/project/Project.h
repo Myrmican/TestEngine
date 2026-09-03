@@ -9,6 +9,7 @@
 
 class QMainWindow;
 class QFile;
+class Explorer;
 
 class Project : public QObject {
     Q_OBJECT
@@ -20,6 +21,7 @@ public:
     bool savingInCloud = false;
 	std::string primaryLanguage = "Kotlin";
     Logger* logger = nullptr;
+	Explorer* explorer = nullptr;
 
     std::shared_ptr<Engine::Game> dataModel;
 

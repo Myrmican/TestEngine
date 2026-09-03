@@ -8,6 +8,11 @@
 #include <project/Project.h>
 #include <datamodel/Game.h>
 
+namespace Engine {
+    QTreeWidgetItem* GetEngineInstance(QTreeWidget* treeWidget, Instance* instance);
+	Instance* GetEngineInstance(QTreeWidgetItem* item);
+}
+
 class Explorer : public QObject {
     Q_OBJECT
 

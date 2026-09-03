@@ -2,6 +2,8 @@
 #include <QMenuBar>
 #include <QStyle>
 #include <QStyleFactory>
+#include <QGuiApplication>
+#include <QScreen>
 
 namespace Menu {
     QMenu* create(QWidget* parent) {
@@ -28,4 +30,28 @@ namespace Menu {
         menu->setTitle(title);
         return menu;
     }
+
+	QPoint getMenuPosition(QWidget* parent, QWidget* menu) {
+        QPoint globalPos = QCursor::pos();
+
+        QScreen* screen = QGuiApplication::screenAt(globalPos);
+        if (!screen) {
+            screen = QGuiApplication::primaryScreen();
+        }
+
+        QRect screenGeometry = screen->availableGeometry();
+        QSize menuSize = menu->sizeHint();
+
+        QPoint targetPos = globalPos;
+
+        if (globalPos.x() + menuSize.width() > screenGeometry.right()) {
+            targetPos.setX(globalPos.x() - menuSize.width());
+        }
+
+        if (globalPos.y() + menuSize.height() > screenGeometry.bottom()) {
+            targetPos.setY(globalPos.y() - menuSize.height());
+        }
+
+        return targetPos;
+	}
 }

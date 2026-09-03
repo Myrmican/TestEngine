@@ -17,7 +17,6 @@
 #include <ui/docks/Explorer.h>
 #include <ui/popups/InsertObject.h>
 #include <engine/datamodel/instances/File.h>
-
 #include <QString>
 #include <QStandardPaths>
 #include <QFileInfo>
@@ -30,26 +29,6 @@ using namespace Engine;
 constexpr int InstancePointerRole = Qt::UserRole + 1;
 
 namespace {
-    Instance* GetEngineInstance(QTreeWidgetItem* item) {
-        if (!item) return nullptr;
-
-        QVariant data = item->data(0, InstancePointerRole);
-        return static_cast<Instance*>(data.value<void*>());
-    }
-
-    QTreeWidgetItem* GetEngineInstance(QTreeWidget* treeWidget, Instance* instance) {
-        if (!treeWidget || !instance) return nullptr;
-        
-        QTreeWidgetItemIterator it(treeWidget);
-        while (*it) {
-            QVariant data = (*it)->data(0, InstancePointerRole);
-            if (static_cast<Instance*>(data.value<void*>()) == instance) {
-                return *it;
-            }
-            ++it;
-        }
-        return nullptr;
-    }
 
     void ConnectSearch(QLineEdit* searchBar, QTreeWidget* explorerTree) {
         QObject::connect(searchBar, &QLineEdit::textChanged, explorerTree, [explorerTree](const QString& text) {
@@ -173,12 +152,36 @@ namespace {
                     }
                 }
                 else if (selectedAction == addInstanceAction) {
-                    auto* popup = new Engine::InsertObjectPopup(window);
-                    popup->move(QCursor::pos());
+                    auto* popup = new Engine::InsertObjectPopup(window, item);
+                    QPoint globalPos = Menu::getMenuPosition(window, popup);
+                    popup->move(globalPos);
                     popup->show();
                 }
             }
         );
+    }
+}
+
+namespace Engine {
+    Instance* GetEngineInstance(QTreeWidgetItem* item) {
+        if (!item) return nullptr;
+
+        QVariant data = item->data(0, InstancePointerRole);
+        return static_cast<Instance*>(data.value<void*>());
+    }
+
+    QTreeWidgetItem* GetEngineInstance(QTreeWidget* treeWidget, Instance* instance) {
+        if (!treeWidget || !instance) return nullptr;
+
+        QTreeWidgetItemIterator it(treeWidget);
+        while (*it) {
+            QVariant data = (*it)->data(0, InstancePointerRole);
+            if (static_cast<Instance*>(data.value<void*>()) == instance) {
+                return *it;
+            }
+            ++it;
+        }
+        return nullptr;
     }
 }
 
@@ -229,7 +232,7 @@ Explorer::Explorer(QMainWindow* window, Project* project)
     );
 
     QPalette palette = explorerTree->palette();
-    palette.setColor(QPalette::Base, QColor(26, 26, 26));
+    palette.setColor(QPalette::Base, QColor(22, 22, 22));
     explorerTree->setPalette(palette);
 
     dockWidget = explorerDock;

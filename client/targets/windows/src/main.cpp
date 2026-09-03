@@ -3,6 +3,8 @@
 #include <string.h>
 #include <tchar.h>
 
+#include <engine/Engine.h>
+
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
 
@@ -57,6 +59,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
     ShowWindow(hWnd, SW_SHOWMAXIMIZED);
     UpdateWindow(hWnd);
+
+    if (!Engine::initialize(WINDOW_WIDTH, WINDOW_HEIGHT, szTitle)) {
+        return 1;
+    }
 
     MSG msg;
     while (GetMessage(&msg, NULL, 0, 0))

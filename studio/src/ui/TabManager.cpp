@@ -4,11 +4,11 @@
 #include <QStackedWidget>
 #include <QMainWindow>
 #include <QTabBar>
-#include <QSplitter>
 #include <project/Project.h>
 #include <ui/TabManager.h>
+#include <ui/Ribbon.h>
 
-QTabWidget* TabManager::createWidget(QSplitter* parent) {
+QTabWidget* TabManager::createWidget(QWidget* parent) {
 
     QTabWidget* tabsWidget = new QTabWidget(parent);
     QSize size = tabsWidget->sizeHint();
@@ -19,12 +19,8 @@ QTabWidget* TabManager::createWidget(QSplitter* parent) {
     tabsWidget->setObjectName("DocumentTabs");
     tabsWidget->setDocumentMode(true);
     tabsWidget->setStyleSheet(
-        "QTabWidget {"
-        "    background-color: #1a1a1a;"
-        "}"
         "QTabWidget::pane {"
         "    border: none;"
-        "    background-color: #1a1a1a;"
         "}"
         "QTabBar {"
         "    background: transparent;"

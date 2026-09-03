@@ -70,7 +70,7 @@ FileMenu::FileMenu(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* works
 
             fileMenu->addSeparator();
 
-            fileMenu->addAction("Download a copy");
+            //fileMenu->addAction("Download a copy");
 
             fileMenu->addSeparator();
 

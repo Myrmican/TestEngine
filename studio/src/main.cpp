@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
 
     QApplication app(argc, argv);
 
-	Engine::initialize();
+	Engine::initialize(1024, 768, "Test Engine");
 
     QMainWindow window;
     window.resize(1024, 768);

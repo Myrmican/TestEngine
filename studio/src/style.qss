@@ -1,9 +1,17 @@
 QMainWindow {
-    background-color: #1a1a1a;
+    background-color: #161616;
+    border: none;
+}
+
+QToolBar {
+    border: none;
+    background: transparent;
+    margin: 0px;
+    padding: 0px;
 }
 
 QWidget#TitleBarPanel {
-    background-color: #1a1a1a;
+    background-color: #202020;
 }
 
 QPushButton#minButton, QPushButton#maxButton, QPushButton#closeButton {
@@ -16,18 +24,9 @@ QPushButton#minButton:hover, QPushButton#maxButton:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-QPushButton#minButton:pressed, QPushButton#maxButton:pressed {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
 QPushButton#closeButton:hover {
     background-color: #E81123;
     color: #FFFFFF;
-}
-
-QPushButton#closeButton:pressed {
-    background-color: #F1707A;
-    color: #000000;
 }
 
 QMenuBar#TitleMenuBar {
