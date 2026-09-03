@@ -11,7 +11,7 @@ QToolBar {
 }
 
 QWidget#TitleBarPanel {
-    background-color: #202020;
+    background-color: #1c1c1c;
 }
 
 QPushButton#minButton, QPushButton#maxButton, QPushButton#closeButton {

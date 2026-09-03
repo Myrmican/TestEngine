@@ -6,6 +6,10 @@
 #include <QLabel>
 #include <QSizePolicy>
 #include <QMainWindow>
+#include <algorithm>
+#include <vector>
+
+std::vector<std::string> ribbonTabNames = { "Home", "Model", "Avatar" };
 
 void ConnectContextMenu(QWidget* ribbonBar, QTabBar* ribbonTabs, QMainWindow* window) {
     QObject::connect(ribbonBar, &QWidget::customContextMenuRequested,
@@ -17,17 +21,39 @@ void ConnectContextMenu(QWidget* ribbonBar, QTabBar* ribbonTabs, QMainWindow* wi
             int index = ribbonTabs->tabAt(tabBarPos);
 
             if (index != -1) {
-				QMenu* tabMenu = Menu::create(contextMenu);
+				QMenu* tabMenu = Menu::create(ribbonTabs);
                 tabMenu->addAction("Rename tab");
                 tabMenu->addAction("Hide tab", [ribbonTabs, index]() {
                     ribbonTabs->setTabVisible(index, false);
                 });
+
+                QAction* selectedAction = tabMenu->exec(ribbonBar->mapToGlobal(pos));
+
             } else {
                 QMenu* ribbonTabMenu = Menu::create(contextMenu, "Ribbon tabs");
 
                 contextMenu->addMenu(ribbonTabMenu);
 
                 QAction* manageRibbonTabs = ribbonTabMenu->addAction("Manage");
+				QMenu* ribbonTabsList = Menu::create(ribbonTabMenu, "Toggle");
+                ribbonTabMenu->addMenu(ribbonTabsList);
+
+                QList<QAction*> tabActions = ribbonTabs->findChildren<QAction*>();
+
+                for (const auto& tabName : ribbonTabNames) {
+                    QAction* ribbonTabAction = ribbonTabsList->addAction(QString::fromStdString(tabName));
+                    ribbonTabAction->setCheckable(true);
+
+                    for (int i = 0; i < ribbonTabs->count(); ++i) {
+                        if (ribbonTabs->tabText(i) != QString::fromStdString(tabName)) continue;
+
+                        ribbonTabAction->setChecked(ribbonTabs->isTabVisible(i));
+                        QObject::connect(ribbonTabAction, &QAction::triggered, [ribbonTabs, i]() {
+                            ribbonTabs->setTabVisible(i, !ribbonTabs->isTabVisible(i));
+                        });
+                        break;
+                    }
+                }
 
                 QAction* selectedAction = contextMenu->exec(ribbonBar->mapToGlobal(pos));
 
@@ -84,6 +110,7 @@ namespace Engine {
             ribbonTabs->setElideMode(Qt::ElideRight);
             ribbonTabs->setUsesScrollButtons(false);
             ribbonTabs->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+            ribbonTabs->setExpanding(false);
 
             ribbonTabs->setStyleSheet(
                 "QTabBar {"
@@ -104,9 +131,6 @@ namespace Engine {
                 "    outline: none;"
                 "    margin-right: 4px;"
                 "}"
-                "QTabBar::tab:first {"
-                "    margin-left: 30px;"
-                "}"
                 "QTabBar::tab:hover {"
                 "    background-color: #252525;"
                 "    color: #cccccc;"
@@ -122,11 +146,15 @@ namespace Engine {
             QWidget* statsWidget = setupStats(ribbonBar);
 
             QHBoxLayout* layout = new QHBoxLayout(ribbonBar);
-            layout->setContentsMargins(0, 0, 0, 0);
+            layout->setContentsMargins(30, 0, 0, 0);
             layout->setSpacing(0);
             layout->addWidget(ribbonTabs);
             layout->addStretch();
             layout->addWidget(statsWidget);
+
+			for (const auto& tabName : ribbonTabNames) {
+				auto ribbonTab = ribbonTabs->addTab(QString::fromStdString(tabName));
+			}
 
 			ConnectContextMenu(ribbonBar, ribbonTabs, parent);
 

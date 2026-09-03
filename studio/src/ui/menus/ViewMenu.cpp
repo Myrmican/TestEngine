@@ -22,16 +22,24 @@ ViewMenu::ViewMenu(QMenuBar* menuBar, QMainWindow* window) {
     QMenu* viewMenu = Menu::create(menuBar, "View");
     menuBar->addMenu(viewMenu);
 
-    viewMenu->addAction("Toolbox", [window] {
+    QAction* toolboxAction = viewMenu->addAction("Toolbox", [window] {
         ToggleVisibility("ToolboxDock", window);
         });
-    viewMenu->addAction("Explorer", [window] {
+    QAction* explorerAction = viewMenu->addAction("Explorer", [window] {
         ToggleVisibility("ExplorerDock", window);
         });
-    viewMenu->addAction("Properties", [window] {
+    QAction* propertiesAction = viewMenu->addAction("Properties", [window] {
         ToggleVisibility("PropertiesDock", window);
         });
-    viewMenu->addAction("Output", [window] {
-        ToggleVisibility("ToolboxDock", window);
+    QAction* outputAction = viewMenu->addAction("Output", [window] {
+        ToggleVisibility("OutputDock", window);
         });
+
+    toolboxAction->setCheckable(true);
+    explorerAction->setCheckable(true);
+    explorerAction->setChecked(true);
+    propertiesAction->setCheckable(true);
+    propertiesAction->setChecked(true);
+    outputAction->setCheckable(true);
+    outputAction->setChecked(true);
 }

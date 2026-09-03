@@ -35,14 +35,6 @@ namespace EditorWindow {
 
         auto ribbonBar = Engine::Ribbon::createWidget(window);
 
-        QTabBar* ribbonTabs = ribbonBar->findChild<QTabBar*>("RibbonTabs");
-        if (ribbonTabs) {
-            ribbonTabs->addTab("Home");
-            ribbonTabs->addTab("Model");
-            ribbonTabs->addTab("Avatar");
-            ribbonTabs->addTab("View");
-        }
-
         QToolBar* ribbonToolBar = new QToolBar("RibbonToolBar", window);
         ribbonToolBar->setMovable(false);
         ribbonToolBar->setFloatable(false);
