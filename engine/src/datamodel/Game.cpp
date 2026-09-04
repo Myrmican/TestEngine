@@ -9,6 +9,7 @@
 #include <datamodel/instances/Folder.h>
 #include <datamodel/instances/Part.h>
 #include <datamodel/instances/PlayerTemplate.h>
+#include <datamodel/instances/Camera.h>
 
 namespace Engine {
 	Game::Game() : Instance("DataModel") {
@@ -68,5 +69,8 @@ namespace Engine {
         auto baseplatePart = std::make_shared<Part>();
 		baseplatePart->setName("Baseplate");
         baseplatePart->setParent(worldService.get(), true);
+
+        auto worldCamera = std::make_shared<Camera>();
+        worldCamera->setParent(worldService.get(), true);
 	}
 }

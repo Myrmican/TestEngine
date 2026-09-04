@@ -3,25 +3,21 @@
 #include <QHBoxLayout>
 #include <QSplitter>
 #include <QTableWidget>
-#include <QTextEdit>
 #include <QDockWidget>
 #include <QMainWindow>
-#include <QHeaderView>
 #include <QToolBar>
 #include <QLabel>
-#include <QWidgetAction>
-#include <QPushButton>
 #include <QTimer>
 #include <QMenu>
 #include <QStackedWidget>
 #include <QActionGroup>
-#include <QToolButton>
 #include <core/Logger.h>
 #include <util/Languages.h>
 #include <ui/docks/DockManager.h>
 #include <ui/TabManager.h>
 #include <ui/Ribbon.h>
 #include <ui/Toolbar.h>
+#include <editor/TestView.h>
 
 namespace EditorWindow {
     void initialize(Project* project, QWidget* editorPage, QMainWindow* window) {
@@ -56,7 +52,7 @@ namespace EditorWindow {
 
         window->setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowNestedDocks);
 
-        QWidget* placeView = new QWidget();
+        QWidget* placeView = new EngineRenderView();
 
         auto windowDocks = DockManager::setup(window, project);
         const int projectTabIndex = documentTabs->addTab(placeView, project->name);

@@ -1,4 +1,5 @@
 #include <ui/menus/MenuManager.h>
+#include <editor/tools/ToolManager.h>
 #include <QMenu>
 #include <QFrame>
 #include <QTabBar>
@@ -22,7 +23,7 @@ void ConnectContextMenu(QWidget* ribbonBar, QTabBar* ribbonTabs, QMainWindow* wi
 
             if (index != -1) {
 				QMenu* tabMenu = Menu::create(ribbonTabs);
-                tabMenu->addAction("Rename tab");
+                //tabMenu->addAction("Rename tab");
                 tabMenu->addAction("Hide tab", [ribbonTabs, index]() {
                     ribbonTabs->setTabVisible(index, false);
                 });
@@ -94,6 +95,20 @@ QWidget* setupStats(QWidget* parent) {
     return statsContainer;
 };
 
+QWidget* setupQuickActions(QWidget* parent) {
+	QWidget* actionsContainer = new QWidget(parent);
+	actionsContainer->setObjectName("RibbonQuickActions");
+
+    QHBoxLayout* actionsLayout = new QHBoxLayout(actionsContainer);
+    actionsLayout->setContentsMargins(0, 0, 12, 0);
+    actionsLayout->setSpacing(16);
+
+    //QWidget* playAction = ToolManager::getTool("Play", actionsContainer);
+	//actionsLayout->addWidget(playAction);
+
+    return actionsContainer;
+}
+
 namespace Engine {
     namespace Ribbon {
         QFrame* createWidget(QMainWindow* parent) {
@@ -144,11 +159,13 @@ namespace Engine {
             );
 
             QWidget* statsWidget = setupStats(ribbonBar);
+			QWidget* quickActions = setupQuickActions(ribbonBar);
 
             QHBoxLayout* layout = new QHBoxLayout(ribbonBar);
             layout->setContentsMargins(30, 0, 0, 0);
             layout->setSpacing(0);
             layout->addWidget(ribbonTabs);
+			layout->addWidget(quickActions);
             layout->addStretch();
             layout->addWidget(statsWidget);
 

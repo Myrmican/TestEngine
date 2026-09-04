@@ -38,11 +38,12 @@ target_link_libraries(TestEngine PRIVATE
     ntdll
     Qt6::Widgets
     Qt6::Network
-    Qt6::OpenGLWidgets
     Qt6::PrintSupport
     QWindowKit::Widgets
     ${QSCI_TARGET_NAME}
     yaml-cpp::yaml-cpp
+    d3d11
+    dxgi
 )
 
 if(MSVC)

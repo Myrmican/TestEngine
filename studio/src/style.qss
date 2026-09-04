@@ -47,15 +47,6 @@ QMenuBar#TitleMenuBar::item:selected {
     border-radius: 4px;
 }
 
-QMenu {
-    background-color: #272930;
-    border: 1px solid #3C3C3C;
-    color: #FFFFFF;
-    padding: 4px;
-    border-radius: 0px !important;
-    outline: none;
-}
-
 QMenu QAbstractItemView {
     border-radius: 0px !important;
     border: none;

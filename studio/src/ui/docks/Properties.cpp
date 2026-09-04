@@ -118,17 +118,19 @@ Properties::Properties(QMainWindow* window, Project* project)
         "QTreeWidget {"
         "   outline: none;"
         "   border: none;"
-        "   background-color: #1a1a1a;"
         "   padding-left: 14px;"
         "}"
         "QTreeWidget QLineEdit {"
-        "    background-color: #1a1a1a;"
         "    color: #ffffff;"
         "    padding: 0px;"
         "    margin: 0px;"
         "    selection-background-color: #007acc;"
         "}"
     );
+
+    QPalette palette = propertiesTree->palette();
+    palette.setColor(QPalette::Base, QColor(22, 22, 22));
+    propertiesTree->setPalette(palette);
 
     dockWidget = propertiesDock;
 	treeWidget = propertiesTree;
