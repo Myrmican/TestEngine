@@ -5,12 +5,11 @@
 #include <unordered_map>
 #include <functional>
 #include <memory>
+#include <datamodel/Instance.h>
 
 namespace Engine {
 
-    class Createable;
-
-    using FactoryFunc = std::function<std::unique_ptr<Createable>()>;
+    using FactoryFunc = std::function<std::unique_ptr<Engine::Createable>()>;
 
     inline auto& GetReflectionRegistry() {
         static struct {

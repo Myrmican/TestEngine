@@ -17,7 +17,7 @@ namespace ToolManager {
         return action;
     }
 
-    QWidget* createToolButtonWidget(QAction* action, QToolBar* toolBar) {
+    QWidget* createToolButtonWidget(QAction* action, QToolBar* toolBar, bool createLabel) {
         QWidget* container = new QWidget(toolBar);
         QVBoxLayout* layout = new QVBoxLayout(container);
         layout->setContentsMargins(0, 4, 0, 4);
@@ -48,11 +48,14 @@ namespace ToolManager {
             "}"
         );
 
-        QLabel* textLabel = new QLabel(action->text(), container);
-        textLabel->setAlignment(Qt::AlignCenter);
-        textLabel->setStyleSheet("color: #b1b1b1; font-size: 11px; background: transparent;");
         layout->addWidget(iconButton, 0, Qt::AlignCenter);
-        layout->addWidget(textLabel, 0, Qt::AlignCenter);
+
+        if (createLabel) {
+            QLabel* textLabel = new QLabel(action->text(), container);
+            textLabel->setAlignment(Qt::AlignCenter);
+            textLabel->setStyleSheet("color: #b1b1b1; font-size: 11px; background: transparent;");
+            layout->addWidget(textLabel, 0, Qt::AlignCenter);
+        }
 
         QObject::connect(iconButton, &QToolButton::clicked, action, [action](bool checked) {
             action->setChecked(checked);
@@ -63,10 +66,11 @@ namespace ToolManager {
         return container;
     }
 
-	QWidget* getTool(const QString& objectName, QWidget* parent) {
-        QWidget* toolWidget = createToolButtonWidget(createToolAction(QIcon(), objectName, parent), nullptr);
-
-
+	QWidget* createQuickTool(const QString& objectName, QWidget* parent) {
+        QWidget* toolWidget = createToolButtonWidget(createToolAction(QIcon(), objectName, parent), nullptr, false);
+		auto* toolButton = toolWidget->findChild<QToolButton*>();
+        toolButton->setIconSize(QSize(8, 8));
+        toolButton->setFixedSize(22, 22);
 
 		return toolWidget;
 	}

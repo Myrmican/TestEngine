@@ -29,13 +29,13 @@ QToolBar* Toolbar::create(QMainWindow* window) {
 
     for (QAction* toolAction : { selectAction, moveAction, scaleAction, rotateAction }) {
         transformToolsGroup->addAction(toolAction);
-        mainToolBar->addWidget(ToolManager::createToolButtonWidget(toolAction, mainToolBar));
+        mainToolBar->addWidget(ToolManager::createToolButtonWidget(toolAction, mainToolBar, true));
     }
 
     mainToolBar->addSeparator();
 
     QAction* playAction = ToolManager::createToolAction(QIcon(":/assets/icons/Play.png"), "Play", mainToolBar);
-    mainToolBar->addWidget(ToolManager::createToolButtonWidget(playAction, mainToolBar));
+    mainToolBar->addWidget(ToolManager::createToolButtonWidget(playAction, mainToolBar, true));
 
     mainToolBar->setStyleSheet(
         "QToolBar {"

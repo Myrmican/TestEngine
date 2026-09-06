@@ -1,5 +1,6 @@
 #include <ui/menus/MenuManager.h>
 #include <editor/tools/ToolManager.h>
+#include <ui/ribbon/RibbonStats.h>
 #include <QMenu>
 #include <QFrame>
 #include <QTabBar>
@@ -10,7 +11,7 @@
 #include <algorithm>
 #include <vector>
 
-std::vector<std::string> ribbonTabNames = { "Home", "Model", "Avatar" };
+std::vector<std::string> ribbonTabNames = { "Home", "Model", "Avatar", "Test", "Plugins" };
 
 void ConnectContextMenu(QWidget* ribbonBar, QTabBar* ribbonTabs, QMainWindow* window) {
     QObject::connect(ribbonBar, &QWidget::customContextMenuRequested,
@@ -38,6 +39,9 @@ void ConnectContextMenu(QWidget* ribbonBar, QTabBar* ribbonTabs, QMainWindow* wi
                 QAction* manageRibbonTabs = ribbonTabMenu->addAction("Manage");
 				QMenu* ribbonTabsList = Menu::create(ribbonTabMenu, "Toggle");
                 ribbonTabMenu->addMenu(ribbonTabsList);
+
+                QMenu* ribbonStats = Engine::Ribbon::createStatsToggleMenu(contextMenu);
+                contextMenu->addMenu(ribbonStats);
 
                 QList<QAction*> tabActions = ribbonTabs->findChildren<QAction*>();
 
@@ -103,8 +107,8 @@ QWidget* setupQuickActions(QWidget* parent) {
     actionsLayout->setContentsMargins(0, 0, 12, 0);
     actionsLayout->setSpacing(16);
 
-    //QWidget* playAction = ToolManager::getTool("Play", actionsContainer);
-	//actionsLayout->addWidget(playAction);
+    QWidget* playAction = ToolManager::createQuickTool("Play", actionsContainer);
+	actionsLayout->addWidget(playAction);
 
     return actionsContainer;
 }
@@ -163,7 +167,7 @@ namespace Engine {
 
             QHBoxLayout* layout = new QHBoxLayout(ribbonBar);
             layout->setContentsMargins(30, 0, 0, 0);
-            layout->setSpacing(0);
+            layout->setSpacing(20);
             layout->addWidget(ribbonTabs);
 			layout->addWidget(quickActions);
             layout->addStretch();

@@ -60,7 +60,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     ShowWindow(hWnd, SW_SHOWMAXIMIZED);
     UpdateWindow(hWnd);
 
-    if (!Engine::initialize(WINDOW_WIDTH, WINDOW_HEIGHT, szTitle)) {
+    if (!Engine::initialize()) {
         return 1;
     }
 

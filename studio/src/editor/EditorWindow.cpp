@@ -15,7 +15,7 @@
 #include <util/Languages.h>
 #include <ui/docks/DockManager.h>
 #include <ui/TabManager.h>
-#include <ui/Ribbon.h>
+#include <ui/ribbon/Ribbon.h>
 #include <ui/Toolbar.h>
 #include <editor/TestView.h>
 

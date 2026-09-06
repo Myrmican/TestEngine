@@ -6,7 +6,7 @@
 #include <QTabBar>
 #include <project/Project.h>
 #include <ui/TabManager.h>
-#include <ui/Ribbon.h>
+#include <ui/ribbon/Ribbon.h>
 
 QTabWidget* TabManager::createWidget(QWidget* parent) {
 
