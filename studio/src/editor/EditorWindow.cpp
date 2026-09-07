@@ -21,8 +21,8 @@
 
 namespace EditorWindow {
     void initialize(Project* project, QWidget* editorPage, QMainWindow* window) {
-
         if (editorPage) {
+            editorPage->setObjectName("ProjectEditorTopWidget");
             editorPage->setProperty("projectInstance", QVariant::fromValue(static_cast<void*>(project)));
             project->setParent(editorPage);
         }

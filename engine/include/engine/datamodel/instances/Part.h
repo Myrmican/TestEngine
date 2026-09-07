@@ -1,7 +1,7 @@
-#include <datamodel/Instance.h>
+#include <datamodel/instances/BasePart.h>
 
 namespace Engine {
-	class Part : public Createable {
+	class Part : public BasePart {
 	public:
 		Part();
 	};

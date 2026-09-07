@@ -78,6 +78,13 @@ namespace Engine {
 		static void BindAPI(WasmRuntime& wasm);
 	private:
 		void setParentInternal(Instance* instance, bool ignoreLock);
+
+		void collectDescendants(Instance* current, std::vector<InstancePtr>& out) {
+			for (const InstancePtr& child : current->getChildren()) {
+				out.push_back(child);
+				collectDescendants(child.get(), out);
+			}
+		}
 	};
 
 	class Createable : public Instance {

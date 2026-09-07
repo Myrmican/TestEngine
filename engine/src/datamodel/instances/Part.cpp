@@ -5,7 +5,7 @@
 
 namespace Engine {
 	REGISTER_CLASS(Part);
-	Part::Part() : Createable("Part") {
+	Part::Part() : BasePart() {
 
-	}
+	};
 }

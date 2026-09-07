@@ -13,9 +13,9 @@
 
 std::vector<std::string> ribbonTabNames = { "Home", "Model", "Avatar", "Test", "Plugins" };
 
-void ConnectContextMenu(QWidget* ribbonBar, QTabBar* ribbonTabs, QMainWindow* window) {
+void ConnectContextMenu(QWidget* ribbonBar, QTabBar* ribbonTabs, QMainWindow* window, QWidget* statsWidget) {
     QObject::connect(ribbonBar, &QWidget::customContextMenuRequested,
-        [ribbonBar, ribbonTabs, window](const QPoint& pos) {
+        [ribbonBar, ribbonTabs, statsWidget](const QPoint& pos) {
             QPoint tabBarPos = ribbonBar->mapFrom(ribbonBar, pos);
 
             QMenu* contextMenu = Menu::create(ribbonBar);
@@ -40,7 +40,7 @@ void ConnectContextMenu(QWidget* ribbonBar, QTabBar* ribbonTabs, QMainWindow* wi
 				QMenu* ribbonTabsList = Menu::create(ribbonTabMenu, "Toggle");
                 ribbonTabMenu->addMenu(ribbonTabsList);
 
-                QMenu* ribbonStats = Engine::Ribbon::createStatsToggleMenu(contextMenu);
+                QMenu* ribbonStats = Engine::Ribbon::createStatsToggleMenu(contextMenu, statsWidget);
                 contextMenu->addMenu(ribbonStats);
 
                 QList<QAction*> tabActions = ribbonTabs->findChildren<QAction*>();
@@ -75,26 +75,20 @@ QWidget* setupStats(QWidget* parent) {
     statsContainer->setObjectName("RibbonStats");
 
     QHBoxLayout* statsLayout = new QHBoxLayout(statsContainer);
-    statsLayout->setContentsMargins(0, 0, 12, 0);
+    statsLayout->setContentsMargins(8, 8, 30, 8);
     statsLayout->setSpacing(16);
+    statsLayout->setObjectName("RibbonStatsLayout");
 
     statsContainer->setStyleSheet(
         "#RibbonStats QLabel {"
         "    color: #cccccc;"
         "    font-size: 13px;"
-        "    padding: 8px 0px;"
         "}"
         "#RibbonStats QLabel[role=\"value\"] {"
         "    color: #ffffff;"
         "    font-weight: bold;"
         "}"
     );
-
-    QLabel* stat1 = new QLabel("Triangles: <span style='color: #ffffff;'>12,321</span>", statsContainer);
-    QLabel* stat2 = new QLabel("Parts: <span style='color: #ffffff;'>1,500</span>", statsContainer);
-
-    statsLayout->addWidget(stat1);
-    statsLayout->addWidget(stat2);
 
     return statsContainer;
 };
@@ -104,11 +98,11 @@ QWidget* setupQuickActions(QWidget* parent) {
 	actionsContainer->setObjectName("RibbonQuickActions");
 
     QHBoxLayout* actionsLayout = new QHBoxLayout(actionsContainer);
-    actionsLayout->setContentsMargins(0, 0, 12, 0);
+    actionsLayout->setContentsMargins(8, 8, 8, 8);
     actionsLayout->setSpacing(16);
 
-    QWidget* playAction = ToolManager::createQuickTool("Play", actionsContainer);
-	actionsLayout->addWidget(playAction);
+    /*QWidget* playAction = ToolManager::createQuickTool("Play", actionsContainer);
+	actionsLayout->addWidget(playAction);*/
 
     return actionsContainer;
 }
@@ -122,6 +116,7 @@ namespace Engine {
             ribbonBar->setStyleSheet("QFrame { background-color: #1c1c1c; }");
             ribbonBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
             ribbonBar->setContextMenuPolicy(Qt::CustomContextMenu);
+            ribbonBar->setFixedHeight(36);
 
             QTabBar* ribbonTabs = new QTabBar(ribbonBar);
             ribbonTabs->setObjectName("RibbonTabs");
@@ -130,6 +125,7 @@ namespace Engine {
             ribbonTabs->setUsesScrollButtons(false);
             ribbonTabs->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
             ribbonTabs->setExpanding(false);
+            ribbonTabs->setFixedHeight(32);
 
             ribbonTabs->setStyleSheet(
                 "QTabBar {"
@@ -138,27 +134,25 @@ namespace Engine {
                 "    outline: none;"
                 "}"
                 "QTabBar::tab {"
-                "    background: transparent;"
-                "    color: #999999;"
-                "    padding: 8px 12px;"
-                "    font-size: 13px;"
-                "    font-weight: 500;"
-                "    border: none;"
-                "    border-bottom: 2px solid transparent;"
-                "    border-top-left-radius: 6px;"
-                "    border-top-right-radius: 6px;"
-                "    outline: none;"
-                "    margin-right: 4px;"
+                "   background: transparent;"
+                "   color: #9ca3af;"
+                "   height: 32px;"
+                "   min-width: 36px;"
+                "   padding: 0 16px;"
+                "   margin-right: 2px;"
+                "   border-top-left-radius: 5px;"
+                "   border-top-right-radius: 5px;"
+                "   border-top: 2px solid transparent;"
                 "}"
                 "QTabBar::tab:hover {"
                 "    background-color: #252525;"
                 "    color: #cccccc;"
                 "}"
                 "QTabBar::tab:selected {"
-                "    background-color: #2b2b2b;"
+                "    background-color: #161616;"
                 "    color: #ffffff;"
                 "    font-weight: 750;"
-                "    border-bottom: 2px solid #8c82ff;"
+                "    border-top: 2px solid #3b82f6;"
                 "}"
             );
 
@@ -166,8 +160,8 @@ namespace Engine {
 			QWidget* quickActions = setupQuickActions(ribbonBar);
 
             QHBoxLayout* layout = new QHBoxLayout(ribbonBar);
-            layout->setContentsMargins(30, 0, 0, 0);
-            layout->setSpacing(20);
+            layout->setContentsMargins(8, 4, 8, 0);
+            layout->setSpacing(16);
             layout->addWidget(ribbonTabs);
 			layout->addWidget(quickActions);
             layout->addStretch();
@@ -177,7 +171,7 @@ namespace Engine {
 				auto ribbonTab = ribbonTabs->addTab(QString::fromStdString(tabName));
 			}
 
-			ConnectContextMenu(ribbonBar, ribbonTabs, parent);
+			ConnectContextMenu(ribbonBar, ribbonTabs, parent, statsWidget);
 
             return ribbonBar;
         }

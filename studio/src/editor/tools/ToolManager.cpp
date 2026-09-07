@@ -11,67 +11,31 @@
 #include <QApplication>
 
 namespace ToolManager {
-    QAction* createToolAction(const QIcon& icon, const QString& text, QObject* parent) {
-        QAction* action = new QAction(icon, text, parent);
-        action->setCheckable(true);
-        return action;
+    QToolButton* createTool(QIcon icon, QString name, QToolBar* toolBar, bool createLabel) {
+
+        QToolButton* toolButton = new QToolButton(toolBar);
+
+        toolButton->setFixedSize(64, 64);
+
+        toolButton->setIcon(icon);
+        toolButton->setIconSize(QSize(18, 18));
+
+        toolButton->setFont(QFont("Inter", 10, 500));
+
+        toolButton->setText(name);
+        toolButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+
+        toolButton->setFocusPolicy(Qt::NoFocus);
+        toolButton->setCheckable(true);
+
+        return toolButton;
     }
 
-    QWidget* createToolButtonWidget(QAction* action, QToolBar* toolBar, bool createLabel) {
-        QWidget* container = new QWidget(toolBar);
-        QVBoxLayout* layout = new QVBoxLayout(container);
-        layout->setContentsMargins(0, 4, 0, 4);
-        layout->setSpacing(4);
+    QToolButton* createQuickTool(const QString& objectName, QWidget* parent) {
+        QToolButton* tool = createTool(QIcon(), "Test", nullptr, false);
+        tool->setIconSize(QSize(8, 8));
+        tool->setFixedSize(22, 22);
 
-        QToolButton* iconButton = new QToolButton(container);
-        iconButton->setIcon(action->icon());
-        iconButton->setIconSize(QSize(32, 32));
-        iconButton->setFixedSize(44, 44);
-        iconButton->setFocusPolicy(Qt::NoFocus);
-        iconButton->setCheckable(true);
-        iconButton->setChecked(action->isChecked());
-
-        iconButton->setStyleSheet(
-            "QToolButton {"
-            "    background: transparent;"
-            "    border: none;"
-            "    border-radius: 6px;"
-            "}"
-            "QToolButton:hover {"
-            "    background-color: #2f3039;"
-            "}"
-            "QToolButton:checked {"
-            "    background-color: #3a7afe;"
-            "}"
-            "QToolButton:checked:hover {"
-            "    background-color: #4a86ff;"
-            "}"
-        );
-
-        layout->addWidget(iconButton, 0, Qt::AlignCenter);
-
-        if (createLabel) {
-            QLabel* textLabel = new QLabel(action->text(), container);
-            textLabel->setAlignment(Qt::AlignCenter);
-            textLabel->setStyleSheet("color: #b1b1b1; font-size: 11px; background: transparent;");
-            layout->addWidget(textLabel, 0, Qt::AlignCenter);
-        }
-
-        QObject::connect(iconButton, &QToolButton::clicked, action, [action](bool checked) {
-            action->setChecked(checked);
-            });
-
-        QObject::connect(action, &QAction::toggled, iconButton, &QToolButton::setChecked);
-
-        return container;
-    }
-
-	QWidget* createQuickTool(const QString& objectName, QWidget* parent) {
-        QWidget* toolWidget = createToolButtonWidget(createToolAction(QIcon(), objectName, parent), nullptr, false);
-		auto* toolButton = toolWidget->findChild<QToolButton*>();
-        toolButton->setIconSize(QSize(8, 8));
-        toolButton->setFixedSize(22, 22);
-
-		return toolWidget;
+		return tool;
 	}
 }

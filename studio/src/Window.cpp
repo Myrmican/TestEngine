@@ -47,7 +47,7 @@ QIcon makeRoundIcon(const QIcon& originalIcon, int size) {
 void createLeftDropdownsMain(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage) {
     new FileMenu(menuBar, window, workspaceStack, editorPage);
     new PluginsMenu(menuBar);
-	new HelpMenu(menuBar);
+    new HelpMenu(menuBar);
 }
 
 void createLeftDropdownsEditor(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage) {
@@ -55,9 +55,9 @@ void createLeftDropdownsEditor(QMenuBar* menuBar, QMainWindow* window, QStackedW
     new EditMenu(menuBar);
     new ViewMenu(menuBar, window);
     new PluginsMenu(menuBar);
-	new TestMenu(menuBar);
+    new TestMenu(menuBar);
     new WindowMenu(menuBar);
-	new HelpMenu(menuBar);
+    new HelpMenu(menuBar);
 }
 
 namespace Window {
@@ -68,7 +68,7 @@ namespace Window {
         auto* titleBarPanel = new QWidget(window);
         titleBarPanel->setObjectName("TitleBarPanel");
         titleBarPanel->setFixedHeight(30);
-		titleBarPanel->contentsMargins().setLeft(30);
+        titleBarPanel->contentsMargins().setLeft(30);
 
         auto* titleLayout = new QHBoxLayout(titleBarPanel);
         titleLayout->setContentsMargins(30, 0, 0, 0);

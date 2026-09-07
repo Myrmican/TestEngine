@@ -77,11 +77,15 @@ namespace Engine {
 	}
 
 	const std::vector<InstancePtr>& Instance::getDescendants() {
-		return children;
+		static std::vector<InstancePtr> result;
+		result.clear();
+
+		collectDescendants(this, result);
+		return result;
 	}
 
 	const std::vector<InstancePtr>& Instance::getDescendants(std::string selector) {
-		return children;
+		return getDescendants();
 	}
 
 	bool Instance::isAncestorOf(const Instance* descendant) const {

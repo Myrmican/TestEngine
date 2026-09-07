@@ -1,21 +1,17 @@
 #include <vector>
 #include <string>
+#include <QIcon>
 
-class QIcon;
 class QString;
 class QObject;
 class QWidget;
 class QAction;
 class QToolBar;
+class QToolButton;
 
 namespace ToolManager {
-	QAction* createToolAction(const QIcon& icon, const QString& text, QObject* parent);
-	QWidget* createToolButtonWidget(QAction* action, QToolBar* toolBar, bool createLabel);
-	QWidget* createQuickTool(const QString& objectName, QWidget* parent = nullptr);
-
-    /*inline std::vector<std::string>& GetTool() {
-        return GetReflectionRegistry().names;
-    }*/
+    QToolButton* createTool(QIcon icon, QString name, QToolBar* toolBar, bool createLabel);
+    QToolButton* createQuickTool(const QString& objectName, QWidget* parent = nullptr);
 }
 
 #define REGISTER_TOOL(toolName) \

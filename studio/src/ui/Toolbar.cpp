@@ -9,41 +9,54 @@
 
 QToolBar* Toolbar::create(QMainWindow* window) {
     QToolBar* mainToolBar = new QToolBar("Main Toolbar", window);
+    mainToolBar->setFixedHeight(80);
+    mainToolBar->setContentsMargins(8, 8, 8, 8);
     mainToolBar->setMovable(false);
-    mainToolBar->setIconSize(QSize(32, 32));
+    mainToolBar->setIconSize(QSize(18, 18));
     mainToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-	mainToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
-    window->addToolBar(Qt::TopToolBarArea, mainToolBar);
+    mainToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
 
-    QWidget* spacer = new QWidget(mainToolBar);
-    spacer->setFixedWidth(12);
-    mainToolBar->addWidget(spacer);
+    QWidget* leftSpacer = new QWidget();
+    leftSpacer->setFixedWidth(20);
+    mainToolBar->addWidget(leftSpacer);
 
     QActionGroup* transformToolsGroup = new QActionGroup(mainToolBar);
     transformToolsGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::ExclusiveOptional);
 
-    QAction* selectAction = ToolManager::createToolAction(QIcon(":/assets/icons/SelectTool.png"), "Select", mainToolBar);
-    QAction* moveAction = ToolManager::createToolAction(QIcon(":/assets/icons/MoveTool.png"), "Move", mainToolBar);
-    QAction* scaleAction = ToolManager::createToolAction(QIcon(":/assets/icons/ScaleTool.png"), "Scale", mainToolBar);
-    QAction* rotateAction = ToolManager::createToolAction(QIcon(":/assets/icons/EraseTool.png"), "Rotate", mainToolBar);
+    auto addTool = [&](QString name, QString iconPath, QString keySequence) {
+        QAction* action = new QAction(QIcon(iconPath), name, transformToolsGroup);
+        action->setCheckable(true);
+        QAction* toolAction = transformToolsGroup->addAction(action);
+        toolAction->setShortcut(QKeySequence(keySequence));
 
-    for (QAction* toolAction : { selectAction, moveAction, scaleAction, rotateAction }) {
-        transformToolsGroup->addAction(toolAction);
-        mainToolBar->addWidget(ToolManager::createToolButtonWidget(toolAction, mainToolBar, true));
-    }
+        window->addAction(action);
+
+        QToolButton* btn = ToolManager::createTool(QIcon(iconPath), name, mainToolBar, true);
+        btn->setDefaultAction(action);
+        btn->setCheckable(true);
+
+        QWidget* wrapper = new QWidget(mainToolBar);
+        wrapper->setFixedSize(64, 80);
+
+        QVBoxLayout* layout = new QVBoxLayout(wrapper);
+        layout->setContentsMargins(0, 0, 0, 0);
+        layout->setSpacing(0);
+        layout->addWidget(btn, 0, Qt::AlignHCenter | Qt::AlignVCenter);
+
+        mainToolBar->addWidget(wrapper);
+        };
+
+    addTool("Select", ":/assets/icons/MoveTool.png", "1");
+    addTool("Move", ":/assets/icons/MoveTool.png", "2");
+    addTool("Scale", ":/assets/icons/MoveTool.png", "3");
+    addTool("Rotate", ":/assets/icons/MoveTool.png", "4");
 
     mainToolBar->addSeparator();
-
-    QAction* playAction = ToolManager::createToolAction(QIcon(":/assets/icons/Play.png"), "Play", mainToolBar);
-    mainToolBar->addWidget(ToolManager::createToolButtonWidget(playAction, mainToolBar, true));
 
     mainToolBar->setStyleSheet(
         "QToolBar {"
         "    border: none;"
         "    border-bottom: 1px solid #252525;"
-        "    padding-top: 7px;"
-        "    padding-bottom: 7px;"
-        "    spacing: 12px;"
         "}"
         "QToolBar::separator {"
         "    background-color: #4a4a4a;"
@@ -51,29 +64,25 @@ QToolBar* Toolbar::create(QMainWindow* window) {
         "    margin: 6px 6px;"
         "}"
         "QToolButton {"
-        "    color: #ffffff;"
-        "    background: transparent;"
-        "    font-size: 11px;"
-        "    border: 1px solid transparent;"
-        "    border-radius: 6px;"
-        "    padding-top: 6px;"
-        "    padding-bottom: 6px;"
-        "    padding-left: 10px;"
-        "    padding-right: 10px;"
+        "   color: #9ca3af;"
+        "   background: transparent;"
+        "   border: 1px solid transparent;"
+        "   border-radius: 4px;"
+        "   padding: 4px;"
         "}"
         "QToolButton:hover {"
-        "    background-color: #2f3039;"
+        "    background-color: #2d2d2d;"
+        "}"
+        "QToolButton:checked {"
+        "    background-color: rgba(59, 130, 246, 0.2);"
+        "}"
+        "QToolButton:checked:hover {"
+        "    background-color: rgba(59, 130, 246, 0.3);"
+        "    color: rgba(96, 165, 250, 1.0);"
         "}"
     );
 
-    /*QObject::connect(playAction, &QAction::toggled, [playAction](bool checked) mutable {
-        if (!checked) return;
-
-        playAction->setChecked(false);
-
-        documentTabs->setCurrentIndex(0);
-        outputLogger->Error("Error starting server.");
-        });*/
+    window->addToolBar(Qt::TopToolBarArea, mainToolBar);
 
     return mainToolBar;
 }

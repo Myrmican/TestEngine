@@ -12,6 +12,7 @@ QToolBar {
 
 QWidget#TitleBarPanel {
     background-color: #1c1c1c;
+    font-size: 13px;
 }
 
 QPushButton#minButton, QPushButton#maxButton, QPushButton#closeButton {
