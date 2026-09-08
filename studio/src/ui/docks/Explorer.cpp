@@ -221,13 +221,30 @@ Explorer::Explorer(QMainWindow* window, Project* project)
 	explorerTree->setAcceptDrops(true);
 	explorerTree->setDropIndicatorShown(true);
     explorerTree->setStyleSheet(
-        "QTreeWidget { outline: 0; border-radius: 0px; }"
-        "QTreeWidget { show-decoration-selected: 0; }"
+        "QTreeView {"
+        "    outline: 0;"
+        "    border-radius: 0px;"
+        "    show-decoration-selected: 1;"
+        "}"
         "QTreeView::item {"
         "    font-size: 14px;"
         "    color: #f2f2f2;"
         "    padding: 2px 0px;"
         "    margin: 0px;"
+        "}"
+        "QTreeView::item:hover, QTreeView::branch:hover {"
+        "    background-color: #2a2a2a;"
+        "}"
+        "QTreeView::item:selected, QTreeView::branch:selected {"
+        "    background-color: #383838;"
+        "}"
+        "QTreeView::branch:has-children:!has-siblings:closed,"
+        "QTreeView::branch:closed:has-children:has-siblings {"
+        "    image: url(:/assets/icons/chevron-right.svg);"
+        "}"
+        "QTreeView::branch:open:has-children:!has-siblings,"
+        "QTreeView::branch:open:has-children:has-siblings {"
+        "    image: url(:/assets/icons/chevron-down.png);"
         "}"
     );
 

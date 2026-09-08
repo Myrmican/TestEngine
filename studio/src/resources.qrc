@@ -6,5 +6,7 @@
 		<file>../../assets/icons/bell.png</file>
 		<file>../../assets/icons/profileTest.png</file>
 		<file>../../assets/icons/MoveTool.png</file>
+		<file>../../assets/icons/chevron-down.png</file>
+		<file>../../assets/icons/chevron-right.svg</file>
 	</qresource>
 </RCC>

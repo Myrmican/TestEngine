@@ -13,6 +13,7 @@ QToolBar {
 QWidget#TitleBarPanel {
     background-color: #1c1c1c;
     font-size: 13px;
+    color: #9ca3af;
 }
 
 QPushButton#minButton, QPushButton#maxButton, QPushButton#closeButton {
@@ -33,14 +34,14 @@ QPushButton#closeButton:hover {
 QMenuBar#TitleMenuBar {
     background-color: transparent;
     border: none;
-    color: #FFFFFF;
+    color: #9ca3af;
 }
 
 QMenuBar#TitleMenuBar::item {
     background-color: transparent;
     padding: 5px 10px;
     margin: 0px;
-    color: #FFFFFF;
+    color: #9ca3af;
 }
 
 QMenuBar#TitleMenuBar::item:selected {

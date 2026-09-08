@@ -13,14 +13,16 @@
 #include <project/Project.h>
 #include <util/Languages.h>
 #include <ui/docks/Properties.h>
+#include <ui/docks/Explorer.h>
+#include <engine/datamodel/Instance.h>
 
 namespace {
 
-    bool ParseValidValue(const QString& value, const QString& expectedType) {
+    bool parseValidValue(const QString& value, const QString& expectedType) {
         return false;
     }
 
-    void ConnectValueEdit(QTreeWidget* treeWidget) {
+    void connectValueEdit(QTreeWidget* treeWidget) {
 		QObject::connect(treeWidget, &QTreeWidget::itemClicked, [treeWidget](QTreeWidgetItem* item, int column) {
             if (column != 1 || !item) return;
 
@@ -43,7 +45,7 @@ namespace {
 			});
     }
 
-    void ConnectSearch(QLineEdit* searchBar, QTreeWidget* propertiesTree) {
+    void connectSearch(QLineEdit* searchBar, QTreeWidget* propertiesTree) {
         QObject::connect(searchBar, &QLineEdit::textChanged, propertiesTree, [propertiesTree](const QString& text) {
             if (text.isEmpty()) {
                 for (int i = 0; i < propertiesTree->topLevelItemCount(); ++i) {
@@ -57,6 +59,24 @@ namespace {
                 bool matches = item->text(0).contains(text, Qt::CaseInsensitive);
                 item->setHidden(!matches);
             }
+            });
+    }
+
+    void connectRename(Properties* self) {
+        QObject::connect(self->treeWidget, &QTreeWidget::itemDoubleClicked, self, [](QTreeWidgetItem* item, int column) {
+            if (column == 1 && (item->flags() & Qt::ItemIsEditable)) {
+                item->treeWidget()->editItem(item, column);
+            }
+            });
+
+        QObject::connect(self->treeWidget, &QTreeWidget::itemChanged,
+            [self](QTreeWidgetItem* item, int column) {
+                if (column == 1) {
+                    QString newName = item->text(column);
+                    
+                    Engine::Instance* instance = Engine::GetEngineInstance(item);
+                    //instance->setName(newName);
+                }
             });
     }
 }
@@ -91,40 +111,30 @@ Properties::Properties(QMainWindow* window, Project* project)
 
     auto* propertiesTree = new QTreeWidget(containerWidget);
     propertiesTree->setColumnCount(2);
+    propertiesTree->header()->setSectionResizeMode(0, QHeaderView::Interactive);
+    propertiesTree->header()->setSectionResizeMode(1, QHeaderView::Stretch);
+    propertiesTree->setIndentation(12);
+    propertiesTree->setEditTriggers(QAbstractItemView::NoEditTriggers);
     propertiesTree->setHeaderHidden(true);
     propertiesTree->setUniformRowHeights(true);
     propertiesTree->setStyleSheet(
-        "QTreeWidget::item {"
-        "    background: transparent;"
-        "    border: none;"
-        "    color: #ffffff;"
-        "}"
-
-        "QTreeWidget::item:hover {"
-        "    background: transparent;"
-        "    border: none;"
-        "}"
-
-        "QTreeWidget::item:selected {"
-        "    background: transparent;"
-        "    border: none;"
-        "}"
-
-        "QTreeWidget::item:selected:hover {"
-        "    background: transparent;"
-        "    border: none;"
-        "}"
-
         "QTreeWidget {"
-        "   outline: none;"
-        "   border: none;"
-        "   padding-left: 14px;"
+        "    background-color: #161616;"
+        "    outline: none;"
+        "    border: none;"
+        "    show-decoration-selected: 1;"
         "}"
-        "QTreeWidget QLineEdit {"
-        "    color: #ffffff;"
-        "    padding: 0px;"
-        "    margin: 0px;"
-        "    selection-background-color: #007acc;"
+        "QTreeWidget::item {"
+        "    color: #cccccc;"
+        "    border-bottom: 1px solid #222222;"
+        "    border-right: 1px solid #222222;"
+        "    height: 22px;"
+        "}"
+        "QTreeWidget::branch:has-children:closed {"
+        "    image: url(:/icons/branch_closed.png);"
+        "}"
+        "QTreeWidget::branch:has-children:open {"
+        "    image: url(:/icons/branch_open.png);"
         "}"
     );
 
@@ -133,10 +143,8 @@ Properties::Properties(QMainWindow* window, Project* project)
     propertiesTree->setPalette(palette);
 
     dockWidget = propertiesDock;
-	treeWidget = propertiesTree;
+    treeWidget = propertiesTree;
 
-    treeWidget->setIndentation(0);
-    treeWidget->setEditTriggers(QAbstractItemView::EditKeyPressed);
     propertiesTree->viewport()->installEventFilter(this);
     propertiesDock->setWidget(containerWidget);
 
@@ -150,8 +158,9 @@ Properties::Properties(QMainWindow* window, Project* project)
         window->resizeDocks({ propertiesDock }, { 400 }, Qt::Horizontal);
         });
 
-    ConnectSearch(searchBar, propertiesTree);
-	ConnectValueEdit(propertiesTree);
+    connectSearch(searchBar, propertiesTree);
+    connectValueEdit(propertiesTree);
+    connectRename(this);
 }
 
 QTreeWidgetItem* Properties::GetOrCreateCategory(const QString& categoryName) {
@@ -181,15 +190,12 @@ void Properties::AddProperty(const QString& category, const QString& property,
 
     QTreeWidgetItem* categoryItem = GetOrCreateCategory(category);
 
-    auto* propertyItem = new QTreeWidgetItem(categoryItem);
+    QTreeWidgetItem* testItem = new QTreeWidgetItem();
+    testItem->setText(0, "Name");
+    testItem->setText(1, "Workspace");
+    testItem->setFlags(testItem->flags() | Qt::ItemIsEditable);
 
-	QLabel* valueLabel = new QLabel(defaultValue);
-	valueLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    valueLabel->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextEditable);
-    this->treeWidget->setItemWidget(propertyItem, 1, valueLabel);
-
-    propertyItem->setText(0, property);
-    propertyItem->setFlags(propertyItem->flags() | Qt::ItemIsEditable);
+    treeWidget->addTopLevelItem(testItem);
 }
 
 bool Properties::eventFilter(QObject* watched, QEvent* event) {

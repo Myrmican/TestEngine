@@ -82,6 +82,9 @@ namespace Window {
         auto* leftMenuToolBars = new QStackedWidget(titleBarPanel);
         titleLayout->addWidget(leftMenuToolBars, 0, Qt::AlignVCenter);
 
+        QWidget* cornerBranding = new QWidget(titleBarPanel);
+        titleLayout->addWidget(cornerBranding);
+
         auto createSubMenuBar = [&](auto setupFunc) {
             auto* menuBar = new QMenuBar(leftMenuToolBars);
             menuBar->setObjectName("TitleMenuBar");

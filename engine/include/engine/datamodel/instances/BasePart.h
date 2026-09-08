@@ -7,7 +7,7 @@
 
 namespace Engine {
 	class BasePart : public Createable {
-	public:
+	protected:
 		BasePart(std::string className);
 
 	private:
