@@ -1,4 +1,5 @@
 #include <project/Project.h>
+#include <editor/EngineViewport.h>
 #include <QWidget>
 #include <QHBoxLayout>
 #include <QSplitter>
@@ -17,7 +18,6 @@
 #include <ui/TabManager.h>
 #include <ui/ribbon/Ribbon.h>
 #include <ui/Toolbar.h>
-#include <editor/TestView.h>
 
 namespace EditorWindow {
     void initialize(Project* project, QWidget* editorPage, QMainWindow* window) {
@@ -52,16 +52,41 @@ namespace EditorWindow {
 
         window->setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowNestedDocks);
 
-        QWidget* placeView = new EngineRenderView();
+        EngineViewport* placeView = new EngineViewport(editorPage);
+
+        auto* mainCamera = new Engine::Camera();
+        mainCamera->position = DirectX::XMFLOAT3(0.0f, 0.0f, -5.0f);
+        placeView->setActiveCamera(mainCamera);
 
         auto windowDocks = DockManager::setup(window, project);
         const int projectTabIndex = documentTabs->addTab(placeView, project->name);
+
+        window->show();
 
         QObject::connect(documentTabs, &QTabWidget::tabCloseRequested,
             [documentTabs, projectTabIndex, editorPage, window, mainToolBar, project](int index) {
                 TabManager::handleTabClose(index, projectTabIndex, documentTabs, editorPage, window, mainToolBar, project);
             }
         );
+
+        // NOTE: We deliberately do NOT call placeView->initializeEngine() or
+        // placeView->resize(placeView->size()) here anymore.
+        //
+        // At this point in the call, Qt has not yet run a layout pass for
+        // placeView inside its new parent tab, so width()/height() are still
+        // stale/default values — initializing the D3D swapchain here would
+        // create it with the wrong dimensions. Calling resize(size()) is also
+        // a no-op since QWidget::resize() only fires resizeEvent when the
+        // size actually changes.
+        //
+        // Instead, EngineRenderView::resizeEvent() now lazily initializes the
+        // engine itself the first time it receives a real, non-zero size from
+        // the layout system (which will happen shortly after window->show()
+        // returns control to the event loop). See TestView.cpp for details.
+
+        QTimer* frameTimer = new QTimer(placeView);
+        QObject::connect(frameTimer, &QTimer::timeout, placeView, &EngineViewport::renderFrame);
+        frameTimer->start(16);
 
         // Recent menu logic
         QWidget* topLevelWindow = window->window();

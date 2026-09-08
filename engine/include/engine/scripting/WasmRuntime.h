@@ -1,25 +1,26 @@
 #pragma once
 
-#include <wasmtime.hh>
+//#include <wasmtime.hh>
 #include <utility>
+#include <string>
 
 class WasmRuntime {
 public:
 	WasmRuntime();
 	~WasmRuntime();
 
-	template <typename Func>
-	void registerFunction(const std::string& funcName, Func&& func, const std::string& moduleName = "env") {
+	//template <typename Func>
+	/*void registerFunction(const std::string& funcName, Func&& func, const std::string& moduleName = "env") {
 		m_linker.define(
 			m_store,
 			moduleName,
 			funcName,
 			wasmtime::Func::wrap(m_store, std::forward<Func>(func))
 		);
-	}
+	}*/
 
 private:
-	wasmtime::Engine m_engine;
+	/*wasmtime::Engine m_engine;
 	wasmtime::Store m_store;
-	wasmtime::Linker m_linker;
+	wasmtime::Linker m_linker;*/
 };
