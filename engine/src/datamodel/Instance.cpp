@@ -74,10 +74,8 @@ namespace Engine {
 		}
 
 		if (newParent != NULL) {
-			
+			newParent->onChildAdded(this);
 		};
-
-		newParent->onChildAdded(this);
 	}
 
 	std::shared_ptr<Instance> Instance::clone() {
