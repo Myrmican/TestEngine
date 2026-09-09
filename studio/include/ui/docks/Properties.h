@@ -7,17 +7,23 @@
 #include <project/Project.h>
 
 class QTreeWidgetItem;
+namespace Engine {
+    class Instance;
+    class Property;
+}
 
 class Properties : public QObject {
     Q_OBJECT
 
 public:
+    Project* m_project;
     QDockWidget* dockWidget;
     QTreeWidget* treeWidget;
 
     Properties(QMainWindow* window, Project* project);
-    void AddProperty(const QString& category, const QString& property, const QString& propertyType, const QString& defaultValue);
-    QTreeWidgetItem* GetOrCreateCategory(const QString& categoryName);
+    void AddProperty(Engine::Instance* instance, const Engine::Property* property);
+    QTreeWidgetItem* GetOrCreateCategory(const std::string& categoryName);
+    void InspectInstance(Engine::Instance* selectedInstance);
 
 protected:
     bool eventFilter(QObject* watched, QEvent* event) override;

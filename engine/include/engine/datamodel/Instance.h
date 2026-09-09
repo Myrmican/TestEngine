@@ -1,10 +1,11 @@
 #pragma once
 
 #include <scripting/WasmRuntime.h>
-
+#include <core/Event.h>
 #include <vector>
 #include <string>
 #include <map>
+#include <any>
 #include "boost/weak_ptr.hpp"
 #include "boost/shared_ptr.hpp"
 #include "boost/enable_shared_from_this.hpp"
@@ -13,6 +14,8 @@
 class WasmRuntime;
 
 namespace Engine {
+
+	class ClassDescriptor;
 
 	class Instance;
 
@@ -38,10 +41,14 @@ namespace Engine {
 		std::map<std::string, bool> attributes;
 	protected:
 		Instance(std::string name);
+
+		virtual void onChildAdded(Instance* child) {};
 	public:
 		bool internalLocked = false;
 
 		virtual ~Instance() = default;
+
+		Event<std::string, std::any> changed;
 
 		virtual void destroy();
 		void remove();
@@ -55,12 +62,12 @@ namespace Engine {
 		void setParent(Instance* instance) { setParentInternal(instance, false); }
 		void setParent(Instance* instance, bool ignoreLock) { setParentInternal(instance, ignoreLock); }
 
-		const std::string& getName() const { return name.get(); }
-		virtual std::string_view setName(std::string_view value);
+		std::string_view getName() const { return name.get(); }
+		virtual void setName(std::string_view value);
 
 		const std::vector<InstancePtr>& getChildren() const { return children; }
 		const std::vector<InstancePtr>& getDescendants();
-		const std::vector<InstancePtr>& getDescendants(std::string selector);
+		const std::vector<InstancePtr>& getDescendants(std::string_view selector);
 
 		bool isAncestorOf(const Instance* descendant) const;
 
@@ -76,6 +83,8 @@ namespace Engine {
 		std::string getClassName() { return className; }
 
 		static void BindAPI(WasmRuntime& wasm);
+
+		static void reflectProperties(ClassDescriptor* desc);
 	private:
 		void setParentInternal(Instance* instance, bool ignoreLock);
 

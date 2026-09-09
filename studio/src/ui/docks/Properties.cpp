@@ -15,34 +15,15 @@
 #include <ui/docks/Properties.h>
 #include <ui/docks/Explorer.h>
 #include <engine/datamodel/Instance.h>
+#include <engine/datamodel/Property.h>
+#include <engine/core/Reflection.h>
+#include <engine/datamodel/ClassDescriptor.h>
+#include <engine/services/selection/Selection.h>
 
 namespace {
 
     bool parseValidValue(const QString& value, const QString& expectedType) {
         return false;
-    }
-
-    void connectValueEdit(QTreeWidget* treeWidget) {
-		QObject::connect(treeWidget, &QTreeWidget::itemClicked, [treeWidget](QTreeWidgetItem* item, int column) {
-            if (column != 1 || !item) return;
-
-            auto* existingLabel = qobject_cast<QLabel*>(treeWidget->itemWidget(item, 1));
-            if (!existingLabel) return;
-
-            auto* lineEdit = new QLineEdit(existingLabel->text(), treeWidget);
-            treeWidget->setItemWidget(item, 1, lineEdit);
-            lineEdit->setFocus();
-            lineEdit->selectAll();
-
-            auto commitEdit = [treeWidget, item, lineEdit]() {
-                QString newValue = lineEdit->text();
-
-                auto* newLabel = new QLabel(newValue);
-                treeWidget->setItemWidget(item, 1, newLabel);
-                };
-
-            QObject::connect(lineEdit, &QLineEdit::editingFinished, commitEdit);
-			});
     }
 
     void connectSearch(QLineEdit* searchBar, QTreeWidget* propertiesTree) {
@@ -61,28 +42,10 @@ namespace {
             }
             });
     }
-
-    void connectRename(Properties* self) {
-        QObject::connect(self->treeWidget, &QTreeWidget::itemDoubleClicked, self, [](QTreeWidgetItem* item, int column) {
-            if (column == 1 && (item->flags() & Qt::ItemIsEditable)) {
-                item->treeWidget()->editItem(item, column);
-            }
-            });
-
-        QObject::connect(self->treeWidget, &QTreeWidget::itemChanged,
-            [self](QTreeWidgetItem* item, int column) {
-                if (column == 1) {
-                    QString newName = item->text(column);
-                    
-                    Engine::Instance* instance = Engine::GetEngineInstance(item);
-                    //instance->setName(newName);
-                }
-            });
-    }
 }
 
 Properties::Properties(QMainWindow* window, Project* project)
-    : QObject(window) {
+    : QObject(window), m_project(project) {
 
     auto* propertiesDock = new QDockWidget("Properties", window);
     propertiesDock->setWindowFlags(Qt::SubWindow);
@@ -122,13 +85,24 @@ Properties::Properties(QMainWindow* window, Project* project)
         "    background-color: #161616;"
         "    outline: none;"
         "    border: none;"
-        "    show-decoration-selected: 1;"
+        "    show-decoration-selected: 0;"
         "}"
         "QTreeWidget::item {"
         "    color: #cccccc;"
         "    border-bottom: 1px solid #222222;"
         "    border-right: 1px solid #222222;"
         "    height: 22px;"
+        "}"
+        "QTreeWidget::item:hover,"
+        "QTreeWidget::item:selected,"
+        "QTreeWidget::item:selected:hover,"
+        "QTreeWidget::branch:hover,"
+        "QTreeWidget::branch:selected {"
+        "    background-color: #161616;"
+        "}"
+        "QTreeWidget QLineEdit {"
+        "    background: transparent;"
+        "    border: none;"
         "}"
         "QTreeWidget::branch:has-children:closed {"
         "    image: url(:/icons/branch_closed.png);"
@@ -144,6 +118,7 @@ Properties::Properties(QMainWindow* window, Project* project)
 
     dockWidget = propertiesDock;
     treeWidget = propertiesTree;
+    treeWidget->setAttribute(Qt::WA_Hover, false);
 
     propertiesTree->viewport()->installEventFilter(this);
     propertiesDock->setWidget(containerWidget);
@@ -159,13 +134,28 @@ Properties::Properties(QMainWindow* window, Project* project)
         });
 
     connectSearch(searchBar, propertiesTree);
-    connectValueEdit(propertiesTree);
-    connectRename(this);
+
+    auto services = project->dataModel->m_services;
+
+    std::shared_ptr<Engine::Selection> selectionService = nullptr;
+
+    for (const auto& [name, instance] : services) {
+        if (name == "Selection") {
+            selectionService = std::dynamic_pointer_cast<Engine::Selection>(instance);
+            break;
+        }
+    }
+
+    selectionService->selectionChanged.connect([this](Engine::Instance* instance) {
+        this->InspectInstance(instance);
+        });
 }
 
-QTreeWidgetItem* Properties::GetOrCreateCategory(const QString& categoryName) {
+QTreeWidgetItem* Properties::GetOrCreateCategory(const std::string& categoryName) {
+    QString qname = QString::fromStdString(categoryName);
+
     QList<QTreeWidgetItem*> items = this->treeWidget->findItems(
-        categoryName,
+        qname,
         Qt::MatchExactly | Qt::MatchExactly,
         0
     );
@@ -175,27 +165,63 @@ QTreeWidgetItem* Properties::GetOrCreateCategory(const QString& categoryName) {
     }
 
     auto* categoryItem = new QTreeWidgetItem(this->treeWidget);
-    categoryItem->setText(0, categoryName);
+    categoryItem->setText(0, qname);
     categoryItem->setFirstColumnSpanned(true);
     categoryItem->setFont(0, QFont("Segoe UI", 10, QFont::Bold));
     categoryItem->setExpanded(true);
 
-	categoryItem->setBackground(0, QBrush(QColor(102, 102, 102)));
+	//categoryItem->setBackground(0, QBrush(QColor(102, 102, 102)));
 
     return categoryItem;
 }
 
-void Properties::AddProperty(const QString& category, const QString& property,
-        const QString& propertyType, const QString& defaultValue) {
+void Properties::AddProperty(Engine::Instance* instance, const Engine::Property* property) {
+    if (!instance || !property) return;
 
-    QTreeWidgetItem* categoryItem = GetOrCreateCategory(category);
+    QTreeWidgetItem* categoryItem = GetOrCreateCategory(property->m_category);
 
-    QTreeWidgetItem* testItem = new QTreeWidgetItem();
-    testItem->setText(0, "Name");
-    testItem->setText(1, "Workspace");
-    testItem->setFlags(testItem->flags() | Qt::ItemIsEditable);
+    QTreeWidgetItem* propertyItem = new QTreeWidgetItem(categoryItem);
+    propertyItem->setText(0, QString::fromStdString(property->m_name));
 
-    treeWidget->addTopLevelItem(testItem);
+    std::any rawValue = property->getValue(instance);
+    QString initialText = "";
+
+    if (rawValue.type() == typeid(std::string)) {
+        initialText = QString::fromStdString(std::any_cast<std::string>(rawValue));
+    }
+
+    instance->changed.connect([this](std::string name, std::any oldValue) {
+
+        });
+
+    auto* valueEdit = new QLineEdit();
+    valueEdit->setText(initialText);
+    valueEdit->setStyleSheet(
+        "QLineEdit {"
+        "   background: transparent;"
+        "   border: none;"
+        "   color: #cccccc;"
+        "   padding-left: 2px;"
+        "}"
+        "QLineEdit:focus {"
+        "   background-color: #2a2a2a;"
+        "}"
+    );
+
+    treeWidget->setItemWidget(propertyItem, 1, valueEdit);
+}
+
+void Properties::InspectInstance(Engine::Instance* selectedInstance) {
+    treeWidget->clear(); // Clear old UI rows
+    if (!selectedInstance) return;
+
+    // Get descriptor (e.g., "Part")
+    Engine::ClassDescriptor* desc = Engine::GetClassDescriptor(selectedInstance->getClassName());
+
+    // Loop through ALL inherited & owned properties
+    for (const Engine::Property* prop : desc->getAllProperties()) {
+        this->AddProperty(selectedInstance, prop);
+    }
 }
 
 bool Properties::eventFilter(QObject* watched, QEvent* event) {

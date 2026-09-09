@@ -23,6 +23,8 @@
 #include <QDir>
 #include <QSettings>
 #include <QProcessEnvironment>
+#include <memory>
+#include <engine/services/selection/Selection.h>
 
 using namespace Engine;
 
@@ -160,6 +162,27 @@ namespace {
             }
         );
     }
+
+    void SelectionChanged(Explorer* self) {
+        Project* project = self->m_project;
+        auto services = project->dataModel->m_services;
+
+        std::shared_ptr<Selection> selectionService = nullptr;
+
+        for (const auto& [name, instance] : services) {
+            if (name == "Selection") {
+                selectionService = std::dynamic_pointer_cast<Selection>(instance);
+                break;
+            }
+        }
+
+        QObject::connect(self->treeWidget, &QTreeWidget::currentItemChanged, self->treeWidget, [self, selectionService](QTreeWidgetItem* current, QTreeWidgetItem* previous) {
+            if (!current) return;
+
+            Engine::Instance* instance = Engine::GetEngineInstance(current);
+            selectionService->select(instance);
+            });
+    }
 }
 
 namespace Engine {
@@ -274,11 +297,12 @@ Explorer::Explorer(QMainWindow* window, Project* project)
     ConnectSearch(searchBar, explorerTree);
     ConnectContextMenu(explorerTree, window, project, this);
     AssembleRoot();
+    SelectionChanged(this);
 }
 
 QTreeWidgetItem* Explorer::AddItem(QTreeWidgetItem* parentItem, Instance* instance) {
     Instance* parentInstance = GetEngineInstance(parentItem);
-    QString instanceName = QString::fromStdString(instance->getName());
+    QString instanceName = QString::fromStdString(std::string(instance->getName()));
 
     if (!parentInstance && m_project->dataModel) {
         parentInstance = m_project->dataModel.get();
@@ -315,7 +339,7 @@ QTreeWidgetItem* Explorer::AddItem(QTreeWidgetItem* parentItem, Instance* instan
 
 void Explorer::AssembleRoot() {
 
-    for (auto& [name, service] : m_project->dataModel->m_services) {
+    for (auto& service : m_project->dataModel->getChildren()) {
         AddItem(nullptr, service.get());
 
         const auto children = service->getChildren();

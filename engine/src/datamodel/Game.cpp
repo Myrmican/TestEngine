@@ -10,6 +10,8 @@
 #include <datamodel/instances/Part.h>
 #include <datamodel/instances/PlayerTemplate.h>
 #include <datamodel/instances/Camera.h>
+#include <services/selection/Selection.h>
+#include <core/Reflection.h>
 
 namespace Engine {
 	Game::Game() : Instance("DataModel") {
@@ -21,6 +23,7 @@ namespace Engine {
         auto clientService = std::make_shared<Client>();
         auto sharedService = std::make_shared<Shared>();
         auto audioService = std::make_shared<Audio>();
+        auto selectService = std::make_shared<Selection>();
 
         worldService->setParent(this, true);
         playersService->setParent(this, true);
@@ -35,6 +38,7 @@ namespace Engine {
         m_services.emplace_back("Client", clientService);
         m_services.emplace_back("Shared", sharedService);
         m_services.emplace_back("Audio", audioService);
+        m_services.emplace_back("Selection", selectService);
 
         auto serverAssetsFolder = std::make_shared<Folder>();
 		serverAssetsFolder->setName("Assets");

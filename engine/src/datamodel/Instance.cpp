@@ -1,7 +1,9 @@
 #include <datamodel/Instance.h>
 #include <scripting/WasmRuntime.h>
+#include <datamodel/ClassDescriptor.h>
+#include <core/Reflection.h>
+#include <datamodel/Property.h>
 #include "boost/shared_ptr.hpp"
-
 #include <iostream>
 #include <format>
 #include <exception>
@@ -18,14 +20,15 @@ namespace Engine {
 		this->name = name;
 	}
 
-	std::string_view Instance::setName(std::string_view value) {
-		if (name == value) return value;
+	void Instance::setName(std::string_view value) {
+		if (name == value) return;
 
 		if (value.size() > 100)
 			name = std::string(value.substr(0, 100));
 		else
 			name = std::string(value);
-		return name.get();
+
+		this->changed.call("Name", name);
 	}
 	
 	void Instance::destroy() {
@@ -39,22 +42,22 @@ namespace Engine {
 
 	std::string Instance::getPath() const {
 		if (parent) {
-			return parent->getPath() + "/" + getName();		 
+			return parent->getPath() + "/" + std::string(getName());
 		}
-		return getName();
+		return std::string(getName());
 	}
 
-	void Instance::setParentInternal(Instance* instance, bool ignoreLock) {
+	void Instance::setParentInternal(Instance* newParent, bool ignoreLock) {
 		std::string message;
 
 		if (internalLocked && !ignoreLock) {
 			message = std::format("Attempted to set the parent of {}, but it was locked.", getName());
 		}
 		
-		if (instance == this) {
+		if (newParent == this) {
 			message = std::format("Attempted to parent {} to itself.", getPath());
 		}
-		else if (this->isAncestorOf(instance)) {
+		else if (this->isAncestorOf(newParent)) {
 			message = std::format("Attempted to set a descendant of {} as its parent.", getName());
 		}
 
@@ -62,13 +65,19 @@ namespace Engine {
 
 		Instance* oldParent = getParent();
 
-		this->parent = instance;
+		this->parent = newParent;
 
-		instance->children.push_back(shared_from_this());
+		newParent->children.push_back(shared_from_this());
 
 		if (oldParent) {
 			std::erase(oldParent->children, shared_from_this());
 		}
+
+		if (newParent != NULL) {
+			
+		};
+
+		newParent->onChildAdded(this);
 	}
 
 	std::shared_ptr<Instance> Instance::clone() {
@@ -84,7 +93,7 @@ namespace Engine {
 		return result;
 	}
 
-	const std::vector<InstancePtr>& Instance::getDescendants(std::string selector) {
+	const std::vector<InstancePtr>& Instance::getDescendants(std::string_view selector) {
 		return getDescendants();
 	}
 
@@ -115,5 +124,16 @@ namespace Engine {
 
 	void Instance::BindAPI(WasmRuntime& wasm) {
 
+	}
+
+	void Instance::reflectProperties(ClassDescriptor* desc) {
+		auto* nameProperty = new TypedProperty<Instance, std::string_view>(
+			"Name",
+			"Data",
+			&Instance::getName,
+			&Instance::setName
+		);
+
+		desc->addProperty(nameProperty);
 	}
 }
