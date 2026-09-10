@@ -74,7 +74,7 @@ struct register_base_of
 };
 
 //
-// Preamble of register_class.  Also used for callback classes, which
+// Preamble of REGISTER_INSTANCE.  Also used for callback classes, which
 // need some registration of their own.
 //
 
@@ -224,7 +224,7 @@ struct class_metadata
 	objects::register_shared_ptr_from_python_and_casts((T2*)0, bases());
         class_metadata::maybe_register_callback_class((T2*)0, Callback());
 
-        class_metadata::maybe_register_class_to_python((T2*)0, is_noncopyable());
+        class_metadata::maybe_REGISTER_INSTANCE_to_python((T2*)0, is_noncopyable());
         
         class_metadata::maybe_register_pointer_to_python(
             (T2*)0, (use_value_holder*)0, (use_back_reference*)0);
@@ -261,11 +261,11 @@ struct class_metadata
     //
     // Support for registering to-python converters
     //
-    inline static void maybe_register_class_to_python(void*, mpl::true_) {}
+    inline static void maybe_REGISTER_INSTANCE_to_python(void*, mpl::true_) {}
     
 
     template <class T2>
-    inline static void maybe_register_class_to_python(T2*, mpl::false_)
+    inline static void maybe_REGISTER_INSTANCE_to_python(T2*, mpl::false_)
     {
         python::detail::force_instantiate(class_cref_wrapper<T2, make_instance<T2, holder> >());
 #ifndef BOOST_PYTHON_NO_PY_SIGNATURES

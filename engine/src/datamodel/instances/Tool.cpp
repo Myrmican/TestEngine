@@ -2,7 +2,7 @@
 #include <core/Reflection.h>
 
 namespace Engine {
-	REGISTER_CLASS(Tool);
+	REGISTER_CREATEABLE(Tool);
 	Tool::Tool() : Createable("Tool") {
 
 

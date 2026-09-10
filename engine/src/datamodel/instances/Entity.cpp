@@ -2,7 +2,7 @@
 #include <core/Reflection.h>
 
 namespace Engine {
-	REGISTER_CLASS(Entity);
+	REGISTER_CREATEABLE(Entity);
 	Entity::Entity() : Createable("Entity") {
 
 	}

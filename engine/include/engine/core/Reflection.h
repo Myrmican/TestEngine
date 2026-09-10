@@ -68,7 +68,7 @@ namespace Engine {
 
 }
 
-#define REGISTER_CLASS(className) \
+#define REGISTER_INSTANCE(className) \
     inline const ::Engine::ReflectionHelper reflection_##className( \
         #className, \
         "Instance", \
@@ -76,10 +76,12 @@ namespace Engine {
         [](::Engine::ClassDescriptor* desc) { className::reflectProperties(desc); } \
     )
 
-#define REGISTER_CLASS_DERIVED(className, parentClassName) \
+#define REGISTER_CREATEABLE(className) \
     inline const ::Engine::ReflectionHelper reflection_##className( \
         #className, \
-        #parentClassName, \
-        []() -> std::unique_ptr<::Engine::Createable> { return std::make_unique<className>(); }, \
+        "Instance", \
+        []() -> std::unique_ptr<::Engine::Createable> { \
+            return std::make_unique<className>(); \
+        }, \
         [](::Engine::ClassDescriptor* desc) { className::reflectProperties(desc); } \
     )

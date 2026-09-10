@@ -2,7 +2,7 @@
 #include <core/Reflection.h>
 
 namespace Engine {
-	REGISTER_CLASS(Server);
+	REGISTER_INSTANCE(Server);
 	Server::Server() : Instance("Server") {
 		internalLocked = true;
 	}

@@ -4,7 +4,7 @@
 #include <string>
 
 namespace Engine {
-	REGISTER_CLASS(Sound);
+	REGISTER_CREATEABLE(Sound);
 	Sound::Sound() : Createable("Sound") {
 
 	}

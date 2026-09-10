@@ -2,7 +2,7 @@
 #include <core/Reflection.h>
 
 namespace Engine {
-	REGISTER_CLASS(Audio);
+	REGISTER_INSTANCE(Audio);
 	Audio::Audio() : Instance("Audio") {
 		internalLocked = true;
 	}

@@ -2,7 +2,7 @@
 #include <core/Reflection.h>
 
 namespace Engine {
-	REGISTER_CLASS(Part);
+	REGISTER_CREATEABLE(Part);
 	Part::Part() : BasePart("Part") {
 
 	};

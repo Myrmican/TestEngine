@@ -2,7 +2,7 @@
 #include <core/Reflection.h>
 
 namespace Engine {
-	REGISTER_CLASS(Backpack);
+	REGISTER_INSTANCE(Backpack);
 	Backpack::Backpack() : Instance("Backpack") {
 
 	}

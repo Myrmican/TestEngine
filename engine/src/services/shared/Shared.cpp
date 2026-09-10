@@ -2,7 +2,7 @@
 #include <core/Reflection.h>
 
 namespace Engine {
-	REGISTER_CLASS(Shared);
+	REGISTER_INSTANCE(Shared);
 	Shared::Shared() : Instance("Shared") {
 		internalLocked = true;
 	}

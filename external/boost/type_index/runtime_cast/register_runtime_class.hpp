@@ -62,8 +62,8 @@ BOOST_TYPE_INDEX_END_MODULE_EXPORT
 /// the current class.
 ///
 /// BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS also adds support for boost::typeindex::type_id_runtime
-/// by including BOOST_TYPE_INDEX_REGISTER_CLASS. It is typical that these features are used together,
-/// but in the event that BOOST_TYPE_INDEX_REGISTER_CLASS is undesirable in the current class,
+/// by including BOOST_TYPE_INDEX_REGISTER_INSTANCE. It is typical that these features are used together,
+/// but in the event that BOOST_TYPE_INDEX_REGISTER_INSTANCE is undesirable in the current class,
 /// BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST is provided.
 ///
 /// \b Example:
@@ -97,7 +97,7 @@ BOOST_TYPE_INDEX_END_MODULE_EXPORT
 /// \param base_class_seq A Boost.Preprocessor sequence of the current class' direct bases, or
 /// BOOST_TYPE_INDEX_NO_BASE_CLASS if this class has no direct base classes.
 #define BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS(...)                                                   \
-    BOOST_TYPE_INDEX_REGISTER_CLASS                                                                               \
+    BOOST_TYPE_INDEX_REGISTER_INSTANCE                                                                               \
     BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST(__VA_ARGS__)
 
 /// \def BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST

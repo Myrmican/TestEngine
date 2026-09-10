@@ -28,7 +28,7 @@
 #elif (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
 #   include <boost/type_index/stl_type_index.hpp>
 #   if defined(BOOST_NO_RTTI) || defined(BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)
-#       include <boost/type_index/detail/stl_register_class.hpp>
+#       include <boost/type_index/detail/stl_REGISTER_INSTANCE.hpp>
 #       ifdef BOOST_HAS_PRAGMA_DETECT_MISMATCH
 #           pragma detect_mismatch( "boost__type_index__abi", "RTTI is off - typeid() is used only for templates")
 #       endif
@@ -39,14 +39,14 @@
 #   endif
 #else
 #   include <boost/type_index/ctti_type_index.hpp>
-#   include <boost/type_index/detail/ctti_register_class.hpp>
+#   include <boost/type_index/detail/ctti_REGISTER_INSTANCE.hpp>
 #   ifdef BOOST_HAS_PRAGMA_DETECT_MISMATCH
 #       pragma detect_mismatch( "boost__type_index__abi", "RTTI is off - using CTTI")
 #   endif
 #endif
 
-#ifndef BOOST_TYPE_INDEX_REGISTER_CLASS
-#define BOOST_TYPE_INDEX_REGISTER_CLASS
+#ifndef BOOST_TYPE_INDEX_REGISTER_INSTANCE
+#define BOOST_TYPE_INDEX_REGISTER_INSTANCE
 #endif
 
 #if !defined(BOOST_USE_MODULES) || defined(BOOST_TYPE_INDEX_INTERFACE_UNIT)
@@ -158,8 +158,8 @@ using type_info = type_index::type_info_t;
 #define BOOST_TYPE_INDEX_USER_TYPEINDEX <full/absolute/path/to/header/with/type_index.hpp>
 
 
-/// \def BOOST_TYPE_INDEX_REGISTER_CLASS
-/// BOOST_TYPE_INDEX_REGISTER_CLASS is used to help to emulate RTTI.
+/// \def BOOST_TYPE_INDEX_REGISTER_INSTANCE
+/// BOOST_TYPE_INDEX_REGISTER_INSTANCE is used to help to emulate RTTI.
 /// Put this macro into the public section of polymorphic class to allow runtime type detection.
 ///
 /// Depending on the typeid() availability this macro will expand to nothing or to virtual helper function
@@ -169,16 +169,16 @@ using type_info = type_index::type_info_t;
 /// \code
 /// class A {
 /// public:
-///     BOOST_TYPE_INDEX_REGISTER_CLASS
+///     BOOST_TYPE_INDEX_REGISTER_INSTANCE
 ///     virtual ~A(){}
 /// };
 ///
 /// struct B: public A {
-///     BOOST_TYPE_INDEX_REGISTER_CLASS
+///     BOOST_TYPE_INDEX_REGISTER_INSTANCE
 /// };
 ///
 /// struct C: public B {
-///     BOOST_TYPE_INDEX_REGISTER_CLASS
+///     BOOST_TYPE_INDEX_REGISTER_INSTANCE
 /// };
 ///
 /// ...
@@ -187,7 +187,7 @@ using type_info = type_index::type_info_t;
 /// A* pc1 = &c1;
 /// assert(boost::typeindex::type_id<C>() == boost::typeindex::type_id_runtime(*pc1));
 /// \endcode
-#define BOOST_TYPE_INDEX_REGISTER_CLASS nothing-or-some-virtual-functions
+#define BOOST_TYPE_INDEX_REGISTER_INSTANCE nothing-or-some-virtual-functions
 
 /// \def BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY
 /// BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY is a helper macro that must be defined if mixing
@@ -240,7 +240,7 @@ inline type_index type_id_with_cvr() noexcept {
 ///
 /// Returns runtime information about specified type.
 ///
-/// \b Requirements: RTTI available or Base and Derived classes must be marked with BOOST_TYPE_INDEX_REGISTER_CLASS.
+/// \b Requirements: RTTI available or Base and Derived classes must be marked with BOOST_TYPE_INDEX_REGISTER_INSTANCE.
 ///
 /// \b Example:
 /// \code

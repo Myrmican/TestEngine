@@ -6,11 +6,11 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef BOOST_TYPE_INDEX_STL_REGISTER_CLASS_HPP
-#define BOOST_TYPE_INDEX_STL_REGISTER_CLASS_HPP
+#ifndef BOOST_TYPE_INDEX_STL_REGISTER_INSTANCE_HPP
+#define BOOST_TYPE_INDEX_STL_REGISTER_INSTANCE_HPP
 
-/// \file stl_register_class.hpp
-/// \brief Contains BOOST_TYPE_INDEX_REGISTER_CLASS macro implementation that uses boost::typeindex::stl_type_index.
+/// \file stl_REGISTER_INSTANCE.hpp
+/// \brief Contains BOOST_TYPE_INDEX_REGISTER_INSTANCE macro implementation that uses boost::typeindex::stl_type_index.
 /// Not intended for inclusion from user's code.
 
 #include <boost/type_index/stl_type_index.hpp>
@@ -37,12 +37,12 @@ BOOST_TYPE_INDEX_END_MODULE_EXPORT
 #endif  // #if !defined(BOOST_USE_MODULES) || defined(BOOST_TYPE_INDEX_INTERFACE_UNIT)
 
 /// @cond
-#define BOOST_TYPE_INDEX_REGISTER_CLASS                                                                               \
+#define BOOST_TYPE_INDEX_REGISTER_INSTANCE                                                                               \
     virtual const boost::typeindex::stl_type_index::type_info_t& boost_type_index_type_id_runtime_() const noexcept { \
         return boost::typeindex::detail::stl_construct_typeid_ref(this);                                              \
     }                                                                                                                 \
 /**/
 /// @endcond
 
-#endif // BOOST_TYPE_INDEX_STL_REGISTER_CLASS_HPP
+#endif // BOOST_TYPE_INDEX_STL_REGISTER_INSTANCE_HPP
 

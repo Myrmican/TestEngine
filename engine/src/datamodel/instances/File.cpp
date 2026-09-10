@@ -3,7 +3,7 @@
 #include <string>
 
 namespace Engine {
-	REGISTER_CLASS(File);
+	REGISTER_CREATEABLE(File);
 	File::File() : Createable("File") {
 
 	}
