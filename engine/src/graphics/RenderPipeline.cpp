@@ -5,6 +5,13 @@
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 
+namespace {
+    std::wstring ShaderPath(const char* filename) {
+        std::string path = std::string(SHADERS_DIR) + "/" + filename;
+        return std::wstring(path.begin(), path.end()); // ASCII-safe widen
+    }
+}
+
 namespace Engine {
 
     bool RenderPipeline::Initialize(HWND windowHandle, int width, int height) {
@@ -60,37 +67,39 @@ namespace Engine {
         vp.MinDepth = 0.0f;
         vp.MaxDepth = 1.0f;
         m_context->RSSetViewports(1, &vp);
+
+        D3D11_DEPTH_STENCIL_DESC dsDesc = {};
+        dsDesc.DepthEnable = TRUE;
+        dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+        dsDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
     }
-
-    // RenderPipeline.cpp
-
-    const char* vsSource = R"(
-cbuffer MatrixBuffer : register(b0) { matrix gViewProjection; };
-struct VSInput { float3 position : POSITION; float4 color : COLOR; };
-struct PSInput { float4 position : SV_POSITION; float4 color : COLOR; };
-PSInput main(VSInput input) {
-    PSInput output;
-    output.position = mul(float4(input.position, 1.0f), gViewProjection);
-    output.color = input.color;
-    return output;
-}
-)";
-
-    const char* psSource = R"(
-struct PSInput { float4 position : SV_POSITION; float4 color : COLOR; };
-float4 main(PSInput input) : SV_TARGET { return input.color; }
-)";
 
     bool RenderPipeline::CreateShadersAndGeometry() {
         ComPtr<ID3DBlob> vsBlob, psBlob, errorBlob;
 
-        // Compile Vertex Shader from string in memory
-        HRESULT hr = D3DCompile(vsSource, strlen(vsSource), nullptr, nullptr, nullptr, "main", "vs_5_0", 0, 0, &vsBlob, &errorBlob);
-        if (FAILED(hr)) return false;
+        HRESULT hr = D3DCompileFromFile(
+            ShaderPath("UnlitVS.hlsl").c_str(),
+            nullptr, nullptr,
+            "main", "vs_5_0",
+            0, 0,
+            &vsBlob, &errorBlob
+        );
+        if (FAILED(hr)) {
+            if (errorBlob) OutputDebugStringA((char*)errorBlob->GetBufferPointer());
+            return false;
+        }
 
-        // Compile Pixel Shader from string in memory
-        hr = D3DCompile(psSource, strlen(psSource), nullptr, nullptr, nullptr, "main", "ps_5_0", 0, 0, &psBlob, &errorBlob);
-        if (FAILED(hr)) return false;
+        hr = D3DCompileFromFile(
+            ShaderPath("UnlitPS.hlsl").c_str(),
+            nullptr, nullptr,
+            "main", "ps_5_0",
+            0, 0,
+            &psBlob, &errorBlob
+        );
+        if (FAILED(hr)) {
+            if (errorBlob) OutputDebugStringA((char*)errorBlob->GetBufferPointer());
+            return false;
+        }
 
         D3D11_RASTERIZER_DESC rasterDesc = {};
         rasterDesc.FillMode = D3D11_FILL_SOLID;
@@ -166,8 +175,7 @@ float4 main(PSInput input) : SV_TARGET { return input.color; }
             return;
         }
 
-        // Clear screen background
-        const float clearColor[4] = { 0.12f, 0.12f, 0.12f, 1.0f };
+        const float clearColor[4] = { 251.0f / 255.0f, 84.0f / 255.0f, 43.0f / 255.0f, 1.0f };
         m_context->ClearRenderTargetView(m_renderTargetView.Get(), clearColor);
 
         // Calculate and transpose Camera matrix for HLSL
@@ -189,10 +197,7 @@ float4 main(PSInput input) : SV_TARGET { return input.color; }
 
         m_context->OMSetRenderTargets(1, m_renderTargetView.GetAddressOf(), nullptr);
 
-        // Issue draw call
         m_context->Draw(3, 0);
-
-        // Swap backbuffer to screen
         m_swapChain->Present(1, 0);
     }
 

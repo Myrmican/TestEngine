@@ -189,10 +189,10 @@ void Properties::AddProperty(Engine::Instance* instance, const Engine::Property*
     if (rawValue.type() == typeid(std::string)) {
         initialText = QString::fromStdString(std::any_cast<std::string>(rawValue));
     }
-
-    instance->changed.connect([this](std::string name, std::any oldValue) {
-
-        });
+    else if (rawValue.type() == typeid(std::string_view)) {
+        auto sv = std::any_cast<std::string_view>(rawValue);
+        initialText = QString::fromUtf8(sv.data(), static_cast<qsizetype>(sv.size()));
+    }
 
     auto* valueEdit = new QLineEdit();
     valueEdit->setText(initialText);
@@ -208,17 +208,19 @@ void Properties::AddProperty(Engine::Instance* instance, const Engine::Property*
         "}"
     );
 
+    instance->changed.connect([this, instance, valueEdit](std::string name, std::any oldValue) {
+        valueEdit->setText(QString::fromStdString(std::string(instance->getName())));
+        });
+
     treeWidget->setItemWidget(propertyItem, 1, valueEdit);
 }
 
 void Properties::InspectInstance(Engine::Instance* selectedInstance) {
-    treeWidget->clear(); // Clear old UI rows
+    treeWidget->clear();
     if (!selectedInstance) return;
 
-    // Get descriptor (e.g., "Part")
-    Engine::ClassDescriptor* desc = Engine::GetClassDescriptor(selectedInstance->getClassName());
+    Engine::ClassDescriptor* desc = Engine::GetClassDescriptor(std::string(selectedInstance->getClassName()));
 
-    // Loop through ALL inherited & owned properties
     for (const Engine::Property* prop : desc->getAllProperties()) {
         this->AddProperty(selectedInstance, prop);
     }

@@ -80,7 +80,7 @@ namespace Engine {
 		void setAttribute(const std::string& name, bool value);
 		bool getAttribute(const std::string& name);
 
-		std::string getClassName() { return className; }
+		std::string_view getClassName() const { return className; }
 
 		static void BindAPI(WasmRuntime& wasm);
 

@@ -177,9 +177,14 @@ namespace {
         }
 
         QObject::connect(self->treeWidget, &QTreeWidget::currentItemChanged, self->treeWidget, [self, selectionService](QTreeWidgetItem* current, QTreeWidgetItem* previous) {
-            if (!current) return;
+            Instance* previousInstance = Engine::GetEngineInstance(previous);
 
-            Engine::Instance* instance = Engine::GetEngineInstance(current);
+            if (!current) {
+                selectionService->deselect(previousInstance);
+                return;
+            }
+
+            Instance* instance = Engine::GetEngineInstance(current);
             selectionService->select(instance);
             });
     }

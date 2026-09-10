@@ -8,8 +8,9 @@ target_include_directories(EngineCore PUBLIC
     "${CMAKE_SOURCE_DIR}/external"
     "${wasmtime_SOURCE_DIR}/include"
 )
-
-# reflection registry — same file, same directory scope
+target_compile_definitions(EngineCore PUBLIC
+    SHADERS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/src/shaders"
+)
 file(GLOB_RECURSE REFLECTION_HEADERS CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/include/engine/datamodel/instances/*.h"
 )
