@@ -11,6 +11,6 @@ namespace Engine {
 	}
 
 	void Selection::deselect(Instance* instance) {
-
+		selectionChanged.call(nullptr);
 	}
 }

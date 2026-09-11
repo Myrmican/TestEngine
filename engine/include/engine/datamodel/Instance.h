@@ -22,14 +22,6 @@ namespace Engine {
 	using InstancePtr = std::shared_ptr<Instance>;
 	using InstanceWeakPtr = std::weak_ptr<Instance>;
 
-	struct ChildAdded {
-
-	public:
-		std::shared_ptr<Instance> const child;
-		ChildAdded(Instance* child);
-		ChildAdded(const ChildAdded& event);
-	};
-
 	class Instance : public std::enable_shared_from_this<Instance> {
 	private:
 		boost::flyweight<std::string> name;

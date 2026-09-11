@@ -124,7 +124,9 @@ namespace Engine {
 
 	}
 
-
+	void Instance::setParent(Instance* instance, bool ignoreLock) {
+		setParentInternal(instance, ignoreLock);
+	}
 
 	void Instance::reflectProperties(ClassDescriptor* desc) {
 		auto* classNameProperty = new TypedProperty<Instance, std::string_view>(

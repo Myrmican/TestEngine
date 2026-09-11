@@ -9,7 +9,7 @@ namespace Engine {
 	class Property {
 	public:
 		std::string m_name;
-		std::string m_category;
+        std::string m_category;
         bool readOnly;
 
 		Property(std::string, std::string category);

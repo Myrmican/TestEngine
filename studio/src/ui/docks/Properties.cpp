@@ -147,6 +147,11 @@ Properties::Properties(QMainWindow* window, Project* project)
     }
 
     selectionService->selectionChanged.connect([this](Engine::Instance* instance) {
+        if (instance == nullptr) {
+            treeWidget->clear();
+            return;
+        }
+
         this->InspectInstance(instance);
         });
 }
@@ -193,13 +198,19 @@ void Properties::AddProperty(Engine::Instance* instance, const Engine::Property*
         auto sv = std::any_cast<std::string_view>(rawValue);
         initialText = QString::fromUtf8(sv.data(), static_cast<qsizetype>(sv.size()));
     }
-    else if (rawValue.type() == typeid(Engine::Instance)) {
-        std::cout << rawValue.type().name() << std::endl;
+    else if (rawValue.type() == typeid(Engine::Instance*)) {
+        auto* instancePtr = std::any_cast<Engine::Instance*>(rawValue);
+        initialText = QString::fromStdString(std::string(instancePtr->getName()));
     }
+
+    bool readOnly = property->readOnly || instance->internalLocked && property->m_name == "Parent";
 
     auto* valueEdit = new QLineEdit();
     valueEdit->setText(initialText);
-    valueEdit->setReadOnly(property->readOnly);
+    valueEdit->setDisabled(readOnly);
+    valueEdit->setReadOnly(readOnly);
+    valueEdit->setObjectName("PropertyValueEdit");
+    valueEdit->setParent(treeWidget);
     valueEdit->setStyleSheet(
         "QLineEdit {"
         "   background: transparent;"
@@ -211,11 +222,6 @@ void Properties::AddProperty(Engine::Instance* instance, const Engine::Property*
         "   background-color: #2a2a2a;"
         "}"
     );
-
-    if (property->readOnly) {
-        valueEdit->setFocusPolicy(Qt::NoFocus);
-        valueEdit->setAttribute(Qt::WA_TransparentForMouseEvents, true);
-    }
 
     treeWidget->setItemWidget(propertyItem, 1, valueEdit);
 }
@@ -235,10 +241,10 @@ bool Properties::eventFilter(QObject* watched, QEvent* event) {
     if (treeWidget && watched == treeWidget->viewport()) {
         if (event->type() == QEvent::MouseButtonPress) {
             auto* mouseEvent = static_cast<QMouseEvent*>(event);
-
-            if (!treeWidget->itemAt(mouseEvent->pos())) {
-                treeWidget->clearSelection();
-                treeWidget->setCurrentItem(nullptr);
+            auto* item = treeWidget->itemAt(mouseEvent->pos());
+            if (!item) {
+                //treeWidget->clearSelection();
+                //treeWidget->setCurrentItem(nullptr);
             }
         }
     }
