@@ -124,6 +124,8 @@ namespace Engine {
 
 	}
 
+
+
 	void Instance::reflectProperties(ClassDescriptor* desc) {
 		auto* classNameProperty = new TypedProperty<Instance, std::string_view>(
 			"ClassName",
@@ -142,5 +144,14 @@ namespace Engine {
 		);
 
 		desc->addProperty(nameProperty);
+
+		auto* parentProperty = new TypedProperty<Instance, std::string_view>(
+			"Parent",
+			"Data",
+			&Instance::getName,
+			&Instance::setName
+		);
+
+		desc->addProperty(parentProperty);
 	}
 }

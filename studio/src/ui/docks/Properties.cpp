@@ -193,9 +193,14 @@ void Properties::AddProperty(Engine::Instance* instance, const Engine::Property*
         auto sv = std::any_cast<std::string_view>(rawValue);
         initialText = QString::fromUtf8(sv.data(), static_cast<qsizetype>(sv.size()));
     }
+    else if (rawValue.type() == typeid(Engine::Instance)) {
+        auto sv = std::any_cast<std::string_view>(rawValue);
+        initialText = QString::fromUtf8(sv.data(), static_cast<qsizetype>(sv.size()));
+    }
 
     auto* valueEdit = new QLineEdit();
     valueEdit->setText(initialText);
+    valueEdit->setReadOnly(property->readOnly);
     valueEdit->setStyleSheet(
         "QLineEdit {"
         "   background: transparent;"
@@ -208,9 +213,10 @@ void Properties::AddProperty(Engine::Instance* instance, const Engine::Property*
         "}"
     );
 
-    instance->changed.connect([this, instance, valueEdit](std::string name, std::any oldValue) {
-        valueEdit->setText(QString::fromStdString(std::string(instance->getName())));
-        });
+    if (property->readOnly) {
+        valueEdit->setFocusPolicy(Qt::NoFocus);
+        valueEdit->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+    }
 
     treeWidget->setItemWidget(propertyItem, 1, valueEdit);
 }

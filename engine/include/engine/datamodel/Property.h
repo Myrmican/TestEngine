@@ -10,6 +10,7 @@ namespace Engine {
 	public:
 		std::string m_name;
 		std::string m_category;
+        bool readOnly;
 
 		Property(std::string, std::string category);
 
@@ -30,6 +31,7 @@ namespace Engine {
 
         TypedProperty(std::string name, std::string category, Getter getter, Setter setter)
             : Property(std::move(name), std::move(category)), m_getter(getter), m_setter(setter) {
+            readOnly = m_setter == NULL;
         }
 
         std::any getValue(const Instance* instance) const override {
@@ -38,6 +40,8 @@ namespace Engine {
         }
 
         void setValue(Instance* instance, const std::any& value) const override {
+            if (!m_setter) return;
+
             auto typedInst = static_cast<ClassType*>(instance);
             (typedInst->*m_setter)(std::any_cast<ValueType>(value));
         }

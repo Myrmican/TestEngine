@@ -339,6 +339,10 @@ QTreeWidgetItem* Explorer::AddItem(QTreeWidgetItem* parentItem, Instance* instan
         documentTabs->setCurrentIndex(newTabIndex);
 	}
 
+    instance->changed.connect([item, instance](std::string name, std::any oldValue) {
+        item->setText(0, QString::fromStdString(std::string(instance->getName())));
+        });
+
     return item;
 }
 
