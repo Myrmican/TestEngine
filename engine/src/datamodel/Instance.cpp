@@ -145,11 +145,11 @@ namespace Engine {
 
 		desc->addProperty(nameProperty);
 
-		auto* parentProperty = new TypedProperty<Instance, std::string_view>(
+		auto* parentProperty = new TypedProperty<Instance, Instance*>(
 			"Parent",
 			"Data",
-			&Instance::getName,
-			&Instance::setName
+			&Instance::getParent,
+			&Instance::setParent
 		);
 
 		desc->addProperty(parentProperty);

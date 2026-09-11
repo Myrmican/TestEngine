@@ -194,8 +194,7 @@ void Properties::AddProperty(Engine::Instance* instance, const Engine::Property*
         initialText = QString::fromUtf8(sv.data(), static_cast<qsizetype>(sv.size()));
     }
     else if (rawValue.type() == typeid(Engine::Instance)) {
-        auto sv = std::any_cast<std::string_view>(rawValue);
-        initialText = QString::fromUtf8(sv.data(), static_cast<qsizetype>(sv.size()));
+        std::cout << rawValue.type().name() << std::endl;
     }
 
     auto* valueEdit = new QLineEdit();

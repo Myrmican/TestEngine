@@ -56,11 +56,10 @@ namespace Engine {
 
 		std::string getPath() const;
 
-		Instance* getParent() { return parent; }
-		const Instance* getParent() const { return parent; }
+		Instance* getParent() const { return parent; }
 
-		void setParent(Instance* instance) { setParentInternal(instance, false); }
-		void setParent(Instance* instance, bool ignoreLock) { setParentInternal(instance, ignoreLock); }
+		void setParent(Instance* instance) { setParent(instance, false); }
+		void setParent(Instance* instance, bool ignoreLock);
 
 		std::string_view getName() const { return name.get(); }
 		virtual void setName(std::string_view value);
