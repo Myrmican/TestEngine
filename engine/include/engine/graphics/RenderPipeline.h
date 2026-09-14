@@ -5,10 +5,17 @@
 #include <wrl/client.h>
 #include <DirectXMath.h>
 #include <datamodel/instances/Camera.h>
+#include <datamodel/instances/BasePart.h>
 
-using Microsoft::WRL::ComPtr;
+struct alignas(16) PerObjectBuffer {
+    DirectX::XMFLOAT4X4 worldViewProjection; // Changed from XMMATRIX to XMFLOAT4X4!
+    DirectX::XMFLOAT4 color;
+};
 
 namespace Engine {
+
+    template <typename T>
+    using ComPtr = Microsoft::WRL::ComPtr<T>;
 
     // Matches the matrix constant buffer in UnlitVS.hlsl
     struct MatrixBuffer {
@@ -28,10 +35,13 @@ namespace Engine {
 
         bool Initialize(HWND windowHandle, int width, int height);
         void Resize(int width, int height);
-        void RenderFrame(Camera* activeCamera);
+        void RenderFrame(Camera* activeCamera, const std::vector<BasePart*>& parts);
 
     private:
         bool CreateShadersAndGeometry();
+
+        Microsoft::WRL::ComPtr<ID3D11DepthStencilView> m_depthStencilView;
+        Microsoft::WRL::ComPtr<ID3D11Buffer> m_indexBuffer;
 
         // DirectX 11 Core Interfaces
         ComPtr<ID3D11Device> m_device;

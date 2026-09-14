@@ -19,6 +19,7 @@
 #include <engine/core/Reflection.h>
 #include <engine/datamodel/ClassDescriptor.h>
 #include <engine/services/selection/Selection.h>
+#include <cmath>
 
 namespace {
 
@@ -137,18 +138,18 @@ Properties::Properties(QMainWindow* window, Project* project)
 
     auto services = project->dataModel->m_services;
 
-    std::shared_ptr<Engine::Selection> selectionService = nullptr;
+    Engine::Selection* selectionService = nullptr;
 
     for (const auto& [name, instance] : services) {
         if (name == "Selection") {
-            selectionService = std::dynamic_pointer_cast<Engine::Selection>(instance);
+            selectionService = dynamic_cast<Engine::Selection*>(instance);
             break;
         }
     }
 
     selectionService->selectionChanged.connect([this](Engine::Instance* instance) {
         if (instance == nullptr) {
-            treeWidget->clear();
+            //treeWidget->clear();
             return;
         }
 
@@ -189,24 +190,28 @@ void Properties::AddProperty(Engine::Instance* instance, const Engine::Property*
     propertyItem->setText(0, QString::fromStdString(property->m_name));
 
     std::any rawValue = property->getValue(instance);
-    QString initialText = "";
+    std::string initialText = "";
 
     if (rawValue.type() == typeid(std::string)) {
-        initialText = QString::fromStdString(std::any_cast<std::string>(rawValue));
+        initialText = std::any_cast<std::string>(rawValue);
     }
     else if (rawValue.type() == typeid(std::string_view)) {
         auto sv = std::any_cast<std::string_view>(rawValue);
-        initialText = QString::fromUtf8(sv.data(), static_cast<qsizetype>(sv.size()));
+        initialText = sv.data(), static_cast<qsizetype>(sv.size());
     }
     else if (rawValue.type() == typeid(Engine::Instance*)) {
         auto* instancePtr = std::any_cast<Engine::Instance*>(rawValue);
-        initialText = QString::fromStdString(std::string(instancePtr->getName()));
+        initialText = std::string(instancePtr->getName());
+    }
+    else if (rawValue.type() == typeid(float)) {
+        float floatValue = std::any_cast<float>(rawValue);
+        initialText = std::format("{:.0f}", floatValue);
     }
 
     bool readOnly = property->readOnly || instance->internalLocked && property->m_name == "Parent";
 
     auto* valueEdit = new QLineEdit();
-    valueEdit->setText(initialText);
+    valueEdit->setText(QString::fromStdString(initialText));
     valueEdit->setDisabled(readOnly);
     valueEdit->setReadOnly(readOnly);
     valueEdit->setObjectName("PropertyValueEdit");
@@ -227,7 +232,7 @@ void Properties::AddProperty(Engine::Instance* instance, const Engine::Property*
 }
 
 void Properties::InspectInstance(Engine::Instance* selectedInstance) {
-    treeWidget->clear();
+    //treeWidget->clear();
     if (!selectedInstance) return;
 
     Engine::ClassDescriptor* desc = Engine::GetClassDescriptor(std::string(selectedInstance->getClassName()));

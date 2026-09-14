@@ -1,7 +1,7 @@
 #include <datamodel/Instance.h>
 
 namespace Engine {
-	class Sound : public Createable {
+	class Sound : public Creatable {
 	public:
 		Sound();
 

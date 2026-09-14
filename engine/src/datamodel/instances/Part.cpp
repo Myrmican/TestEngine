@@ -2,8 +2,14 @@
 #include <core/Reflection.h>
 
 namespace Engine {
-	REGISTER_CREATEABLE(Part);
+	REGISTER_CREATABLE(Part);
 	Part::Part() : BasePart("Part") {
 
 	};
+
+	void Part::reflectProperties(Engine::ClassDescriptor* desc) {
+		Instance::reflectProperties(desc);
+
+
+	}
 }

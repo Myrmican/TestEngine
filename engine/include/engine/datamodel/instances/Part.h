@@ -6,5 +6,7 @@ namespace Engine {
 	class Part : public BasePart {
 	public:
 		Part();
+
+		static void reflectProperties(Engine::ClassDescriptor* desc);
 	};
 }

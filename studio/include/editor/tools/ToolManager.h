@@ -17,7 +17,7 @@ namespace ToolManager {
 #define REGISTER_TOOL(toolName) \
     inline const ::int studioTool_##toolName( \
         #toolName, \
-        []() -> std::unique_ptr<::Engine::Createable> { \
+        []() -> std::unique_ptr<::Engine::Creatable> { \
             return std::make_unique<toolName>(); \
         } \
     )

@@ -14,6 +14,7 @@ target_compile_features(TestEngine PUBLIC cxx_std_20)
 target_compile_definitions(TestEngine PRIVATE
     -DUNICODE
     -D_UNICODE
+    -DQSCINTILLA_DLL
     LANGUAGES_YML_PATH="${CMAKE_BINARY_DIR}/assets/util/ProgrammingLanguages.yml"
 )
 

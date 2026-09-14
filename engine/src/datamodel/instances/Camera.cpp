@@ -2,9 +2,22 @@
 #include <core/Reflection.h>
 
 namespace Engine {
-	REGISTER_CREATEABLE(Camera);
-	Camera::Camera() : Createable("Camera") {
+	REGISTER_CREATABLE(Camera);
+	Camera::Camera() : Creatable("Camera"),
+		m_FieldOfView(70)
+	{
 
+	}
+
+	void Camera::reflectProperties(ClassDescriptor* desc) {
+		Instance::reflectProperties(desc);
+
+		desc->addProperty(new TypedProperty<Camera, float>(
+			"FieldOfView",
+			"Viewport",
+			&Camera::getFOV,
+			&Camera::setFOV
+		));
 	}
 
 	DirectX::XMMATRIX Camera::GetViewMatrix() const {
@@ -28,7 +41,7 @@ namespace Engine {
 
 	DirectX::XMMATRIX Camera::GetProjectionMatrix(float aspectRatio) const {
 		using namespace DirectX;
-		float fovRad = XMConvertToRadians(FOV);
+		float fovRad = XMConvertToRadians(m_FieldOfView);
 		return XMMatrixPerspectiveFovLH(fovRad, aspectRatio, nearPlane, farPlane);
 	}
 

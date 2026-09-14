@@ -3,19 +3,18 @@
 #include <datamodel/ClassDescriptor.h>
 #include <core/Reflection.h>
 #include <datamodel/Property.h>
-#include "boost/shared_ptr.hpp"
 #include <iostream>
 #include <format>
 #include <exception>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 namespace Engine {
-	Createable::Createable(const std::string name) : Instance(name) {
-		
+	Creatable::Creatable(const std::string name) : Instance(name) {
 	}
 
-	Instance::Instance(std::string name): parent(nullptr) {
+	Instance::Instance(std::string name) : parent(nullptr) {
 		this->className = name;
 		this->name = name;
 	}
@@ -30,14 +29,14 @@ namespace Engine {
 
 		this->changed.call("Name", name);
 	}
-	
+
 	void Instance::destroy() {
 		removeAllChildren();
-		setParent(nullptr);
+		setParent(nullptr); // after this returns, `this` has been deleted — don't touch it again
 	}
 
 	void Instance::removeAllChildren() {
-		
+		children.clear(); // unique_ptr cascade: this recursively destroys all descendants too
 	}
 
 	std::string Instance::getPath() const {
@@ -47,51 +46,70 @@ namespace Engine {
 		return std::string(getName());
 	}
 
+	void Instance::addChild(InstancePtr child) {
+		if (!child) return;
+
+		Instance* rawChild = child.get();
+		rawChild->parent = this;
+		children.push_back(std::move(child));
+		onChildAdded(rawChild);
+	}
+
 	void Instance::setParentInternal(Instance* newParent, bool ignoreLock) {
 		std::string message;
 
 		if (internalLocked && !ignoreLock) {
 			message = std::format("Attempted to set the parent of {}, but it was locked.", getName());
 		}
-		
-		if (newParent == this) {
+		else if (newParent == this) {
 			message = std::format("Attempted to parent {} to itself.", getPath());
 		}
-		else if (this->isAncestorOf(newParent)) {
+		else if (newParent && this->isAncestorOf(newParent)) {
 			message = std::format("Attempted to set a descendant of {} as its parent.", getName());
 		}
 
 		if (!message.empty()) throw std::runtime_error(message);
 
 		Instance* oldParent = getParent();
-
 		this->parent = newParent;
 
-		newParent->children.push_back(shared_from_this());
-
+		// Move ownership out of the old parent's children vector.
+		InstancePtr self;
 		if (oldParent) {
-			std::erase(oldParent->children, shared_from_this());
+			auto& siblings = oldParent->children;
+			auto it = std::find_if(siblings.begin(), siblings.end(),
+				[this](const InstancePtr& p) { return p.get() == this; });
+			if (it != siblings.end()) {
+				self = std::move(*it);
+				siblings.erase(it);
+			}
 		}
 
-		if (newParent != NULL) {
+		if (newParent) {
+			// `self` must be valid here — this instance must already have been
+			// owned by an old parent (or use addChild() for brand-new instances).
+			if (self) {
+				newParent->children.push_back(std::move(self));
+			}
 			newParent->onChildAdded(this);
-		};
+		}
+
+		// If newParent is null and self was populated, `self` now goes out of
+		// scope here and `this` is deleted. Do not access `this` after this call
+		// returns in that case.
 	}
 
-	std::shared_ptr<Instance> Instance::clone() {
-		std::shared_ptr<Instance> instance = nullptr;
-		return instance;
+	std::unique_ptr<Instance> Instance::clone() {
+		return nullptr;
 	}
 
-	const std::vector<InstancePtr>& Instance::getDescendants() {
-		static std::vector<InstancePtr> result;
-		result.clear();
-
+	std::vector<Instance*> Instance::getDescendants() {
+		std::vector<Instance*> result;
 		collectDescendants(this, result);
 		return result;
 	}
 
-	const std::vector<InstancePtr>& Instance::getDescendants(std::string_view selector) {
+	std::vector<Instance*> Instance::getDescendants(std::string_view selector) {
 		return getDescendants();
 	}
 
@@ -105,6 +123,7 @@ namespace Engine {
 	bool Instance::isDescendantOf(const Instance* ancestor) {
 		if (!ancestor) return false;
 		else if (getParent() == ancestor) return true;
+		if (!parent) return false;
 
 		return parent->isDescendantOf(ancestor);
 	}
@@ -121,7 +140,6 @@ namespace Engine {
 	}
 
 	void Instance::BindAPI(WasmRuntime& wasm) {
-
 	}
 
 	void Instance::setParent(Instance* instance, bool ignoreLock) {
@@ -130,30 +148,18 @@ namespace Engine {
 
 	void Instance::reflectProperties(ClassDescriptor* desc) {
 		auto* classNameProperty = new TypedProperty<Instance, std::string_view>(
-			"ClassName",
-			"Data",
-			&Instance::getClassName,
-			nullptr
+			"ClassName", "Data", &Instance::getClassName, nullptr
 		);
-
 		desc->addProperty(classNameProperty);
 
 		auto* nameProperty = new TypedProperty<Instance, std::string_view>(
-			"Name",
-			"Data",
-			&Instance::getName,
-			&Instance::setName
+			"Name", "Data", &Instance::getName, &Instance::setName
 		);
-
 		desc->addProperty(nameProperty);
 
 		auto* parentProperty = new TypedProperty<Instance, Instance*>(
-			"Parent",
-			"Data",
-			&Instance::getParent,
-			&Instance::setParent
+			"Parent", "Data", &Instance::getParent, &Instance::setParent
 		);
-
 		desc->addProperty(parentProperty);
 	}
 }

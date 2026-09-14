@@ -1,7 +1,7 @@
 #include <datamodel/Instance.h>
 
 namespace Engine {
-	class File : public Createable {
+	class File : public Creatable {
 	public:
 		std::string content;
 

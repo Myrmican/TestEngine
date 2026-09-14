@@ -1,7 +1,7 @@
 #include <datamodel/Instance.h>
 
 namespace Engine {
-	class Entity : public Createable {
+	class Entity : public Creatable {
 	public:
 		Entity();
 	};

@@ -1,7 +1,8 @@
 #include <services/selection/Selection.h>
-#include <iostream>
+#include <core/Reflection.h>
 
 namespace Engine {
+	REGISTER_INTERNAL(Selection);
 	Selection::Selection() : Instance("Selection") {
 		internalLocked = true;
 	}

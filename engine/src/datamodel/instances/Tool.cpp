@@ -2,8 +2,8 @@
 #include <core/Reflection.h>
 
 namespace Engine {
-	REGISTER_CREATEABLE(Tool);
-	Tool::Tool() : Createable("Tool") {
+	REGISTER_CREATABLE(Tool);
+	Tool::Tool() : Creatable("Tool") {
 
 
 	}

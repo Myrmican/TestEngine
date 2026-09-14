@@ -30,7 +30,7 @@ namespace Engine {
 
         searchBar->setFocus();
 
-		for (const auto& className : GetCreateableClasses()) {
+		for (const auto& className : GetCreatableClasses()) {
 			objectList->addItem(QString::fromStdString(className));
 		}
 
@@ -49,21 +49,37 @@ namespace Engine {
             }
             });
 
-		QObject::connect(objectList, &QListWidget::itemPressed, this, [this, parentItem](QListWidgetItem* item) {
-			if (item) {
+        QObject::connect(objectList, &QListWidget::itemPressed, this, [this, parentItem](QListWidgetItem* item) {
+            if (item) {
                 QTreeWidget* treeWidget = parentItem->treeWidget();
 
-				const auto explorer = treeWidget->parent()->findChild<Explorer*>();
+                QMainWindow* mainWindow = qobject_cast<QMainWindow*>(treeWidget->window());
+                if (!mainWindow) return;
 
-				QString className = item->text();
-                std::unique_ptr<Engine::Createable> newInstance = Engine::CreateInstance(className.toStdString());
-				close();
+                Explorer* explorer = mainWindow->findChild<Explorer*>();
+                if (!explorer) return;
 
-				QTreeWidgetItem* treeItem = explorer->AddItem(parentItem, newInstance.get());
+                QString className = item->text();
+                std::unique_ptr<Engine::Creatable> newInstance = Engine::CreateInstance(className.toStdString());
+                if (!newInstance) return;
+
+                Instance* parentInstance = Engine::GetEngineInstance(parentItem);
+                if (!parentInstance && explorer->m_project->dataModel)
+                    parentInstance = explorer->m_project->dataModel.get();
+
+                Instance* rawInstance = newInstance.get();
+
+                if (parentInstance) {
+                    parentInstance->addChild(std::move(newInstance));
+                }
+
+                QTreeWidgetItem* treeItem = explorer->AddItem(parentItem, rawInstance);
 
                 treeWidget->clearSelection();
-				treeWidget->setCurrentItem(treeItem);
-			}
-			});
+                treeWidget->setCurrentItem(treeItem);
+
+                //close();
+            }
+            });
 	}
 }

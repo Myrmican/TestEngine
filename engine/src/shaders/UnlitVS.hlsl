@@ -1,21 +1,20 @@
-cbuffer MatrixBuffer : register(b0) {
-    matrix gViewProjection;
+cbuffer PerObjectBuffer : register(b0) {
+    matrix gWorldViewProjection;
+    float4 gPartColor;
 };
 
 struct VSInput {
     float3 position : POSITION;
-    float4 color    : COLOR;
 };
 
 struct PSInput {
     float4 position : SV_POSITION;
-    float4 color    : COLOR;
+    float4 color : COLOR;
 };
 
 PSInput main(VSInput input) {
     PSInput output;
-    // Multiply vertex position by the camera matrix
-    output.position = mul(float4(input.position, 1.0f), gViewProjection);
-    output.color = input.color;
+    output.position = mul(gWorldViewProjection, float4(input.position, 1.0f));
+    output.color = gPartColor;
     return output;
 }

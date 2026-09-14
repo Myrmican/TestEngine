@@ -24,7 +24,7 @@ Project::Project(const std::string& projectName) {
     savingInCloud = false;
 
     try {
-        dataModel = std::make_shared<Engine::Game>();
+        dataModel = std::make_unique<Engine::Game>();
     }
     catch (const std::exception& e) {
         qCritical() << "Failed to initialize Game engine:";

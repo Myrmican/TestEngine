@@ -54,9 +54,9 @@ namespace EditorWindow {
 
         EngineViewport* placeView = new EngineViewport(editorPage);
 
-        auto* mainCamera = new Engine::Camera();
+        /*auto* mainCamera = new Engine::Camera();
         mainCamera->position = DirectX::XMFLOAT3(0.0f, 0.0f, -5.0f);
-        placeView->setActiveCamera(mainCamera);
+        placeView->setActiveCamera(mainCamera);*/
 
         auto windowDocks = DockManager::setup(window, project);
         const int projectTabIndex = documentTabs->addTab(placeView, project->name);
@@ -68,6 +68,8 @@ namespace EditorWindow {
                 TabManager::handleTabClose(index, projectTabIndex, documentTabs, editorPage, window, mainToolBar, project);
             }
         );
+
+
 
         // NOTE: We deliberately do NOT call placeView->initializeEngine() or
         // placeView->resize(placeView->size()) here anymore.
@@ -84,9 +86,28 @@ namespace EditorWindow {
         // the layout system (which will happen shortly after window->show()
         // returns control to the event loop). See TestView.cpp for details.
 
+        /*std::vector<Engine::BasePart*> parts;
+
+        const auto& rootChildren = project->dataModel->getChildren();
+
+        for (const auto& child : rootChildren) {
+            if (!child || child->getName() != "World") continue;
+
+            const auto& worldChildren = child->getChildren();
+            for (const auto& child2 : worldChildren) {
+                if (!child2 || child2->getName() != "Baseplate") continue;
+
+                if (auto* basePart = dynamic_cast<Engine::BasePart*>(child2.get())) {
+                    parts.push_back(basePart);
+                }
+            }
+        }
+
         QTimer* frameTimer = new QTimer(placeView);
-        QObject::connect(frameTimer, &QTimer::timeout, placeView, &EngineViewport::renderFrame);
-        frameTimer->start(16);
+        QObject::connect(frameTimer, &QTimer::timeout, placeView, [placeView, parts]() {
+            placeView->renderFrame(parts);
+            });
+        frameTimer->start(16);*/
 
         // Recent menu logic
         QWidget* topLevelWindow = window->window();

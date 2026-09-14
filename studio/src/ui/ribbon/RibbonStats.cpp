@@ -28,8 +28,8 @@ GetStatistic Engine::Ribbon::getStatistic(std::string statName, QWidget* statsWi
 
 		int result = 0;
 
-		for (const InstancePtr& descendant : descendants) {
-			if (descendant.get()->getClassName() != statNameSplit[1]) continue;
+		for (Instance* descendant : descendants) {
+			if (descendant->getClassName() != statNameSplit[1]) continue;
 
 			result++;
 		}
@@ -68,7 +68,7 @@ QMenu* Engine::Ribbon::createStatsToggleMenu(QWidget* parent, QWidget* statsWidg
 
 	QHBoxLayout* statsLayout = statsWidget->findChild<QHBoxLayout*>("RibbonStatsLayout");
 
-	for (const auto& className : GetCreateableClasses()) {
+	for (const auto& className : GetCreatableClasses()) {
 		QAction* instanceAction = instanceCount->addAction(QString::fromStdString(className));
 		instanceAction->setCheckable(true);
 

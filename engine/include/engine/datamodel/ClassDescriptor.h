@@ -9,13 +9,16 @@ namespace Engine {
 	class ClassDescriptor {
 		std::string m_className;
 		ClassDescriptor* m_superClass;
+		bool m_isEditorVisible = true;
 
 		std::vector<std::unique_ptr<Property>> m_properties;
 		std::unordered_map<std::string, Property*> m_propertyMap;
 
 	public:
-		ClassDescriptor(std::string className, ClassDescriptor* superClass = nullptr)
-			: m_className(std::move(className)), m_superClass(superClass) {}
+		ClassDescriptor(std::string className, ClassDescriptor* superClass = nullptr, bool isEditorVisible = true)
+			: m_className(std::move(className)), m_superClass(superClass), m_isEditorVisible(isEditorVisible) {}
+
+		bool isEditorVisible() const { return m_isEditorVisible; }
 
 		~ClassDescriptor() = default;
 

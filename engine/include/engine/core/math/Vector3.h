@@ -1,7 +1,7 @@
 namespace Engine {
 	class Vector3 {
 	public:
-		float m_x, m_y, m_z;
+		float x, y, z;
 
 		Vector3(float x, float y, float z);
 	};

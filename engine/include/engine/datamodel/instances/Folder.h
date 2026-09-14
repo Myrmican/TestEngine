@@ -4,7 +4,7 @@
 #include <core/math/Color3.h>
 
 namespace Engine {
-	class Folder : public Createable {
+	class Folder : public Creatable {
 	public:
 		Folder();
 

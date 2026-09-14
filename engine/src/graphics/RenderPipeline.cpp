@@ -1,4 +1,5 @@
 #include <graphics/RenderPipeline.h>
+#include <datamodel/instances/BasePart.h>
 #include <d3dcompiler.h>
 
 #pragma comment(lib, "d3d11.lib")
@@ -35,8 +36,13 @@ namespace Engine {
         // (Flip-model swap effects are intended for top-level/DirectComposition
         // surfaces and can fail to composite correctly inside a child window.)
 
+        UINT createDeviceFlags = 0;
+    #if defined(_DEBUG)
+            createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+    #endif
+
         HRESULT hr = D3D11CreateDeviceAndSwapChain(
-            nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0,
+            nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, createDeviceFlags,
             nullptr, 0, D3D11_SDK_VERSION, &sd,
             m_swapChain.GetAddressOf(), m_device.GetAddressOf(), nullptr, m_context.GetAddressOf()
         );
@@ -69,9 +75,27 @@ namespace Engine {
         m_context->RSSetViewports(1, &vp);
 
         D3D11_DEPTH_STENCIL_DESC dsDesc = {};
-        dsDesc.DepthEnable = TRUE;
+        dsDesc.DepthEnable = FALSE;
         dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
         dsDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+
+        D3D11_TEXTURE2D_DESC depthDesc = {};
+        depthDesc.Width = width;
+        depthDesc.Height = height;
+        depthDesc.MipLevels = 1;
+        depthDesc.ArraySize = 1;
+        depthDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+        depthDesc.SampleDesc.Count = 1;
+        depthDesc.Usage = D3D11_USAGE_DEFAULT;
+        depthDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+
+        ComPtr<ID3D11Texture2D> depthTex;
+        m_device->CreateTexture2D(&depthDesc, nullptr, depthTex.GetAddressOf());
+        m_device->CreateDepthStencilView(depthTex.Get(), nullptr, m_depthStencilView.GetAddressOf());
+
+        ComPtr<ID3D11DepthStencilState> dsState;
+        m_device->CreateDepthStencilState(&dsDesc, dsState.GetAddressOf());
+        m_context->OMSetDepthStencilState(dsState.Get(), 0);
     }
 
     bool RenderPipeline::CreateShadersAndGeometry() {
@@ -141,63 +165,97 @@ namespace Engine {
             float color[4];
         };
 
-        SimpleVertex triangleVerts[] = {
-            { {  0.0f,  0.5f, 0.0f }, { 1.0f, 0.0f, 0.0f, 1.0f } },
-            { {  0.5f, -0.5f, 0.0f }, { 0.0f, 1.0f, 0.0f, 1.0f } },
-            { { -0.5f, -0.5f, 0.0f }, { 0.0f, 0.0f, 1.0f, 1.0f } },
+        Vertex cubeVertices[] = {
+            { { -0.5f,  0.5f, -0.5f } }, { {  0.5f,  0.5f, -0.5f } },
+            { {  0.5f,  0.5f,  0.5f } }, { { -0.5f,  0.5f,  0.5f } },
+            { { -0.5f, -0.5f, -0.5f } }, { {  0.5f, -0.5f, -0.5f } },
+            { {  0.5f, -0.5f,  0.5f } }, { { -0.5f, -0.5f,  0.5f } }
         };
 
-        D3D11_BUFFER_DESC vbDesc = {};
-        vbDesc.Usage = D3D11_USAGE_DEFAULT;
-        vbDesc.ByteWidth = sizeof(triangleVerts);
-        vbDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+        uint16_t cubeIndices[] = {
+            3,1,0, 2,1,3, // Top
+            0,5,4, 1,5,0, // Front
+            3,4,7, 0,4,3, // Left
+            1,6,5, 2,6,1, // Right
+            2,7,6, 3,7,2, // Back
+            4,6,7, 5,6,4  // Bottom
+        };
 
-        D3D11_SUBRESOURCE_DATA vbInitData = {};
-        vbInitData.pSysMem = triangleVerts;
+        D3D11_BUFFER_DESC ibDesc = {};
+        ibDesc.Usage = D3D11_USAGE_DEFAULT;
+        ibDesc.ByteWidth = sizeof(cubeIndices);
+        ibDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 
-        hr = m_device->CreateBuffer(&vbDesc, &vbInitData, &m_vertexBuffer);
+        D3D11_SUBRESOURCE_DATA ibInit = { cubeIndices };
+        hr = m_device->CreateBuffer(&ibDesc, &ibInit, &m_indexBuffer);
         if (FAILED(hr)) return false;
 
         // --- Constant buffer (per-frame view/projection matrix) ---
         D3D11_BUFFER_DESC cbDesc = {};
         cbDesc.Usage = D3D11_USAGE_DEFAULT;
-        cbDesc.ByteWidth = sizeof(MatrixBuffer);
+        cbDesc.ByteWidth = sizeof(PerObjectBuffer);
         cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
         hr = m_device->CreateBuffer(&cbDesc, nullptr, &m_matrixConstantBuffer);
         if (FAILED(hr)) return false;
 
+        D3D11_BUFFER_DESC vbDesc = {};
+        vbDesc.Usage = D3D11_USAGE_DEFAULT;
+        vbDesc.ByteWidth = sizeof(cubeVertices);
+        vbDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+
+        D3D11_SUBRESOURCE_DATA vbInit = { cubeVertices };
+        hr = m_device->CreateBuffer(&vbDesc, &vbInit, &m_vertexBuffer);
+        if (FAILED(hr)) return false;
+
         return true;
     }
 
-    void RenderPipeline::RenderFrame(Camera* activeCamera) {
-        if (!m_context || !m_renderTargetView || !m_inputLayout || !activeCamera) {
-            return;
-        }
+    void RenderPipeline::RenderFrame(Camera* activeCamera, const std::vector<BasePart*>& parts) {
+        if (!m_context || !m_renderTargetView || !activeCamera) return;
 
-        const float clearColor[4] = { 251.0f / 255.0f, 84.0f / 255.0f, 43.0f / 255.0f, 1.0f };
+        // 1. Bind Output Merger (Render Target & Depth View)
+        ID3D11RenderTargetView* rtvs[] = { m_renderTargetView.Get() };
+        m_context->OMSetRenderTargets(1, rtvs, m_depthStencilView.Get());
+
+        // 2. Clear background & depth
+        const float clearColor[4] = { 0.12f, 0.06f, 0.15f, 1.0f };
         m_context->ClearRenderTargetView(m_renderTargetView.Get(), clearColor);
+        m_context->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
-        // Calculate and transpose Camera matrix for HLSL
-        float aspect = static_cast<float>(m_viewportWidth) / static_cast<float>(m_viewportHeight);
-        MatrixBuffer cb;
-        cb.viewProjection = DirectX::XMMatrixTranspose(activeCamera->GetViewProjectionMatrix(aspect));
-        m_context->UpdateSubresource(m_matrixConstantBuffer.Get(), 0, nullptr, &cb, 0, 0);
-
-        // Bind pipeline stages
+        // 3. Bind Shader Pipeline & Geometry Buffers
         m_context->IASetInputLayout(m_inputLayout.Get());
-        UINT stride = sizeof(Vertex);
-        UINT offset = 0;
-        m_context->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
-        m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
         m_context->VSSetShader(m_vertexShader.Get(), nullptr, 0);
         m_context->VSSetConstantBuffers(0, 1, m_matrixConstantBuffer.GetAddressOf());
         m_context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
 
-        m_context->OMSetRenderTargets(1, m_renderTargetView.GetAddressOf(), nullptr);
+        UINT stride = sizeof(Vertex), offset = 0;
+        m_context->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
+        m_context->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
+        m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-        m_context->Draw(3, 0);
+        float aspect = static_cast<float>(m_viewportWidth) / static_cast<float>(m_viewportHeight);
+        DirectX::XMMATRIX viewProj = activeCamera->GetViewProjectionMatrix(aspect);
+
+        // 4. Draw Parts
+        for (const BasePart* part : parts) {
+            if (!part) continue;
+
+            // Calculate Transposed WVP Matrix
+            DirectX::XMMATRIX world = part->GetWorldMatrix();
+            DirectX::XMMATRIX wvpMatrix = DirectX::XMMatrixTranspose(world * viewProj);
+
+            PerObjectBuffer cb;
+            DirectX::XMStoreFloat4x4(&cb.worldViewProjection, wvpMatrix);
+            cb.color = DirectX::XMFLOAT4(0.2, 0, 1, 1.0f);
+
+            // Send Constant Buffer update to GPU
+            m_context->UpdateSubresource(m_matrixConstantBuffer.Get(), 0, nullptr, &cb, 0, 0);
+
+            // Draw 36 indices for this part
+            m_context->DrawIndexed(36, 0, 0);
+        }
+
         m_swapChain->Present(1, 0);
     }
 

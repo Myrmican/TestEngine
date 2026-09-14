@@ -9,7 +9,7 @@
 namespace Engine {
 	class Game : public Instance {
 	public:
-		std::vector<std::pair<std::string, std::shared_ptr<Instance>>> m_services;
+		std::vector<std::pair<std::string, Instance*>> m_services;
 
 		Game();
 		~Game() override = default;

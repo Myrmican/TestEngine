@@ -2,7 +2,7 @@
 #include <core/Reflection.h>
 
 namespace Engine {
-	class Tool : public Createable {
+	class Tool : public Creatable {
 	public:
 		Tool();
 	};

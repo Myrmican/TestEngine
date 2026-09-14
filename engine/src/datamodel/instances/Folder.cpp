@@ -2,8 +2,8 @@
 #include <core/Reflection.h>
 
 namespace Engine {
-	REGISTER_CREATEABLE(Folder);
-	Folder::Folder() : Createable("Folder")
+	REGISTER_CREATABLE(Folder);
+	Folder::Folder() : Creatable("Folder")
 		,m_color(0, 0, 0) {
 	}
 

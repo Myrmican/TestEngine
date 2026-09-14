@@ -6,9 +6,7 @@
 #include <string>
 #include <map>
 #include <any>
-#include "boost/weak_ptr.hpp"
-#include "boost/shared_ptr.hpp"
-#include "boost/enable_shared_from_this.hpp"
+#include <memory>
 #include <boost/flyweight.hpp>
 
 class WasmRuntime;
@@ -16,13 +14,11 @@ class WasmRuntime;
 namespace Engine {
 
 	class ClassDescriptor;
-
 	class Instance;
 
-	using InstancePtr = std::shared_ptr<Instance>;
-	using InstanceWeakPtr = std::weak_ptr<Instance>;
+	using InstancePtr = std::unique_ptr<Instance>;
 
-	class Instance : public std::enable_shared_from_this<Instance> {
+	class Instance {
 	private:
 		boost::flyweight<std::string> name;
 
@@ -50,21 +46,24 @@ namespace Engine {
 
 		Instance* getParent() const { return parent; }
 
+		// Reparent an instance that ALREADY belongs to some parent's children vector.
 		void setParent(Instance* instance) { setParent(instance, false); }
 		void setParent(Instance* instance, bool ignoreLock);
+
+		// Take ownership of a freshly created (parentless) instance.
+		void addChild(InstancePtr child);
 
 		std::string_view getName() const { return name.get(); }
 		virtual void setName(std::string_view value);
 
 		const std::vector<InstancePtr>& getChildren() const { return children; }
-		const std::vector<InstancePtr>& getDescendants();
-		const std::vector<InstancePtr>& getDescendants(std::string_view selector);
+		std::vector<Instance*> getDescendants();
+		std::vector<Instance*> getDescendants(std::string_view selector);
 
 		bool isAncestorOf(const Instance* descendant) const;
-
 		bool isDescendantOf(const Instance* ancestor);
 
-		std::shared_ptr<Instance> clone();
+		std::unique_ptr<Instance> clone();
 
 		std::map<std::string, bool> getAttributes() { return attributes; }
 
@@ -74,22 +73,20 @@ namespace Engine {
 		std::string_view getClassName() const { return className; }
 
 		static void BindAPI(WasmRuntime& wasm);
-
 		static void reflectProperties(ClassDescriptor* desc);
 	private:
 		void setParentInternal(Instance* instance, bool ignoreLock);
 
-		void collectDescendants(Instance* current, std::vector<InstancePtr>& out) {
+		void collectDescendants(Instance* current, std::vector<Instance*>& out) {
 			for (const InstancePtr& child : current->getChildren()) {
-				out.push_back(child);
+				out.push_back(child.get());
 				collectDescendants(child.get(), out);
 			}
 		}
 	};
 
-	class Createable : public Instance {
+	class Creatable : public Instance {
 	public:
-
-		Createable(const std::string name);
+		Creatable(const std::string name);
 	};
 }

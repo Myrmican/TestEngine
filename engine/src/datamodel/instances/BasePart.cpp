@@ -5,10 +5,15 @@
 
 namespace Engine {
 	REGISTER_INSTANCE(BasePart);
-	BasePart::BasePart(std::string className) : Createable("BasePart"),
+	BasePart::BasePart(std::string className) : Creatable("BasePart"),
 		m_size(1, 1, 1),
 		m_color(0.0f, 0.0f, 0.0f)
 	{
+	}
+
+	void BasePart::reflectProperties(Engine::ClassDescriptor* desc) {
+		Instance::reflectProperties(desc);
+
 
 	}
 }

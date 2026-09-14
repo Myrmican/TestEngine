@@ -25,6 +25,7 @@
 #include <QProcessEnvironment>
 #include <memory>
 #include <engine/services/selection/Selection.h>
+#include <engine/core/Reflection.h>
 
 using namespace Engine;
 
@@ -167,25 +168,31 @@ namespace {
         Project* project = self->m_project;
         auto services = project->dataModel->m_services;
 
-        std::shared_ptr<Selection> selectionService = nullptr;
+        Selection* selectionService = nullptr;
 
         for (const auto& [name, instance] : services) {
             if (name == "Selection") {
-                selectionService = std::dynamic_pointer_cast<Selection>(instance);
+                selectionService = dynamic_cast<Selection*>(instance);
                 break;
             }
         }
 
         QObject::connect(self->treeWidget, &QTreeWidget::currentItemChanged, self->treeWidget, [self, selectionService](QTreeWidgetItem* current, QTreeWidgetItem* previous) {
-            Instance* previousInstance = Engine::GetEngineInstance(previous);
+            if (!selectionService) return;
 
-            if (!current) {
-                selectionService->deselect(previousInstance);
-                return;
+            if (previous) {
+                Instance* previousInstance = Engine::GetEngineInstance(previous);
+                if (previousInstance) {
+                    selectionService->deselect(previousInstance);
+                }
             }
 
+            if (!current) return;
+
             Instance* instance = Engine::GetEngineInstance(current);
-            selectionService->select(instance);
+            if (instance) {
+                selectionService->select(instance);
+            }
             });
     }
 }
@@ -306,6 +313,9 @@ Explorer::Explorer(QMainWindow* window, Project* project)
 }
 
 QTreeWidgetItem* Explorer::AddItem(QTreeWidgetItem* parentItem, Instance* instance) {
+    auto* desc = Engine::GetClassDescriptor(std::string(instance->getClassName()));
+    if (desc && !desc->isEditorVisible()) return nullptr;
+
     Instance* parentInstance = GetEngineInstance(parentItem);
     QString instanceName = QString::fromStdString(std::string(instance->getName()));
 
@@ -335,7 +345,7 @@ QTreeWidgetItem* Explorer::AddItem(QTreeWidgetItem* parentItem, Instance* instan
 
         CodeEditor* codeEditor = new CodeEditor(documentTabs);
 
-        int newTabIndex = documentTabs->addTab(codeEditor->editor, instanceName);
+        int newTabIndex = documentTabs->addTab(codeEditor, instanceName);
         documentTabs->setCurrentIndex(newTabIndex);
 	}
 
@@ -351,15 +361,15 @@ void Explorer::AssembleRoot() {
     for (auto& service : m_project->dataModel->getChildren()) {
         AddItem(nullptr, service.get());
 
-        const auto children = service->getChildren();
+        const auto& children = service->getChildren();
         if (children.empty() || !children.front()) continue;
 
         for (const auto& child : children) {
             if (child) {
 				AddItem(GetEngineInstance(treeWidget, service.get()), child.get());
 
-				const auto childChildren = child->getChildren();
-                if (children.empty() || !children.front()) continue;
+				const auto& childChildren = child->getChildren();
+                if (childChildren.empty() || !childChildren.front()) continue;
 
                 for (const auto& child2 : childChildren) {
                     if (child2) {

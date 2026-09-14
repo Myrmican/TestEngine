@@ -10,7 +10,7 @@
 
 namespace Engine {
 
-    using FactoryFunc = std::function<std::unique_ptr<Engine::Createable>()>;
+    using FactoryFunc = std::function<std::unique_ptr<Instance>()>;
 
     inline auto& GetReflectionRegistry() {
         static struct {
@@ -21,15 +21,17 @@ namespace Engine {
         return registry;
     }
 
-    inline std::vector<std::string>& GetCreateableClasses() {
+    inline std::vector<std::string>& GetCreatableClasses() {
         return GetReflectionRegistry().names;
     }
 
-    inline std::unique_ptr<Createable> CreateInstance(const std::string& className) {
+    inline std::unique_ptr<Creatable> CreateInstance(const std::string& className) {
         auto& factories = GetReflectionRegistry().factories;
         auto it = factories.find(className);
         if (it != factories.end()) {
-            return it->second();
+            std::unique_ptr<Instance> inst = it->second();
+
+            return std::unique_ptr<Creatable>(static_cast<Creatable*>(inst.release()));
         }
         return nullptr;
     }
@@ -44,7 +46,13 @@ namespace Engine {
     }
 
     struct ReflectionHelper {
-        ReflectionHelper(const std::string& className, const std::string& parentClassName, FactoryFunc factory, std::function<void(ClassDescriptor*)> reflectFunc) {
+        ReflectionHelper(
+            const std::string& className,
+            const std::string& parentClassName,
+            FactoryFunc factory,
+            std::function<void(ClassDescriptor*)> reflectFunc,
+            bool isEditorVisible = true
+        ) {
             auto& reg = GetReflectionRegistry();
 
             // 1. Store factory for instantiation
@@ -57,7 +65,7 @@ namespace Engine {
             ClassDescriptor* parentDesc = parentClassName.empty() ? nullptr : GetClassDescriptor(parentClassName);
 
             // 3. Create ClassDescriptor and execute property reflections
-            auto desc = std::make_unique<ClassDescriptor>(className, parentDesc);
+            auto desc = std::make_unique<ClassDescriptor>(className, parentDesc, isEditorVisible);
             if (reflectFunc) {
                 reflectFunc(desc.get());
             }
@@ -73,15 +81,28 @@ namespace Engine {
         #className, \
         "Instance", \
         nullptr, \
-        [](::Engine::ClassDescriptor* desc) { className::reflectProperties(desc); } \
+        [](::Engine::ClassDescriptor* desc) { className::reflectProperties(desc); }, \
+        true \
     )
 
-#define REGISTER_CREATEABLE(className) \
+#define REGISTER_CREATABLE(className) \
     inline const ::Engine::ReflectionHelper reflection_##className( \
         #className, \
         "Instance", \
-        []() -> std::unique_ptr<::Engine::Createable> { \
+        []() -> std::unique_ptr<::Engine::Creatable> { \
             return std::make_unique<className>(); \
         }, \
-        [](::Engine::ClassDescriptor* desc) { className::reflectProperties(desc); } \
+        [](::Engine::ClassDescriptor* desc) { className::reflectProperties(desc); }, \
+        true \
+    )
+
+#define REGISTER_INTERNAL(className) \
+    inline const ::Engine::ReflectionHelper reflection_##className( \
+        #className, \
+        "Instance", \
+        []() -> std::unique_ptr<::Engine::Instance> { \
+            return std::make_unique<className>(); \
+        }, \
+        [](::Engine::ClassDescriptor* desc) { className::reflectProperties(desc); }, \
+        false \
     )

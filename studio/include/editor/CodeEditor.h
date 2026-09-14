@@ -1,11 +1,13 @@
 #include <Qsci/qsciscintilla.h>
 #include <Qsci/qscilexerjava.h>
 
-class CodeEditor {
+namespace Engine {
+    class CodeEditor : public QsciScintilla {
+        Q_OBJECT
 
-public:
-    QsciScintilla* editor = nullptr;
-    QsciLexer* lexer = nullptr;
+    public:
+        QsciLexer* lexer = nullptr;
 
-    explicit CodeEditor(QWidget* parent = nullptr);
-};
+        explicit CodeEditor(QWidget* parent = nullptr);
+    };
+}

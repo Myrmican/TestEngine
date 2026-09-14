@@ -30,12 +30,9 @@
 //        lexer->setColor(QColor("#CE9178"), QsciLexerJava::DoubleQuotedString);
 //        lexer->setColor(QColor("#CE9178"), QsciLexerJava::SingleQuotedString);
 //
-//        editor->setCaretForegroundColor(QColor("#AEAFAD"));
-//        editor->setCaretLineVisible(true);
-//        editor->setCaretLineBackgroundColor(QColor("#282828"));
-//
-//        editor->setCallTipsStyle(QsciScintilla::CallTipsContext);
-//        editor->setCallTipsPosition(QsciScintilla::CallTipsBelowText);
+//        this->setCaretForegroundColor(QColor("#AEAFAD"));
+//        this->setCaretLineVisible(true);
+//        this->setCaretLineBackgroundColor(QColor("#282828"));
 //
 //        auto* api = new QsciAPIs(lexer);
 //        api->add("public");
@@ -47,55 +44,52 @@
 //
 //        api->prepare();
 //
-//        editor->setAutoCompletionSource(QsciScintilla::AcsAll);
-//        editor->setAutoCompletionThreshold(1);
-//        editor->setAutoCompletionReplaceWord(true);
-//
-//        editor->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-//        editor->setScrollWidthTracking(true);
-//		editor->setScrollWidth(1);
-//
-//		editor->setText("// Java code example\n"
+//		this->setText("// Java code example\n"
 //			"public class HelloWorld {\n"
 //			"   public static void main(String[] args) {\n"
 //			"       System.out.println(\"Hello, World!\");\n"
 //			"   }\n"
 //			"}\n");
 //
-//        return editor;
+//        return this;
 //    }
 //}
 
-CodeEditor::CodeEditor(QWidget* parent) {
-	editor = new QsciScintilla(parent);
-	lexer = new QsciLexerJava(editor);
+namespace Engine {
+	CodeEditor::CodeEditor(QWidget* parent) : QsciScintilla(parent) {
 
-	QFont editorFont("Consolas", 10);
-	editorFont.setStyleHint(QFont::Monospace);
-	lexer->setFont(editorFont);
+		lexer = new QsciLexerJava(this);
 
-	editor->setLexer(lexer);
+		QFont thisFont("Consolas", 10);
+		thisFont.setStyleHint(QFont::Monospace);
+		lexer->setFont(thisFont);
 
-	editor->setAutoIndent(true);
-	editor->setIndentationGuides(true);
-	editor->setUtf8(true);
-	editor->setIndentationsUseTabs(true);
-	editor->setTabWidth(4);
+		this->setLexer(lexer);
 
-	editor->setMarginType(0, QsciScintilla::NumberMargin);
-	editor->setMarginWidth(0, "0000");
-	editor->setMarginsBackgroundColor(QColor("#252526"));
-	editor->setMarginsForegroundColor(QColor("#858585"));
-	editor->setMarginLineNumbers(0, true);
+		this->setAutoIndent(true);
+		this->setIndentationGuides(true);
+		this->setUtf8(true);
+		this->setIndentationsUseTabs(true);
+		this->setTabWidth(4);
 
-	editor->setSelectionBackgroundColor(QColor("#264F78"));
-	editor->resetSelectionForegroundColor();
+		this->setMarginType(0, QsciScintilla::NumberMargin);
+		this->setMarginWidth(0, "0000");
+		this->setMarginsBackgroundColor(QColor("#252526"));
+		this->setMarginsForegroundColor(QColor("#858585"));
+		this->setMarginLineNumbers(0, true);
 
-	editor->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-	editor->setScrollWidthTracking(true);
-	editor->setScrollWidth(1);
+		this->setSelectionBackgroundColor(QColor("#264F78"));
+		this->resetSelectionForegroundColor();
 
-	editor->setAutoCompletionSource(QsciScintilla::AcsAll);
-	editor->setAutoCompletionThreshold(1);
-	editor->setAutoCompletionReplaceWord(true);
+		this->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+		this->setScrollWidthTracking(true);
+		this->setScrollWidth(1);
+
+		this->setAutoCompletionSource(QsciScintilla::AcsAll);
+		this->setAutoCompletionThreshold(1);
+		this->setAutoCompletionReplaceWord(true);
+
+		this->setCallTipsStyle(QsciScintilla::CallTipsContext);
+		this->setCallTipsPosition(QsciScintilla::CallTipsBelowText);
+	}
 }

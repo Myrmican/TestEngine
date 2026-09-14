@@ -4,8 +4,8 @@
 #include <string>
 
 namespace Engine {
-	REGISTER_CREATEABLE(Sound);
-	Sound::Sound() : Createable("Sound") {
+	REGISTER_CREATABLE(Sound);
+	Sound::Sound() : Creatable("Sound") {
 
 	}
 }
