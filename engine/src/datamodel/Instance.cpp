@@ -12,6 +12,7 @@
 
 namespace Engine {
 	Creatable::Creatable(const std::string name) : Instance(name) {
+		
 	}
 
 	Instance::Instance(std::string name) : parent(nullptr) {

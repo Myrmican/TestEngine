@@ -24,19 +24,21 @@ int main(int argc, char *argv[]) {
 
 	qputenv("QWK_CORE_SHARE_CONTEXT", "1");
 
-    QApplication app(argc, argv);
+	{
+		QApplication app(argc, argv);
 
-	Engine::initialize();
+		Engine::initialize();
 
-    QMainWindow window;
-    window.resize(1024, 768);
-    window.setWindowTitle("Test Engine");
-	window.winId();
+		QMainWindow window;
+		window.resize(1024, 768);
+		window.setWindowTitle("Test Engine");
+		window.winId();
 
-	Window::initialize(&window, app);
-    window.showMaximized();
+		Window::initialize(&window, app);
+		window.showMaximized();
 
-	app.exec();
+		app.exec();
+	}
 
 	Engine::shutdown();
 

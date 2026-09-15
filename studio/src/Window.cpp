@@ -9,6 +9,7 @@
 #include <QPainterPath>
 #include <QPushButton>
 #include <QStackedWidget>
+#include <QWidgetAction>
 #include <QUrl>
 #include <QVBoxLayout>
 #include <QWKWidgets/widgetwindowagent.h>
@@ -19,6 +20,8 @@
 #include <ui/menus/EditMenu.h>
 #include <ui/menus/TestMenu.h>
 #include <ui/menus/WindowMenu.h>
+#include <ui/menus/SoftwareStatus.h>
+#include <ui/menus/MenuManager.h>
 
 #ifdef Q_OS_WIN
 #include <dwmapi.h>
@@ -102,12 +105,17 @@ namespace Window {
         auto* rightMenuBar = new QMenuBar(titleBarPanel);
         rightMenuBar->setObjectName("TitleMenuBar");
         rightMenuBar->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
+        
+        QMenu* softwareStatus = new SoftwareStatus(rightMenuBar);
+
         rightMenuBar->addMenu(QIcon(":/assets/icons/bell.png"), "");
 
-        QMenu* userProfileMenu = rightMenuBar->addMenu(makeRoundIcon(QIcon(":/assets/icons/profileTest.png"), 30), "");
+        QMenu* userProfileMenu = Menu::create(rightMenuBar, makeRoundIcon(QIcon(":/assets/icons/profileTest.png"), 30));
         userProfileMenu->setObjectName("UserProfileMenu");
         userProfileMenu->addAction("Add account");
         userProfileMenu->addAction("Log out");
+
+        rightMenuBar->addMenu(userProfileMenu);
 
         titleLayout->addWidget(rightMenuBar, 0, Qt::AlignVCenter);
         titleLayout->addSpacing(20);

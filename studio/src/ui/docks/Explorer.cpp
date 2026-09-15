@@ -35,17 +35,22 @@ namespace {
 
     void ConnectSearch(QLineEdit* searchBar, QTreeWidget* explorerTree) {
         QObject::connect(searchBar, &QLineEdit::textChanged, explorerTree, [explorerTree](const QString& text) {
+            QTreeWidgetItemIterator it(explorerTree);
             if (text.isEmpty()) {
-                for (int i = 0; i < explorerTree->topLevelItemCount(); ++i) {
-                    explorerTree->topLevelItem(i)->setHidden(false);
+                while (*it) {
+                    explorerTree->collapseAll();
+                    (*it)->setHidden(false);
+                    ++it;
                 }
                 return;
             }
 
-            for (int i = 0; i < explorerTree->topLevelItemCount(); ++i) {
-                QTreeWidgetItem* item = explorerTree->topLevelItem(i);
-                bool matches = item->text(0).contains(text, Qt::CaseInsensitive);
-                item->setHidden(!matches);
+            while (*it) {
+                bool matches = (*it)->text(0).contains(text, Qt::CaseInsensitive);
+                explorerTree->scrollToItem((*it));
+
+                (*it)->setHidden(!matches);
+                ++it;
             }
             });
     }
@@ -56,6 +61,7 @@ namespace {
         QObject::connect(explorerTree, &QTreeWidget::customContextMenuRequested,
             [explorerTree, window, project, self](const QPoint& pos) {
                 QTreeWidgetItem* item = explorerTree->itemAt(pos);
+                Instance* instance = Engine::GetEngineInstance(item);
 
                 if (!item) {
                     return;
@@ -87,14 +93,17 @@ namespace {
                     contextMenu->addSeparator();
                 }
 
-                QAction* cutAction = contextMenu->addAction("Cut");
-                QAction* copyAction = contextMenu->addAction("Copy");
-                QAction* pasteAction = contextMenu->addAction("Paste");
+                if (!instance->internalLocked) {
+                    QAction* cutAction = contextMenu->addAction("Cut");
+                    QAction* copyAction = contextMenu->addAction("Copy");
+                    QAction* pasteAction = contextMenu->addAction("Paste");
 
-                contextMenu->addSeparator();
+                    contextMenu->addSeparator();
 
-                QAction* duplicateAction = contextMenu->addAction("Duplicate");
-                QAction* deleteAction = contextMenu->addAction("Delete");
+                    QAction* duplicateAction = contextMenu->addAction("Duplicate");
+                    QAction* deleteAction = contextMenu->addAction("Delete");
+                }
+
                 QAction* renameAction = contextMenu->addAction("Rename");
 
                 contextMenu->addSeparator();
@@ -109,20 +118,27 @@ namespace {
                 addInstanceAction->setShortcutContext(Qt::WindowShortcut);
 
                 QAction* selectedAction = contextMenu->exec(explorerTree->viewport()->mapToGlobal(pos));
+                if (selectedAction == nullptr) return;
+
+                QString actionText = selectedAction->text();
 
                 if (selectedAction == openWithCode) {
                     
                 }
-                else if (selectedAction == cutAction) {
+                else if (actionText == "Cut") {
+                    Instance* instance = GetEngineInstance(item);
+                    if (instance) {
+                        instance->destroy();
+                        delete item;
+                    }
+                }
+                else if (actionText == "Copy") {
                     
                 }
-                else if (selectedAction == copyAction) {
+                else if (actionText == "Paste") {
                     
                 }
-                else if (selectedAction == pasteAction) {
-                    
-                }
-                else if (selectedAction == deleteAction) {
+                else if (actionText == "Delete") {
 					Instance* instance = GetEngineInstance(item);
 					if (instance) {
 						instance->destroy();

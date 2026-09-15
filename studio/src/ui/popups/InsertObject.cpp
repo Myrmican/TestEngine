@@ -66,19 +66,20 @@ namespace Engine {
                 Instance* parentInstance = Engine::GetEngineInstance(parentItem);
                 if (!parentInstance && explorer->m_project->dataModel)
                     parentInstance = explorer->m_project->dataModel.get();
+                
+                if (!parentInstance) {
+                    return;
+                }
 
                 Instance* rawInstance = newInstance.get();
-
-                if (parentInstance) {
-                    parentInstance->addChild(std::move(newInstance));
-                }
+                parentInstance->addChild(std::move(newInstance));
 
                 QTreeWidgetItem* treeItem = explorer->AddItem(parentItem, rawInstance);
 
                 treeWidget->clearSelection();
                 treeWidget->setCurrentItem(treeItem);
 
-                //close();
+                close();
             }
             });
 	}

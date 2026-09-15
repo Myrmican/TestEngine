@@ -14,7 +14,8 @@ namespace Engine {
 
     inline auto& GetReflectionRegistry() {
         static struct {
-            std::vector<std::string> names;
+            std::vector<std::string> creatables;
+            std::vector<std::string> classes;
             std::unordered_map<std::string, FactoryFunc> factories;
             std::unordered_map<std::string, std::unique_ptr<ClassDescriptor>> descriptors;
         } registry;
@@ -22,7 +23,11 @@ namespace Engine {
     }
 
     inline std::vector<std::string>& GetCreatableClasses() {
-        return GetReflectionRegistry().names;
+        return GetReflectionRegistry().creatables;
+    }
+
+    inline std::vector<std::string>& GetClasses() {
+        return GetReflectionRegistry().classes;
     }
 
     inline std::unique_ptr<Creatable> CreateInstance(const std::string& className) {
@@ -55,9 +60,11 @@ namespace Engine {
         ) {
             auto& reg = GetReflectionRegistry();
 
+            reg.classes.push_back(className);
+
             // 1. Store factory for instantiation
             if (factory) {
-                reg.names.push_back(className);
+                reg.creatables.push_back(className);
                 reg.factories[className] = factory;
             }
 

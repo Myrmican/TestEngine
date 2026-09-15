@@ -2,6 +2,7 @@
 #include <QMenuBar>
 #include <QStyle>
 #include <QStyleFactory>
+#include <QIcon>
 #include <QGuiApplication>
 #include <QScreen>
 
@@ -29,6 +30,12 @@ namespace Menu {
     QMenu* create(QWidget* parent, const QString& title) {
         QMenu* menu = create(parent);
         menu->setTitle(title);
+        return menu;
+    }
+
+    QMenu* create(QWidget* parent, const QIcon& icon) {
+        QMenu* menu = create(parent);
+        menu->setIcon(icon);
         return menu;
     }
 

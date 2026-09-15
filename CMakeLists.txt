@@ -37,6 +37,12 @@ set(BUILD_QSCI_LEXERS ON CACHE BOOL "" FORCE)
 set(ENABLE_LEXERS ON CACHE BOOL "" FORCE)
 set(BUILD_LEXERS ON CACHE BOOL "" FORCE)
 
+if (MSVC)
+    # Enable PDB generation for Debug and Release builds
+    add_compile_options(/Zi)
+    add_link_options(/DEBUG /OPT:REF /OPT:ICF)
+endif()
+
 FetchContent_Declare(
     qwindowkit
     GIT_REPOSITORY https://github.com/stdware/qwindowkit.git
