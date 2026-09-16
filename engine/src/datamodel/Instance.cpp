@@ -114,6 +114,30 @@ namespace Engine {
 		return getDescendants();
 	}
 
+	Instance* Instance::findChild(std::string name) const {
+
+		const std::vector<InstancePtr>& children = getChildren();
+
+		for (const InstancePtr& child : children) {
+			Instance* childPtr = child.get();
+			if (childPtr->getName() != name) continue;
+
+			return childPtr;
+		}
+	}
+
+	Instance* Instance::findChildClass(std::string className) const {
+
+		const std::vector<InstancePtr>& children = getChildren();
+
+		for (const InstancePtr& child : children) {
+			Instance* childPtr = child.get();
+			if (childPtr->getClassName() != className) continue;
+			
+			return childPtr;
+		}
+	}
+
 	bool Instance::isAncestorOf(const Instance* descendant) const {
 		if (!descendant) return false;
 		else if (descendant->getParent() == this) return true;

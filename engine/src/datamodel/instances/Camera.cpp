@@ -1,12 +1,52 @@
 #include <datamodel/instances/Camera.h>
 #include <core/Reflection.h>
 
+using namespace Engine;
+using namespace DirectX;
+
 namespace Engine {
 	REGISTER_CREATABLE(Camera);
-	Camera::Camera() : Creatable("Camera"),
-		m_FieldOfView(70)
-	{
+	Camera::Camera() : Creatable("Camera") {}
 
+	void Camera::setFOV(const float FOV) {
+		if (m_FieldOfView != FOV)
+			this->changed.call("FOV", m_FieldOfView);
+		m_FieldOfView = FOV;
+	}
+
+	void Camera::setNearPlane(const float value) {
+		if (m_NearPlane != value) {
+			m_NearPlane = value;
+			this->changed.call("NearPlane", m_NearPlane);
+		}
+	}
+
+	void Camera::setFarPlane(const float value) {
+		if (m_FarPlane != value) {
+			m_FarPlane = value;
+			this->changed.call("FarPlane", m_FarPlane);
+		}
+	}
+
+	void Camera::setCFrame(const XMMATRIX& cframe) {
+		m_CFrame = cframe;
+		this->changed.call("CFrame", 0); // adjust to however your signal expects non-primitive payloads
+	}
+
+	XMMATRIX Camera::getViewMatrix() const {
+		// The view matrix is just the INVERSE of the camera's world transform.
+		// Intuition: moving the camera right is equivalent to moving the
+		// entire world left. XMMatrixInverse does that flip for us.
+		XMVECTOR det;
+		return XMMatrixInverse(&det, m_CFrame);
+	}
+
+	XMMATRIX Camera::getProjectionMatrix(float aspectRatio) const {
+		// Converts the 3D frustum (a pyramid-shaped volume in front of the
+		// camera) into clip space. This is what gives you perspective -
+		// distant objects appear smaller.
+		float fovRadians = XMConvertToRadians(m_FieldOfView);
+		return XMMatrixPerspectiveFovLH(fovRadians, aspectRatio, m_NearPlane, m_FarPlane);
 	}
 
 	void Camera::reflectProperties(ClassDescriptor* desc) {
@@ -18,34 +58,5 @@ namespace Engine {
 			&Camera::getFOV,
 			&Camera::setFOV
 		));
-	}
-
-	DirectX::XMMATRIX Camera::GetViewMatrix() const {
-		using namespace DirectX;
-
-		XMVECTOR pos = XMLoadFloat3(&position);
-
-		// Calculate forward look vector from Euler rotation angles
-		float pitch = XMConvertToRadians(rotation.x);
-		float yaw = XMConvertToRadians(rotation.y);
-		float roll = XMConvertToRadians(rotation.z);
-
-		XMMATRIX rotMatrix = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
-		XMVECTOR defaultForward = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f); // LH default forward (+Z)
-		XMVECTOR forward = XMVector3TransformCoord(defaultForward, rotMatrix);
-
-		XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-
-		return XMMatrixLookToLH(pos, forward, up);
-	}
-
-	DirectX::XMMATRIX Camera::GetProjectionMatrix(float aspectRatio) const {
-		using namespace DirectX;
-		float fovRad = XMConvertToRadians(m_FieldOfView);
-		return XMMatrixPerspectiveFovLH(fovRad, aspectRatio, nearPlane, farPlane);
-	}
-
-	DirectX::XMMATRIX Camera::GetViewProjectionMatrix(float aspectRatio) const {
-		return GetViewMatrix() * GetProjectionMatrix(aspectRatio);
 	}
 }

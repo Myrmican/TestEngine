@@ -9,9 +9,6 @@
 namespace Engine {
 	class BasePart : public Creatable {
 	public:
-		Vector3 position{ 0.0f, 0.0f, 0.0f };
-		Vector3 rotation{ 0.0f, 0.0f, 0.0f }; // Yaw, Pitch, Roll in degrees
-
 		Vector3 getSize() const { return m_size; }
 
 		void setSize(Vector3 size) {
@@ -19,6 +16,17 @@ namespace Engine {
 				this->changed.call("Size", m_size);
 			m_size = size;
 		}
+
+		Vector3 getPosition() const { return m_position; }
+
+		void setPosition(Vector3 position) {
+			if (m_position != position)
+				this->changed.call("Size", m_position);
+			m_position = position;
+		}
+
+		DirectX::XMMATRIX getCFrame() const;
+		DirectX::XMMATRIX getWorldMatrix() const;
 
 		Color3 getColor() const { return m_color; }
 
@@ -28,24 +36,13 @@ namespace Engine {
 			m_color = color;
 		}
 
-		DirectX::XMMATRIX GetWorldMatrix() const {
-			using namespace DirectX;
-			XMMATRIX matScale = XMMatrixScaling(m_size.x, m_size.y, m_size.z);
-			XMMATRIX matRot = XMMatrixRotationRollPitchYaw(
-				XMConvertToRadians(rotation.x),
-				XMConvertToRadians(rotation.y),
-				XMConvertToRadians(rotation.z)
-			);
-			XMMATRIX matTrans = XMMatrixTranslation(position.x, position.y, position.z);
-
-			return matScale * matRot * matTrans;
-		}
-
 		static void reflectProperties(ClassDescriptor* desc);
 	protected:
 		BasePart(std::string className);
 	private:
 		Vector3 m_size;
+		Vector3 m_position;
+		Vector3 m_rotation;
 		Color3 m_color;
 	};
 }

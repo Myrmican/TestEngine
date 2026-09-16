@@ -60,6 +60,9 @@ namespace Engine {
 		std::vector<Instance*> getDescendants();
 		std::vector<Instance*> getDescendants(std::string_view selector);
 
+		Instance* findChild(std::string) const;
+		Instance* findChildClass(std::string) const;
+
 		bool isAncestorOf(const Instance* descendant) const;
 		bool isDescendantOf(const Instance* ancestor);
 

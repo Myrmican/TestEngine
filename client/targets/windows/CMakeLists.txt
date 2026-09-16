@@ -10,3 +10,5 @@ target_include_directories(ClientWindows PRIVATE
 target_link_libraries(ClientWindows PRIVATE
     EngineCore
 )
+
+copy_shaders_to_target(ClientWindows)

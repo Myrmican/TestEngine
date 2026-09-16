@@ -13,9 +13,9 @@ static const std::unordered_map<std::string_view, std::string_view> NamedColors 
 namespace Engine {
 	class Color3 {
 	public:
-		float m_red;
-		float m_green;
-		float m_blue;
+		float m_red = 0.0f;
+		float m_green = 0.0f;
+		float m_blue = 0.0f;
 
 		Color3() = default;
 		Color3(float red, float green, float blue);
@@ -31,8 +31,9 @@ namespace Engine {
 			return !(*this == other);
 		}
 
-		Color3 fromRGB(float red, float green, float blue);
-		Color3 fromHex(std::string hex);
-		
+		std::string toHex();
+
+		static Color3 fromRGB(float red, float green, float blue);
+		static Color3 fromHex(std::string hex);
 	};
 }

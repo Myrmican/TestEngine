@@ -84,8 +84,18 @@ configure_file(
     COPYONLY
 )
 
+function(copy_shaders_to_target target_name)
+    add_custom_command(TARGET ${target_name} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_SOURCE_DIR}/src/rendering/shaders
+            $<TARGET_FILE_DIR:${target_name}>/shaders
+    )
+endfunction()
+
 add_subdirectory(engine)
 add_subdirectory(studio)
 add_subdirectory(client)
 
 include_directories(SYSTEM ${CMAKE_CURRENT_SOURCE_DIR}/external)
+
+target_link_libraries(TestEngine PRIVATE d3d11 dxgi d3dcompiler)

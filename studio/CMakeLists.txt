@@ -47,6 +47,8 @@ target_link_libraries(TestEngine PRIVATE
     dxgi
 )
 
+copy_shaders_to_target(TestEngine)
+
 if(MSVC)
     set_target_properties(TestEngine PROPERTIES 
         LINK_FLAGS "/ENTRY:mainCRTStartup"

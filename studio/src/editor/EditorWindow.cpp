@@ -16,6 +16,7 @@
 #include <util/Languages.h>
 #include <ui/docks/DockManager.h>
 #include <ui/TabManager.h>
+#include <editor/StudioEngine.h>
 #include <ui/ribbon/Ribbon.h>
 #include <ui/Toolbar.h>
 
@@ -53,10 +54,8 @@ namespace EditorWindow {
         window->setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowNestedDocks);
 
         EngineViewport* placeView = new EngineViewport(editorPage);
-
-        /*auto* mainCamera = new Engine::Camera();
-        mainCamera->position = DirectX::XMFLOAT3(0.0f, 0.0f, -5.0f);
-        placeView->setActiveCamera(mainCamera);*/
+        placeView->setRenderDevice(StudioEngine::Get().getRenderDevice());
+        placeView->setRenderPipeline(StudioEngine::Get().getRenderPipeline());
 
         auto windowDocks = DockManager::setup(window, project);
         const int projectTabIndex = documentTabs->addTab(placeView, project->name);

@@ -9,26 +9,28 @@ namespace Engine {
 		Camera();
 
 		float getFOV() const { return m_FieldOfView; }
+		void setFOV(const float FOV);
 
-		void setFOV(const float FOV) {
-			if (m_FieldOfView != FOV)
-				this->changed.call("FOV", m_FieldOfView);
-			m_FieldOfView = FOV;
-		}
+		float getNearPlane() const { return m_NearPlane; }
+		void setNearPlane(const float value);
+
+		float getFarPlane() const { return m_FarPlane; }
+		void setFarPlane(const float value);
+
+		// Position + orientation, stored as a transform matrix (like Roblox's CFrame)
+		DirectX::XMMATRIX getCFrame() const { return m_CFrame; }
+		void setCFrame(const DirectX::XMMATRIX& cframe);
+
+		// The two matrices your renderer actually needs each frame
+		DirectX::XMMATRIX getViewMatrix() const;
+		DirectX::XMMATRIX getProjectionMatrix(float aspectRatio) const;
 
 		static void reflectProperties(ClassDescriptor* desc);
 
-		float nearPlane = 0.1f;
-		float farPlane = 1000.0f;
-
-		DirectX::XMFLOAT3 position = { 0.0f, 2.0f, -10.0f };
-		DirectX::XMFLOAT3 rotation = { 0.0f, 0.0f, 0.0f };
-
-		DirectX::XMMATRIX GetViewMatrix() const;
-		DirectX::XMMATRIX GetProjectionMatrix(float aspectRatio) const;
-		DirectX::XMMATRIX GetViewProjectionMatrix(float aspectRatio) const;
-
 	private:
-		float m_FieldOfView;
+		float m_FieldOfView = 70.0f;   // degrees - Roblox default is 70
+		float m_NearPlane = 0.1f;      // anything closer than this is clipped
+		float m_FarPlane = 1000.0f;    // anything farther than this is clipped
+		DirectX::XMMATRIX m_CFrame = DirectX::XMMatrixIdentity();
 	};
 }
