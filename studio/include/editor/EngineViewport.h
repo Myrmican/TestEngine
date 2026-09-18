@@ -1,11 +1,20 @@
 #pragma once
 
 #include <QWidget>
-#include <QTimer>
-#include <engine/datamodel/instances/Camera.h>
-#include <engine/rendering/RenderDevice.h>
-#include <engine/rendering/RenderPipeline.h>
-#include <engine/rendering/SwapChain.h>
+#include <memory>
+
+#include <SDL3/SDL.h>
+#include "engine/rendering/Renderer.h"
+
+class QTimer;
+class QResizeEvent;
+class QShowEvent;
+class QPaintEngine;
+
+namespace Engine
+{
+    class Camera;
+}
 
 class EngineViewport : public QWidget
 {
@@ -13,37 +22,33 @@ class EngineViewport : public QWidget
 
 public:
     explicit EngineViewport(QWidget* parent = nullptr);
-    ~EngineViewport();
-
-    // Injected from outside (your Engine bootstrap owns these, not the widget).
-    // EngineViewport does NOT own the device or pipeline - only its own SwapChain.
-    void setRenderDevice(Engine::RenderDevice* device) { m_renderDevice = device; }
-    void setRenderPipeline(Engine::RenderPipeline* pipeline) { m_renderPipeline = pipeline; }
-    void setCamera(Engine::Camera* camera) { m_camera = camera; }
-    Engine::Camera* getCamera() const { return m_camera; }
+    ~EngineViewport() override;
 
 protected:
-    // Qt calls this automatically once the widget's native window is ready -
-    // the correct place to create our SwapChain, since only now do we have
-    // a real, final HWND to give it.
+    // Qt calls this once the widget has a real native window to draw
+    // into — this is where we create the SDL_Window wrapping it and
+    // build the Renderer, since doing it in the constructor risks
+    // running before the native window (and its correct size) exists.
     void showEvent(QShowEvent* event) override;
 
-    // Called whenever the widget is resized - the swap chain's back buffer
-    // must be resized to match, or rendering will be stretched/invalid.
     void resizeEvent(QResizeEvent* event) override;
 
-    // Overriding this to return nullptr stops Qt from trying to paint over
-    // our D3D output with its own software renderer.
+    // Returning nullptr here tells Qt "don't set up your own paint
+    // backing store for this widget" — required alongside
+    // WA_PaintOnScreen, since we're doing all drawing ourselves via
+    // SDL_GPU rather than through QPainter.
     QPaintEngine* paintEngine() const override { return nullptr; }
 
 private:
-    void Render();
+    void createRenderer();
 
-    Engine::RenderDevice* m_renderDevice = nullptr;     // shared, injected - not owned
-    Engine::RenderPipeline* m_renderPipeline = nullptr;  // shared, injected - not owned
-    Engine::SwapChain m_swapChain;                       // owned - this window's own back buffer
-    Engine::Camera* m_camera = nullptr;                  // not owned - just observed
+    Engine::Camera* m_camera = nullptr;
 
+    SDL_Window* m_sdlWindow = nullptr;
+    std::unique_ptr<Engine::Rendering::Renderer> m_renderer;
+
+    // Drives DrawFrame() at a fixed interval. WA_PaintOnScreen widgets
+    // don't get regular Qt paint events, so we pull rather than wait to
+    // be pushed.
     QTimer* m_renderTimer = nullptr;
-    bool m_initialized = false;
 };

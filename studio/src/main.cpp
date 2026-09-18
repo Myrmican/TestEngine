@@ -4,7 +4,6 @@
 #include "Velopack.h"
 #include <QApplication>
 #include <QMainWindow>
-#include <editor/StudioEngine.h>
 #include <engine/Engine.h>
 
 int main(int argc, char *argv[]) {
@@ -27,11 +26,6 @@ int main(int argc, char *argv[]) {
 
 	{
 		QApplication app(argc, argv);
-
-		if (!StudioEngine::Get().Init())
-		{
-			qDebug("Failed to initialize rendering engine");
-		}
 
 		Engine::initialize();
 

@@ -75,7 +75,7 @@ Properties::Properties(QMainWindow* window, Project* project)
 
     auto* propertiesTree = new QTreeWidget(containerWidget);
     propertiesTree->setColumnCount(2);
-    propertiesTree->header()->setSectionResizeMode(0, QHeaderView::Interactive);
+    propertiesTree->header()->setSectionResizeMode(0, QHeaderView::Stretch);
     propertiesTree->header()->setSectionResizeMode(1, QHeaderView::Stretch);
     propertiesTree->setIndentation(12);
     propertiesTree->setEditTriggers(QAbstractItemView::NoEditTriggers);

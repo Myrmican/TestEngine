@@ -11,30 +11,15 @@ namespace Engine {
 	public:
 		Vector3 getSize() const { return m_size; }
 
-		void setSize(Vector3 size) {
-			if (m_size != size)
-				this->changed.call("Size", m_size);
-			m_size = size;
-		}
+		void setSize(Vector3 size);
 
 		Vector3 getPosition() const { return m_position; }
 
-		void setPosition(Vector3 position) {
-			if (m_position != position)
-				this->changed.call("Size", m_position);
-			m_position = position;
-		}
-
-		DirectX::XMMATRIX getCFrame() const;
-		DirectX::XMMATRIX getWorldMatrix() const;
+		void setPosition(Vector3 position);
 
 		Color3 getColor() const { return m_color; }
 
-		void setColor(const Color3 color) {
-			if (m_color != color)
-				this->changed.call("Color", m_color);
-			m_color = color;
-		}
+		void setColor(const Color3 color);
 
 		static void reflectProperties(ClassDescriptor* desc);
 	protected:

@@ -1,16 +1,18 @@
 file(GLOB_RECURSE ENGINE_SOURCES CONFIGURE_DEPENDS "src/*.cpp" "include/*.h")
 
-add_library(EngineCore OBJECT ${ENGINE_SOURCES})
+add_library(EngineCore STATIC ${ENGINE_SOURCES})
 
 target_compile_features(EngineCore PUBLIC cxx_std_20)
 target_include_directories(EngineCore PUBLIC 
     "${CMAKE_CURRENT_SOURCE_DIR}/include/engine"
     "${CMAKE_SOURCE_DIR}/external"
+    "${CMAKE_SOURCE_DIR}/external/SDL/include"
+    "${CMAKE_SOURCE_DIR}/external/SDL"
     "${wasmtime_SOURCE_DIR}/include"
 )
-target_compile_definitions(EngineCore PUBLIC
-    SHADERS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/src/shaders"
-)
+
+target_link_libraries(EngineCore PUBLIC SDL3::SDL3)
+
 file(GLOB_RECURSE REFLECTION_HEADERS CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/include/engine/datamodel/instances/*.h"
 )

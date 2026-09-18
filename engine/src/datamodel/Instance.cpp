@@ -124,6 +124,8 @@ namespace Engine {
 
 			return childPtr;
 		}
+
+		return nullptr;
 	}
 
 	Instance* Instance::findChildClass(std::string className) const {
@@ -136,6 +138,8 @@ namespace Engine {
 			
 			return childPtr;
 		}
+
+		return nullptr;
 	}
 
 	bool Instance::isAncestorOf(const Instance* descendant) const {

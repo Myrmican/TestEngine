@@ -23,6 +23,7 @@ target_include_directories(TestEngine PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
     "${CMAKE_SOURCE_DIR}/engine/include"
     "${CMAKE_SOURCE_DIR}/external"
+    "${CMAKE_SOURCE_DIR}/external/SDL/include"
     "${CMAKE_SOURCE_DIR}/external/velopack_libc_1.2.0/include"
     "${qscintilla_SOURCE_DIR}/src"
     "${qscintilla_SOURCE_DIR}/scintilla/include"
@@ -32,6 +33,7 @@ target_include_directories(TestEngine PRIVATE
 
 target_link_libraries(TestEngine PRIVATE 
     EngineCore
+    SDL3::SDL3
     "${CMAKE_SOURCE_DIR}/external/velopack_libc_1.2.0/lib-static/velopack_libc_win_x64_msvc.lib"
     "${wasmtime_SOURCE_DIR}/lib/wasmtime.dll.lib"
     ws2_32
@@ -43,11 +45,7 @@ target_link_libraries(TestEngine PRIVATE
     QWindowKit::Widgets
     ${QSCI_TARGET_NAME}
     yaml-cpp::yaml-cpp
-    d3d11
-    dxgi
 )
-
-copy_shaders_to_target(TestEngine)
 
 if(MSVC)
     set_target_properties(TestEngine PROPERTIES 
@@ -75,6 +73,10 @@ if(WIN32)
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${wasmtime_SOURCE_DIR}/lib/wasmtime.dll"
             "$<TARGET_FILE_DIR:TestEngine>"
+
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+                "${CMAKE_SOURCE_DIR}/shaders/compiled"
+                "$<TARGET_FILE_DIR:TestEngine>/shaders/compiled"
 
         COMMAND "${QT_BIN_DIR}/windeployqt.exe" --no-compiler-runtime "$<TARGET_FILE:TestEngine>"
         

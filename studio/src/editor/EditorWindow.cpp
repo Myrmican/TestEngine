@@ -16,7 +16,6 @@
 #include <util/Languages.h>
 #include <ui/docks/DockManager.h>
 #include <ui/TabManager.h>
-#include <editor/StudioEngine.h>
 #include <ui/ribbon/Ribbon.h>
 #include <ui/Toolbar.h>
 
@@ -54,8 +53,6 @@ namespace EditorWindow {
         window->setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowNestedDocks);
 
         EngineViewport* placeView = new EngineViewport(editorPage);
-        placeView->setRenderDevice(StudioEngine::Get().getRenderDevice());
-        placeView->setRenderPipeline(StudioEngine::Get().getRenderPipeline());
 
         auto windowDocks = DockManager::setup(window, project);
         const int projectTabIndex = documentTabs->addTab(placeView, project->name);
@@ -67,46 +64,6 @@ namespace EditorWindow {
                 TabManager::handleTabClose(index, projectTabIndex, documentTabs, editorPage, window, mainToolBar, project);
             }
         );
-
-
-
-        // NOTE: We deliberately do NOT call placeView->initializeEngine() or
-        // placeView->resize(placeView->size()) here anymore.
-        //
-        // At this point in the call, Qt has not yet run a layout pass for
-        // placeView inside its new parent tab, so width()/height() are still
-        // stale/default values — initializing the D3D swapchain here would
-        // create it with the wrong dimensions. Calling resize(size()) is also
-        // a no-op since QWidget::resize() only fires resizeEvent when the
-        // size actually changes.
-        //
-        // Instead, EngineRenderView::resizeEvent() now lazily initializes the
-        // engine itself the first time it receives a real, non-zero size from
-        // the layout system (which will happen shortly after window->show()
-        // returns control to the event loop). See TestView.cpp for details.
-
-        /*std::vector<Engine::BasePart*> parts;
-
-        const auto& rootChildren = project->dataModel->getChildren();
-
-        for (const auto& child : rootChildren) {
-            if (!child || child->getName() != "World") continue;
-
-            const auto& worldChildren = child->getChildren();
-            for (const auto& child2 : worldChildren) {
-                if (!child2 || child2->getName() != "Baseplate") continue;
-
-                if (auto* basePart = dynamic_cast<Engine::BasePart*>(child2.get())) {
-                    parts.push_back(basePart);
-                }
-            }
-        }
-
-        QTimer* frameTimer = new QTimer(placeView);
-        QObject::connect(frameTimer, &QTimer::timeout, placeView, [placeView, parts]() {
-            placeView->renderFrame(parts);
-            });
-        frameTimer->start(16);*/
 
         // Recent menu logic
         QWidget* topLevelWindow = window->window();

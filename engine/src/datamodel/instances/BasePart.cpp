@@ -12,25 +12,22 @@ namespace Engine {
 
 	}
 
-	DirectX::XMMATRIX BasePart::getCFrame() const
-	{
-		DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationRollPitchYaw(
-			DirectX::XMConvertToRadians(m_rotation.x),
-			DirectX::XMConvertToRadians(m_rotation.y),
-			DirectX::XMConvertToRadians(m_rotation.z)
-		);
-		DirectX::XMMATRIX translation = DirectX::XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
-
-		// rotate first, then move into place - same reasoning as before:
-		// translating first would orbit the part around the world origin
-		// instead of spinning it in place.
-		return rotation * translation;
+	void BasePart::setSize(Vector3 size) {
+		if (m_size != size)
+			this->changed.call("Size", m_size);
+		m_size = size;
 	}
 
-	DirectX::XMMATRIX BasePart::getWorldMatrix() const
-	{
-		DirectX::XMMATRIX scale = DirectX::XMMatrixScaling(m_size.x, m_size.y, m_size.z);
-		return scale * getCFrame(); // reuse it, rather than duplicate rotation/translation
+	void BasePart::setPosition(Vector3 position) {
+		if (m_position != position)
+			this->changed.call("Size", m_position);
+		m_position = position;
+	}
+
+	void BasePart::setColor(const Color3 color) {
+		if (m_color != color)
+			this->changed.call("Color", m_color);
+		m_color = color;
 	}
 
 	void BasePart::reflectProperties(Engine::ClassDescriptor* desc) {
