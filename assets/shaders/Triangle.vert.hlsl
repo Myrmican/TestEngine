@@ -1,24 +1,25 @@
-// A vertex shader runs once per vertex. Its job here is simple: pass the
-// position straight through (our triangle is already in the -1..1 clip
-// space range the GPU expects) and hand the color along to the fragment
-// shader.
+// Vertex shader: transform each cube vertex by the part's model-view-
+// projection matrix. No per-vertex color anymore — that comes from the
+// part's Color, passed separately to the fragment shader below.
+
+cbuffer MVPBuffer : register(b0, space1) // vertex uniform buffer, slot 0
+{
+    float4x4 MVP;
+};
 
 struct Input
 {
-    float3 Position : TEXCOORD0; // matches attribute location = 0
-    float4 Color    : TEXCOORD1; // matches attribute location = 1
+    float3 Position : TEXCOORD0;
 };
 
 struct Output
 {
-    float4 Color    : TEXCOORD0;
-    float4 Position : SV_Position; // the GPU reads this as clip-space position
+    float4 Position : SV_Position;
 };
 
 Output main(Input input)
 {
     Output output;
-    output.Position = float4(input.Position, 1.0f);
-    output.Color = input.Color;
+    output.Position = mul(float4(input.Position, 1.0f), MVP);
     return output;
 }

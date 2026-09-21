@@ -6,7 +6,7 @@ namespace Engine {
 	public:
 		World();
 
-		Camera* getCurrentCamera() {
+		Camera* getCurrentCamera() const {
 			return currentCamera;
 		}
 
@@ -17,6 +17,6 @@ namespace Engine {
 		static void reflectProperties(ClassDescriptor* desc);
 
 	private:
-		Camera* currentCamera;
+		Camera* currentCamera = nullptr;
 	};
 }

@@ -8,6 +8,7 @@
 
 class QTimer;
 class QResizeEvent;
+class BasePart;
 class QShowEvent;
 class QPaintEngine;
 
@@ -43,6 +44,8 @@ private:
     void createRenderer();
 
     Engine::Camera* m_camera = nullptr;
+
+    std::vector<Engine::BasePart*> m_parts;
 
     SDL_Window* m_sdlWindow = nullptr;
     std::unique_ptr<Engine::Rendering::Renderer> m_renderer;

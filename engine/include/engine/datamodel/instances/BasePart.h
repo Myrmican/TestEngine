@@ -9,6 +9,10 @@
 namespace Engine {
 	class BasePart : public Creatable {
 	public:
+		DirectX::XMMATRIX getCFrame() const;
+
+		DirectX::XMMATRIX getWorldMatrix() const;
+
 		Vector3 getSize() const { return m_size; }
 
 		void setSize(Vector3 size);

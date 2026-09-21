@@ -1,13 +1,12 @@
-// A fragment shader runs once per pixel covered by our triangle. It
-// receives the color that was interpolated between the 3 vertices'
-// colors and just outputs it directly.
+// Fragment shader: just output the part's color, pushed in as a
+// uniform once per draw call (see Renderer::DrawFrame).
 
-struct Input
+cbuffer ColorBuffer : register(b0, space3) // fragment uniform buffer, slot 0
 {
-    float4 Color : TEXCOORD0;
+    float4 Color;
 };
 
-float4 main(Input input) : SV_Target0
+float4 main() : SV_Target0
 {
-    return input.Color;
+    return Color;
 }

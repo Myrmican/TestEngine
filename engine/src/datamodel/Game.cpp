@@ -87,8 +87,5 @@ namespace Engine {
         auto baseplatePart = std::make_unique<Part>();
         baseplatePart->setName("Baseplate");
         worldService->addChild(std::move(baseplatePart));
-
-        auto worldCamera = std::make_unique<Camera>();
-        worldService->addChild(std::move(worldCamera));
     }
 }
