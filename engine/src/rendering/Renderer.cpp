@@ -34,7 +34,7 @@ namespace Engine::Rendering
     // bundle rather than sitting next to the executable.
     static std::string ShaderPath(const char* name)
     {
-        return std::string("shaders/compiled/") + name;
+        return std::string("assets/shaders/compiled/") + name;
     }
 
     SDL_GPUShader* Renderer::LoadShader(const char* path,

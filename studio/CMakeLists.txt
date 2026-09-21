@@ -75,8 +75,8 @@ if(WIN32)
             "$<TARGET_FILE_DIR:TestEngine>"
 
         COMMAND ${CMAKE_COMMAND} -E copy_directory
-                "${CMAKE_SOURCE_DIR}/shaders/compiled"
-                "$<TARGET_FILE_DIR:TestEngine>/shaders/compiled"
+                "${CMAKE_SOURCE_DIR}/assets/shaders/compiled"
+                "$<TARGET_FILE_DIR:TestEngine>/assets/shaders/compiled"
 
         COMMAND "${QT_BIN_DIR}/windeployqt.exe" --no-compiler-runtime "$<TARGET_FILE:TestEngine>"
         
