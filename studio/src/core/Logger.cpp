@@ -5,6 +5,9 @@
 #include <QDateTime>
 #include <core/Logger.h>
 #include <ui/docks/Output.h>
+#include <engine/services/logservice/LogService.h>
+
+Engine::LogService::messageOut;
 
 using namespace std::chrono;
 

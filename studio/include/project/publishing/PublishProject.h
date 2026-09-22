@@ -1,3 +1,5 @@
+#include <project/Project.h>
+
 namespace PublishProject {
-	void initPublish();
+	void initPublish(Project* project);
 }
