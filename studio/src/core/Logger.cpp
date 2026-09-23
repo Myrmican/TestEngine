@@ -4,15 +4,42 @@
 #include <iostream>
 #include <QDateTime>
 #include <core/Logger.h>
+#include <project/Project.h>
 #include <ui/docks/Output.h>
-#include <engine/services/logservice/LogService.h>
-
-Engine::LogService::messageOut;
+#include <engine/services/logging/Logging.h>
 
 using namespace std::chrono;
 
-Logger::Logger(Output* parent) {
+Logger::Logger(Output* parent, Project* project) {
     this->outputDock = parent;
+    this->project = project;
+
+    auto services = project->dataModel->m_services;
+
+    Engine::Logging* logging = nullptr;
+
+    for (const auto& [name, instance] : services) {
+        if (name == "Logging") {
+            logging = dynamic_cast<Engine::Logging*>(instance);
+            break;
+        }
+    }
+
+    logging->messageOut.connect([this](std::string_view message, Engine::LoggerMessageType type) {
+        int messageLevel = static_cast<int>(type);
+        switch (messageLevel) {
+        case 0:
+            Logger::Info(message);
+            break;
+        case 1:
+            qDebug() << messageLevel;
+            break;
+        case 2:
+            Logger::Error(message);
+            break;
+        }
+
+        });
 }
 
 void Logger::Info(std::string_view message) {

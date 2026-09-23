@@ -9,7 +9,7 @@
 
 QToolBar* Toolbar::create(QMainWindow* window) {
     QToolBar* mainToolBar = new QToolBar("Main Toolbar", window);
-    mainToolBar->setFixedHeight(80);
+    mainToolBar->setMinimumHeight(80);
     mainToolBar->setContentsMargins(8, 8, 8, 8);
     mainToolBar->setMovable(false);
     mainToolBar->setIconSize(QSize(18, 18));
@@ -23,35 +23,7 @@ QToolBar* Toolbar::create(QMainWindow* window) {
     QActionGroup* transformToolsGroup = new QActionGroup(mainToolBar);
     transformToolsGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::ExclusiveOptional);
 
-    auto addTool = [&](QString name, QString iconPath, QString keySequence) {
-        QAction* action = new QAction(QIcon(iconPath), name, transformToolsGroup);
-        action->setCheckable(true);
-        QAction* toolAction = transformToolsGroup->addAction(action);
-        toolAction->setShortcut(QKeySequence(keySequence));
-
-        window->addAction(action);
-
-        QToolButton* btn = ToolManager::createTool(QIcon(iconPath), name, mainToolBar, true);
-        btn->setDefaultAction(action);
-        btn->setCheckable(true);
-
-        QWidget* wrapper = new QWidget(mainToolBar);
-        wrapper->setFixedSize(64, 80);
-
-        QVBoxLayout* layout = new QVBoxLayout(wrapper);
-        layout->setContentsMargins(0, 0, 0, 0);
-        layout->setSpacing(0);
-        layout->addWidget(btn, 0, Qt::AlignHCenter | Qt::AlignVCenter);
-
-        mainToolBar->addWidget(wrapper);
-        };
-
-    addTool("Select", ":/assets/icons/MoveTool.png", "1");
-    addTool("Move", ":/assets/icons/MoveTool.png", "2");
-    addTool("Scale", ":/assets/icons/MoveTool.png", "3");
-    addTool("Rotate", ":/assets/icons/MoveTool.png", "4");
-
-    mainToolBar->addSeparator();
+    ToolManager::createTools(mainToolBar);
 
     mainToolBar->setStyleSheet(
         "QToolBar {"
@@ -64,14 +36,15 @@ QToolBar* Toolbar::create(QMainWindow* window) {
         "    margin: 6px 6px;"
         "}"
         "QToolButton {"
-        "   color: #9ca3af;"
+        "   color: rgba(156, 163, 175, 1.0);;"
         "   background: transparent;"
         "   border: 1px solid transparent;"
         "   border-radius: 4px;"
         "   padding: 4px;"
         "}"
         "QToolButton:hover {"
-        "    background-color: #2d2d2d;"
+        "   background-color: rgba(63, 63, 70, 0.4);"
+        "   color: rgba(255, 255, 255, 1.0);"
         "}"
         "QToolButton:checked {"
         "    background-color: rgba(59, 130, 246, 0.2);"

@@ -81,7 +81,7 @@ namespace EditorWindow {
             recentAction->setObjectName("RecentProject_" + project->name);
         }
 
-        Logger* outputLogger = new Logger(windowDocks.output);
+        Logger* outputLogger = new Logger(windowDocks.output, project);
         project->logger = outputLogger;
         project->explorer = windowDocks.explorer;
     }

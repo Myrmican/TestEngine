@@ -11,6 +11,7 @@
 #include <datamodel/instances/PlayerTemplate.h>
 #include <datamodel/instances/Camera.h>
 #include <services/selection/Selection.h>
+#include <services/logging/Logging.h>
 #include <core/Reflection.h>
 
 namespace Engine {
@@ -45,6 +46,10 @@ namespace Engine {
         Selection* selectService = selectServiceOwned.get();
         addChild(std::move(selectServiceOwned));
 
+        auto loggingServiceOwned = std::make_unique<Logging>();
+        Logging* loggingService = loggingServiceOwned.get();
+        addChild(std::move(loggingServiceOwned));
+
         m_services.emplace_back("World", worldService);
         m_services.emplace_back("Players", playersService);
         m_services.emplace_back("Server", serverService);
@@ -52,6 +57,7 @@ namespace Engine {
         m_services.emplace_back("Shared", sharedService);
         m_services.emplace_back("Audio", audioService);
         m_services.emplace_back("Selection", selectService);
+        m_services.emplace_back("Logging", loggingService);
 
         auto serverAssetsFolder = std::make_unique<Folder>();
         serverAssetsFolder->setName("Assets");

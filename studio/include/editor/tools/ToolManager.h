@@ -1,23 +1,12 @@
+#pragma once
+
 #include <vector>
 #include <string>
-#include <QIcon>
-
-class QString;
-class QObject;
-class QWidget;
-class QAction;
-class QToolBar;
-class QToolButton;
+#include <editor/tools/transform/SelectTool.h>
+#include <editor/tools/PlayTool.h>
+#include <QToolBar>
 
 namespace ToolManager {
-    QToolButton* createTool(QIcon icon, QString name, QToolBar* toolBar, bool createLabel);
+    void createTools(QToolBar* parent);
     QToolButton* createQuickTool(const QString& objectName, QWidget* parent = nullptr);
 }
-
-#define REGISTER_TOOL(toolName) \
-    inline const ::int studioTool_##toolName( \
-        #toolName, \
-        []() -> std::unique_ptr<::Engine::Creatable> { \
-            return std::make_unique<toolName>(); \
-        } \
-    )

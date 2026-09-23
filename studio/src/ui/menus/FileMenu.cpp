@@ -58,12 +58,10 @@ FileMenu::FileMenu(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* works
             saveAction->setShortcut(QKeySequence("Ctrl+S"));
             saveAction->setShortcutContext(Qt::WindowShortcut);
 
-            //fileMenu->addSeparator();
-
             QAction* publishAction = fileMenu->addAction("Publish", [editorPage]() {
                 Project* activeProject = ProjectManager::getProject(editorPage);
 
-                PublishProject::initPublish();
+                PublishProject::initPublish(activeProject);
                 });
             publishAction->setShortcut(QKeySequence("Alt+P"));
             publishAction->setShortcutContext(Qt::WindowShortcut);

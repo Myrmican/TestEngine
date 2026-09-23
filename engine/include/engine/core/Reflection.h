@@ -6,6 +6,7 @@
 #include <functional>
 #include <memory>
 #include <datamodel/Instance.h>
+#include <iostream>
 #include <datamodel/ClassDescriptor.h>
 
 namespace Engine {
@@ -107,9 +108,7 @@ namespace Engine {
     inline const ::Engine::ReflectionHelper reflection_##className( \
         #className, \
         "Instance", \
-        []() -> std::unique_ptr<::Engine::Instance> { \
-            return std::make_unique<className>(); \
-        }, \
+        nullptr, \
         [](::Engine::ClassDescriptor* desc) { className::reflectProperties(desc); }, \
         false \
     )
