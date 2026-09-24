@@ -12,5 +12,17 @@ namespace Engine {
 		Event<std::string_view, LoggerMessageType> messageOut;
 
 		Logging();
+
+		void error(std::string_view message) const {
+			messageOut.call(message, LoggerMessageType::Error);
+		}
+
+		void warn(std::string_view message) const {
+			messageOut.call(message, LoggerMessageType::Warning);
+		}
+
+		void info(std::string_view message) const {
+			messageOut.call(message, LoggerMessageType::Info);
+		}
 	};
 }

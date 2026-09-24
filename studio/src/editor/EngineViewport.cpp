@@ -1,11 +1,11 @@
 #include "editor/EngineViewport.h"
-//#include <engine/datamodel/Game.h>
-//#include <engine/datamodel/instances/BasePart.h>
-//#include <engine/datamodel/instances/Camera.h>
+#include <engine/datamodel/Game.h>
+#include <engine/datamodel/instances/BasePart.h>
+#include <engine/datamodel/instances/Camera.h>
 //#include <engine/services/world/World.h>
 //#include <engine/core/math/Vector3.h>
 //#include <engine/core/math/Color3.h>
-//#include <project/Project.h>
+#include <project/Project.h>
 #include <QDebug>
 #include <QResizeEvent>
 #include <QShowEvent>

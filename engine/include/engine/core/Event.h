@@ -27,7 +27,7 @@ namespace Engine {
 		Connection connect(Callback callback) {
 			size_t id = m_nextId++;
 			m_callbacks[id] = callback;
-			return Connection{this};
+			return Connection{ this, id };
 		}
 
 		void call(Args... args) const {
@@ -39,7 +39,7 @@ namespace Engine {
 
 	private:
 		void disconnect() {
-
+			m_callbacks.erase(id);
 		}
 
 		size_t m_nextId = 0;

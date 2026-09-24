@@ -10,6 +10,7 @@
 #include <boost/flyweight.hpp>
 
 class WasmRuntime;
+class Game;
 
 namespace Engine {
 
@@ -43,6 +44,8 @@ namespace Engine {
 		void removeAllChildren();
 
 		std::string getPath() const;
+		
+		Game* getDataModel() const;
 
 		Instance* getParent() const { return parent; }
 

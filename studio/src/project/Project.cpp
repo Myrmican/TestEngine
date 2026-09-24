@@ -15,6 +15,7 @@
 #include <QPushButton>
 #include <QButtonGroup>
 #include <project/Project.h>
+#include <engine/Engine.h>
 #include <memory>
 
 using namespace std;
@@ -24,10 +25,10 @@ Project::Project(const std::string& projectName) {
     savingInCloud = false;
 
     try {
-        dataModel = std::make_unique<Engine::Game>();
+        engine = std::make_unique<Engine::Engine>();
     }
     catch (const std::exception& e) {
-        qCritical() << "Failed to initialize Game engine:";
+        qCritical() << "Failed to initialize Engine:";
     }
 }
 

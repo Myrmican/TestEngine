@@ -5,7 +5,7 @@
 #include <QObject>
 #include <QFile>
 #include <core/Logger.h>
-#include <engine/datamodel/Game.h>
+#include <engine/Engine.h>
 
 class QMainWindow;
 class QFile;
@@ -23,7 +23,7 @@ public:
     Logger* logger = nullptr;
 	Explorer* explorer = nullptr;
 
-    std::shared_ptr<Engine::Game> dataModel;
+    std::shared_ptr<Engine::Engine> engine;
 
     Project(const std::string& projectName);
     ~Project();

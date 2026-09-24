@@ -2,6 +2,7 @@
 #include <scripting/WasmRuntime.h>
 #include <datamodel/ClassDescriptor.h>
 #include <core/Reflection.h>
+#include <datamodel/Game.h>
 #include <datamodel/Property.h>
 #include <iostream>
 #include <format>
@@ -18,6 +19,17 @@ namespace Engine {
 	Instance::Instance(std::string name) : parent(nullptr) {
 		this->className = name;
 		this->name = name;
+	}
+
+	Game* Instance::getDataModel() const {
+		const Instance* current = this;
+		while (current->parent != nullptr) {
+			current = current->parent;
+		}
+
+		// Verify if the top-level root is indeed the DataModel / Game
+		// (You can use dynamic_cast, RTTI, or an internal type flag/check)
+		return const_cast<Game*>(dynamic_cast<const Game*>(current));
 	}
 
 	void Instance::setName(std::string_view value) {
