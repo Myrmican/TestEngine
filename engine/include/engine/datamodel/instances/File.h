@@ -8,5 +8,7 @@ namespace Engine {
 		File();
 
 		void setContent(std::string& text);
+
+		static void registerProperties(ClassDescriptor* desc) {};
 	};
 }

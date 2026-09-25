@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
 	{
 		QApplication app(argc, argv);
 
-		Engine::initialize();
+		new Engine::EngineInstance();
 
 		QMainWindow window;
 		window.resize(1024, 768);
@@ -39,8 +39,6 @@ int main(int argc, char *argv[]) {
 
 		app.exec();
 	}
-
-	Engine::shutdown();
 
 	CoUninitialize();
 

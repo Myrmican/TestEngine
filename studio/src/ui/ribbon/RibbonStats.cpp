@@ -22,7 +22,7 @@ GetStatistic Engine::Ribbon::getStatistic(std::string statName, QWidget* statsWi
 	if (!currentProject) return { QString::fromStdString(statName), "ERR" };
 
 	if (statNameSplit[0] == "InstanceCount") {
-		auto dataModel = currentProject->dataModel.get();
+		auto dataModel = currentProject->engine->getDataModel();
 
 		auto descendants = dataModel->getDescendants();
 

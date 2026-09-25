@@ -23,7 +23,7 @@ public:
     Logger* logger = nullptr;
 	Explorer* explorer = nullptr;
 
-    std::shared_ptr<Engine::Engine> engine;
+    std::shared_ptr<Engine::EngineInstance> engine;
 
     Project(const std::string& projectName);
     ~Project();

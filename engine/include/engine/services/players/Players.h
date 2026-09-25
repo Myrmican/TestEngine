@@ -1,5 +1,5 @@
 #include <datamodel/Instance.h>
-#include <datamodel/instances/Player.h>
+#include <network/Player.h>
 
 namespace Engine {
 	class Players : public Instance {

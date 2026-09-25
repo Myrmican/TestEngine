@@ -16,7 +16,7 @@ namespace Engine {
 			m_color = color;
 		}
 
-		static void reflectProperties(ClassDescriptor* desc);
+		static void registerProperties(ClassDescriptor* desc);
 
 	private:
 		Color3 m_color;

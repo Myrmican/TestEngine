@@ -4,5 +4,7 @@ namespace Engine {
 	class PlayerTemplate : public Instance {
 	public:
 		PlayerTemplate();
+
+		static void registerProperties(ClassDescriptor* desc) {};
 	};
 }

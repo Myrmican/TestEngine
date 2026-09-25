@@ -2,7 +2,7 @@
 
 #include <datamodel/Instance.h>
 #include <core/Event.h>
-#include <datamodel/instances/Player.h>
+#include <network/Player.h>
 #include <util/Globals.h>
 
 namespace Engine {
@@ -14,5 +14,7 @@ namespace Engine {
 
 		void Send(Player* target, const std::vector<uint8_t>& payload);
 		void Broadcast(const std::vector<uint8_t>& payload);
+
+		static void registerProperties(ClassDescriptor* desc) {};
 	};
 }

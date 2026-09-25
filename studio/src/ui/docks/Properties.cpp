@@ -136,16 +136,7 @@ Properties::Properties(QMainWindow* window, Project* project)
 
     connectSearch(searchBar, propertiesTree);
 
-    auto services = project->dataModel->m_services;
-
-    Engine::Selection* selectionService = nullptr;
-
-    for (const auto& [name, instance] : services) {
-        if (name == "Selection") {
-            selectionService = dynamic_cast<Engine::Selection*>(instance);
-            break;
-        }
-    }
+    Engine::Selection* selectionService = project->engine->getProvider()->getService<Engine::Selection>();
 
     selectionService->selectionChanged.connect([this](Engine::Instance* instance) {
         if (instance == nullptr) {

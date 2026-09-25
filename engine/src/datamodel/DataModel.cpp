@@ -1,4 +1,5 @@
-#include <datamodel/Game.h>
+#include <datamodel/DataModel.h>
+#include <Engine.h>
 #include <services/world/World.h>
 #include <services/players/Players.h>
 #include <services/server/Server.h>
@@ -15,8 +16,9 @@
 #include <core/Reflection.h>
 
 namespace Engine {
-    Game::Game() : Instance("DataModel") {
+    DataModel::DataModel(EngineInstance* engine) : Instance("DataModel") {
         internalLocked = true;
+        m_engine = engine;
 
         auto worldServiceOwned = std::make_unique<World>();
         World* worldService = worldServiceOwned.get();
@@ -50,14 +52,14 @@ namespace Engine {
         Logging* loggingService = loggingServiceOwned.get();
         addChild(std::move(loggingServiceOwned));
 
-        m_services.emplace_back("World", worldService);
-        m_services.emplace_back("Players", playersService);
-        m_services.emplace_back("Server", serverService);
-        m_services.emplace_back("Client", clientService);
-        m_services.emplace_back("Shared", sharedService);
-        m_services.emplace_back("Audio", audioService);
-        m_services.emplace_back("Selection", selectService);
-        m_services.emplace_back("Logging", loggingService);
+        engine->getProvider()->create(worldService);
+        engine->getProvider()->create(playersService);
+        engine->getProvider()->create(serverService);
+        engine->getProvider()->create(clientService);
+        engine->getProvider()->create(sharedService);
+        engine->getProvider()->create(audioService);
+        engine->getProvider()->create(selectService);
+        engine->getProvider()->create(loggingService);
 
         auto serverAssetsFolder = std::make_unique<Folder>();
         serverAssetsFolder->setName("Assets");

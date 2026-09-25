@@ -8,5 +8,7 @@ namespace Engine {
 		void play();
 		void pause();
 		void stop();
+
+		static void registerProperties(ClassDescriptor* desc) {};
 	};
 }

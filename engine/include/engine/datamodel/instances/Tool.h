@@ -5,5 +5,7 @@ namespace Engine {
 	class Tool : public Creatable {
 	public:
 		Tool();
+
+		static void registerProperties(ClassDescriptor* desc) {};
 	};
 }

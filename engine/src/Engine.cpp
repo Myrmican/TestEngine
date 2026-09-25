@@ -1,12 +1,9 @@
 #include <Engine.h>
+#include <datamodel/Service.h>
 
 namespace Engine {
-	bool initialize() {
-
-		return true;
-	}
-
-	void shutdown() {
-
+	EngineInstance::EngineInstance() {
+		m_sProvider = new ServiceProvider(this);
+		m_dataModel = std::make_unique<DataModel>(this);
 	}
 }

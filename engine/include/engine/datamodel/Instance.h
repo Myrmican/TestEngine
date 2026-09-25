@@ -44,8 +44,6 @@ namespace Engine {
 		void removeAllChildren();
 
 		std::string getPath() const;
-		
-		Game* getDataModel() const;
 
 		Instance* getParent() const { return parent; }
 
@@ -79,9 +77,9 @@ namespace Engine {
 		std::string_view getClassName() const { return className; }
 
 		static void BindAPI(WasmRuntime& wasm);
-		static void reflectProperties(ClassDescriptor* desc);
+		static void registerProperties(ClassDescriptor* desc);
 	private:
-		void setParentInternal(Instance* instance, bool ignoreLock);
+		bool setParentInternal(Instance* instance, bool ignoreLock);
 
 		void collectDescendants(Instance* current, std::vector<Instance*>& out) {
 			for (const InstancePtr& child : current->getChildren()) {

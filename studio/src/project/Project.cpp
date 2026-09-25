@@ -25,7 +25,7 @@ Project::Project(const std::string& projectName) {
     savingInCloud = false;
 
     try {
-        engine = std::make_unique<Engine::Engine>();
+        engine = std::make_unique<Engine::EngineInstance>();
     }
     catch (const std::exception& e) {
         qCritical() << "Failed to initialize Engine:";

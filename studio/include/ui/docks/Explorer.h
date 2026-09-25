@@ -6,7 +6,7 @@
 #include <QObject>
 #include <QEvent>
 #include <project/Project.h>
-#include <datamodel/Game.h>
+#include <datamodel/DataModel.h>
 
 namespace Engine {
     QTreeWidgetItem* GetEngineInstance(QTreeWidget* treeWidget, Instance* instance);

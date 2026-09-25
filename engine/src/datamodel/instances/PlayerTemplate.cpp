@@ -1,7 +1,9 @@
 #include <datamodel/instances/PlayerTemplate.h>
 #include <datamodel/instances/Backpack.h>
+#include <core/Reflection.h>
 
 namespace Engine {
+	REGISTER_INSTANCE(PlayerTemplate);
 	PlayerTemplate::PlayerTemplate() : Instance("PlayerTemplate") {
 		internalLocked = true;
 

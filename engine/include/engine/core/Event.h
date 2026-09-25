@@ -39,7 +39,7 @@ namespace Engine {
 
 	private:
 		void disconnect() {
-			m_callbacks.erase(id);
+			m_callbacks.erase();
 		}
 
 		size_t m_nextId = 0;

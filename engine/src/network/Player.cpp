@@ -1,4 +1,4 @@
-#include <datamodel/instances/Player.h>
+#include <network/Player.h>
 
 namespace Engine {
 	Player::Player() : Instance("Player") {

@@ -158,16 +158,16 @@ namespace {
                         "Create New File",
                         "File Name:",
                         QLineEdit::Normal,
-                        "" + finalExtension,
+                        finalExtension,
                         &ok
                     );
 
                     if (ok && !fileName.isEmpty()) {
                         File* file = new File();
-                        file->setName(fileName.toStdString());
-                        QTreeWidgetItem* insertedItem = self->AddItem(item, file);
-                        insertedItem->setSelected(true);
-                        self->treeWidget->scrollToItem(insertedItem);
+                        //file->setName(fileName.toStdString());
+                        //QTreeWidgetItem* insertedItem = self->AddItem(item, file);
+                        //insertedItem->setSelected(true);
+                        //self->treeWidget->scrollToItem(insertedItem);
                     }
                 }
                 else if (selectedAction == addInstanceAction) {
@@ -182,16 +182,7 @@ namespace {
 
     void SelectionChanged(Explorer* self) {
         Project* project = self->m_project;
-        auto services = project->dataModel->m_services;
-
-        Selection* selectionService = nullptr;
-
-        for (const auto& [name, instance] : services) {
-            if (name == "Selection") {
-                selectionService = dynamic_cast<Selection*>(instance);
-                break;
-            }
-        }
+        Selection* selectionService = project->engine->getProvider()->getService<Selection>();
 
         QObject::connect(self->treeWidget, &QTreeWidget::currentItemChanged, self->treeWidget, [self, selectionService](QTreeWidgetItem* current, QTreeWidgetItem* previous) {
             if (!selectionService) return;
@@ -335,8 +326,8 @@ QTreeWidgetItem* Explorer::AddItem(QTreeWidgetItem* parentItem, Instance* instan
     Instance* parentInstance = GetEngineInstance(parentItem);
     QString instanceName = QString::fromStdString(std::string(instance->getName()));
 
-    if (!parentInstance && m_project->dataModel) {
-        parentInstance = m_project->dataModel.get();
+    if (!parentInstance && m_project->engine->getDataModel()) {
+        parentInstance = m_project->engine->getDataModel();
     }
 
     if (!parentInstance) return nullptr;
@@ -374,7 +365,7 @@ QTreeWidgetItem* Explorer::AddItem(QTreeWidgetItem* parentItem, Instance* instan
 
 void Explorer::AssembleRoot() {
 
-    for (auto& service : m_project->dataModel->getChildren()) {
+    for (auto& service : m_project->engine->getDataModel()->getChildren()) {
         AddItem(nullptr, service.get());
 
         const auto& children = service->getChildren();

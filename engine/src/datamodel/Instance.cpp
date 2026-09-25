@@ -2,7 +2,7 @@
 #include <scripting/WasmRuntime.h>
 #include <datamodel/ClassDescriptor.h>
 #include <core/Reflection.h>
-#include <datamodel/Game.h>
+#include <datamodel/DataModel.h>
 #include <datamodel/Property.h>
 #include <iostream>
 #include <format>
@@ -19,17 +19,6 @@ namespace Engine {
 	Instance::Instance(std::string name) : parent(nullptr) {
 		this->className = name;
 		this->name = name;
-	}
-
-	Game* Instance::getDataModel() const {
-		const Instance* current = this;
-		while (current->parent != nullptr) {
-			current = current->parent;
-		}
-
-		// Verify if the top-level root is indeed the DataModel / Game
-		// (You can use dynamic_cast, RTTI, or an internal type flag/check)
-		return const_cast<Game*>(dynamic_cast<const Game*>(current));
 	}
 
 	void Instance::setName(std::string_view value) {
@@ -68,7 +57,7 @@ namespace Engine {
 		onChildAdded(rawChild);
 	}
 
-	void Instance::setParentInternal(Instance* newParent, bool ignoreLock) {
+	bool Instance::setParentInternal(Instance* newParent, bool ignoreLock) {
 		std::string message;
 
 		if (internalLocked && !ignoreLock) {
@@ -107,9 +96,7 @@ namespace Engine {
 			newParent->onChildAdded(this);
 		}
 
-		// If newParent is null and self was populated, `self` now goes out of
-		// scope here and `this` is deleted. Do not access `this` after this call
-		// returns in that case.
+		return true;
 	}
 
 	std::unique_ptr<Instance> Instance::clone() {
@@ -187,7 +174,7 @@ namespace Engine {
 		setParentInternal(instance, ignoreLock);
 	}
 
-	void Instance::reflectProperties(ClassDescriptor* desc) {
+	void Instance::registerProperties(ClassDescriptor* desc) {
 		auto* classNameProperty = new TypedProperty<Instance, std::string_view>(
 			"ClassName", "Data", &Instance::getClassName, nullptr
 		);

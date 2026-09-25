@@ -1,19 +1,23 @@
 #pragma once
 
 #include <memory>
-#include <datamodel/Game.h>
+#include <datamodel/DataModel.h>
+#include <datamodel/Service.h>
 
 namespace Engine {
-	class Engine {
+	class ServiceProvider;
+	
+	class EngineInstance {
 
 	public:
-		Engine() {
-			m_dataModel = std::make_unique<Game>();
-		}
+		EngineInstance();
+		~EngineInstance() = default;
 
-		~Engine() = default;
+		DataModel* getDataModel() { return m_dataModel.get(); }
 
+		Engine::ServiceProvider* getProvider() { return m_sProvider; }
 	private:
-		std::unique_ptr<Game> m_dataModel;
+		std::unique_ptr<DataModel> m_dataModel;
+		Engine::ServiceProvider* m_sProvider;
 	};
 }

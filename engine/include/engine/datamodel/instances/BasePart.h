@@ -25,7 +25,7 @@ namespace Engine {
 
 		void setColor(const Color3 color);
 
-		static void reflectProperties(ClassDescriptor* desc);
+		static void registerProperties(ClassDescriptor* desc);
 	protected:
 		BasePart(std::string className);
 	private:

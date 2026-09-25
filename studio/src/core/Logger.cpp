@@ -14,7 +14,7 @@ Logger::Logger(Output* parent, Project* project) {
     this->outputDock = parent;
     this->project = project;
 
-    auto services = project->dataModel->m_services;
+    auto services = project->engine->getProvider()->m_services;
 
     Engine::Logging* logging = nullptr;
 

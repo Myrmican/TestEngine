@@ -4,5 +4,7 @@ namespace Engine {
 	class Backpack : public Instance {
 	public:
 		Backpack();
+
+		static void registerProperties(ClassDescriptor* desc) {};
 	};
 }

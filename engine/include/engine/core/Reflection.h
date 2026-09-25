@@ -81,7 +81,6 @@ namespace Engine {
             reg.descriptors[className] = std::move(desc);
         }
     };
-
 }
 
 #define REGISTER_INSTANCE(className) \
@@ -89,7 +88,7 @@ namespace Engine {
         #className, \
         "Instance", \
         nullptr, \
-        [](::Engine::ClassDescriptor* desc) { className::reflectProperties(desc); }, \
+        [](::Engine::ClassDescriptor* desc) { className::registerProperties(desc); }, \
         true \
     )
 
@@ -100,7 +99,7 @@ namespace Engine {
         []() -> std::unique_ptr<::Engine::Creatable> { \
             return std::make_unique<className>(); \
         }, \
-        [](::Engine::ClassDescriptor* desc) { className::reflectProperties(desc); }, \
+        [](::Engine::ClassDescriptor* desc) { className::registerProperties(desc); }, \
         true \
     )
 
@@ -109,6 +108,6 @@ namespace Engine {
         #className, \
         "Instance", \
         nullptr, \
-        [](::Engine::ClassDescriptor* desc) { className::reflectProperties(desc); }, \
+        [](::Engine::ClassDescriptor* desc) { className::registerProperties(desc); }, \
         false \
     )

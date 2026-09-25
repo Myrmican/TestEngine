@@ -64,8 +64,8 @@ namespace Engine {
                 if (!newInstance) return;
 
                 Instance* parentInstance = Engine::GetEngineInstance(parentItem);
-                if (!parentInstance && explorer->m_project->dataModel)
-                    parentInstance = explorer->m_project->dataModel.get();
+                if (!parentInstance && explorer->m_project->engine->getDataModel())
+                    parentInstance = explorer->m_project->engine->getDataModel();
                 
                 if (!parentInstance) {
                     return;
