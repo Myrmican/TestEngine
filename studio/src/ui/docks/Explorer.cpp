@@ -26,6 +26,7 @@
 #include <memory>
 #include <engine/services/selection/Selection.h>
 #include <engine/core/Reflection.h>
+#include <core/InstanceHandler.h>
 
 using namespace Engine;
 
@@ -78,7 +79,7 @@ namespace {
 					currentIteratedItem = currentIteratedItem->parent();
 				}
 
-                QMenu* contextMenu = Menu::create(explorerTree);
+                QMenu* contextMenu = Menu::create(window);
 
                 QAction* openAction = nullptr;
                 QMenu* openWithMenu = nullptr;
@@ -163,11 +164,13 @@ namespace {
                     );
 
                     if (ok && !fileName.isEmpty()) {
-                        File* file = new File();
-                        //file->setName(fileName.toStdString());
-                        //QTreeWidgetItem* insertedItem = self->AddItem(item, file);
-                        //insertedItem->setSelected(true);
-                        //self->treeWidget->scrollToItem(insertedItem);
+                        InsertInstanceSet insertResult = Engine::insertInstance("File", item, window);
+
+                        std::string nameStr = fileName.toStdString();
+                        insertResult.instance->setName(nameStr);
+
+                        explorerTree->clearSelection();
+                        explorerTree->setCurrentItem(insertResult.item);
                     }
                 }
                 else if (selectedAction == addInstanceAction) {

@@ -2,6 +2,7 @@
 #include <engine/core/Reflection.h>
 #include <ui/docks/Explorer.h>
 #include <datamodel/Instance.h>
+#include <core/InstanceHandler.h>
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
@@ -50,37 +51,17 @@ namespace Engine {
             });
 
         QObject::connect(objectList, &QListWidget::itemPressed, this, [this, parentItem](QListWidgetItem* item) {
-            if (item) {
-                QTreeWidget* treeWidget = parentItem->treeWidget();
+            QTreeWidget* treeWidget = parentItem->treeWidget();
 
-                QMainWindow* mainWindow = qobject_cast<QMainWindow*>(treeWidget->window());
-                if (!mainWindow) return;
+            QMainWindow* mainWindow = qobject_cast<QMainWindow*>(treeWidget->window());
+            if (!mainWindow) return;
 
-                Explorer* explorer = mainWindow->findChild<Explorer*>();
-                if (!explorer) return;
+            InsertInstanceSet insertResult = insertInstance(item->text().toStdString(), parentItem, mainWindow);
 
-                QString className = item->text();
-                std::unique_ptr<Engine::Creatable> newInstance = Engine::CreateInstance(className.toStdString());
-                if (!newInstance) return;
+            treeWidget->clearSelection();
+            treeWidget->setCurrentItem(insertResult.item);
 
-                Instance* parentInstance = Engine::GetEngineInstance(parentItem);
-                if (!parentInstance && explorer->m_project->engine->getDataModel())
-                    parentInstance = explorer->m_project->engine->getDataModel();
-                
-                if (!parentInstance) {
-                    return;
-                }
-
-                Instance* rawInstance = newInstance.get();
-                parentInstance->addChild(std::move(newInstance));
-
-                QTreeWidgetItem* treeItem = explorer->AddItem(parentItem, rawInstance);
-
-                treeWidget->clearSelection();
-                treeWidget->setCurrentItem(treeItem);
-
-                close();
-            }
+            close();
             });
 	}
 }

@@ -26,9 +26,16 @@ Project::Project(const std::string& projectName) {
 
     try {
         engine = std::make_unique<Engine::EngineInstance>();
+
+        try {
+            scriptEngine = std::make_unique<Engine::ScriptEngine>(engine->getDataModel());
+        }
+        catch (const std::exception& e) {
+            qCritical() << "Failed to initialize ScriptEngine:";
+        }
     }
     catch (const std::exception& e) {
-        qCritical() << "Failed to initialize Engine:";
+        qCritical() << "Failed to initialize EngineInstance:";
     }
 }
 

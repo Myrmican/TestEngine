@@ -16,7 +16,7 @@ namespace Menu {
         palette.setColor(QPalette::WindowText, QColor(242, 242, 242));
         palette.setColor(QPalette::Text, QColor(242, 242, 242));
         palette.setColor(QPalette::Highlight, QColor(26, 26, 26));
-        menu->setWindowFlags(menu->windowFlags() | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
+        menu->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
 
         menu->setPalette(palette);
         if (QStyle* fusion = QStyleFactory::create("Fusion")) {

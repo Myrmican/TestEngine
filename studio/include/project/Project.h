@@ -6,6 +6,7 @@
 #include <QFile>
 #include <core/Logger.h>
 #include <engine/Engine.h>
+#include <engine/scripting/ScriptEngine.h>
 
 class QMainWindow;
 class QFile;
@@ -24,6 +25,7 @@ public:
 	Explorer* explorer = nullptr;
 
     std::shared_ptr<Engine::EngineInstance> engine;
+    std::shared_ptr<Engine::ScriptEngine> scriptEngine;
 
     Project(const std::string& projectName);
     ~Project();
