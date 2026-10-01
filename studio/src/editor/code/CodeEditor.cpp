@@ -1,11 +1,9 @@
-#pragma once
-
 #include <Qsci/qsciapis.h>
 #include <QWidget>
 #include <QFont>
 #include <QColor>
 #include <Qsci/qsciglobal.h>
-#include <editor/CodeEditor.h>
+#include <editor/code/CodeEditor.h>
 
 namespace Engine {
 	CodeEditor::CodeEditor(QWidget* parent) : QsciScintilla(parent) {
@@ -32,6 +30,8 @@ namespace Engine {
 		this->setIndentationsUseTabs(true);
 		this->setTabWidth(4);
 
+		this->SendScintilla(QsciScintilla::SCI_SETKEYWORDS, 1, "@Override @Deprecated @SuppressWarnings @Target @Retention");
+
 		lexer->setColor(defaultFg, QsciLexerJava::Default);
 		lexer->setColor(defaultFg, QsciLexerJava::Identifier);
 		lexer->setColor(QColor("#57A64A"), QsciLexerJava::Comment);
@@ -42,6 +42,7 @@ namespace Engine {
 		lexer->setColor(QColor("#B5CEA8"), QsciLexerJava::Number);
 		lexer->setColor(QColor("#CE9178"), QsciLexerJava::DoubleQuotedString);
 		lexer->setColor(QColor("#CE9178"), QsciLexerJava::SingleQuotedString);
+		lexer->setColor(QColor("#4EC9B0"), 15);
 
 		this->setMatchedBraceBackgroundColor(darkBg);
 		this->setMatchedBraceForegroundColor(QColor("#569CD6"));

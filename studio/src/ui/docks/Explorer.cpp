@@ -11,7 +11,7 @@
 #include <QHeaderView>
 #include <string>
 #include <project/Project.h>
-#include <editor/CodeEditor.h>
+#include <editor/code/CodeEditor.h>
 #include <util/Languages.h>
 #include <ui/menus/MenuManager.h>
 #include <ui/docks/Explorer.h>

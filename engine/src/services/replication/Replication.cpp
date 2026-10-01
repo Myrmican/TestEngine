@@ -41,10 +41,12 @@ namespace Engine {
 	std::vector<Player*>& Replication::getTargets(Instance* instance) {
 		bool isServer = false; //Replace with networking logic
 
+		static std::vector<Player*> targets;
+
 		if (!isServer) {
 			throw std::runtime_error("Can only get replication targets on the server.");
 		}
 
-
+		return targets;
 	};
 }

@@ -80,9 +80,9 @@ if(WIN32)
             "${wasmtime_SOURCE_DIR}/lib/wasmtime.dll"
             "$<TARGET_FILE_DIR:TestEngine>"
 
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-                "${CMAKE_SOURCE_DIR}/assets/shaders/compiled"
-                "$<TARGET_FILE_DIR:TestEngine>/assets/shaders/compiled"
+        #COMMAND ${CMAKE_COMMAND} -E copy_directory
+        #        "${CMAKE_SOURCE_DIR}/assets/shaders/compiled"
+        #        "$<TARGET_FILE_DIR:TestEngine>/assets/shaders/compiled"
 
         COMMAND "${QT_BIN_DIR}/windeployqt.exe" --no-compiler-runtime "$<TARGET_FILE:TestEngine>"
         
