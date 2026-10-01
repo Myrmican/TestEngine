@@ -11,7 +11,7 @@ namespace Engine {
 		this->addChild(std::move(worldCamera));
 	}
 
-	void World::registerProperties(ClassDescriptor* desc) {
+	void World::properties(ClassDescriptor* desc) {
 		auto* currentCameraProperty = new TypedProperty<World, Camera*>(
 			"CurrentCamera", "Data", &World::getCurrentCamera, &World::setCurrentCamera
 		);

@@ -15,6 +15,6 @@ namespace Engine {
 		void Send(Player* target, const std::vector<uint8_t>& payload);
 		void Broadcast(const std::vector<uint8_t>& payload);
 
-		static void registerProperties(ClassDescriptor* desc) {};
+		static void properties(ClassDescriptor* desc) {};
 	};
 }

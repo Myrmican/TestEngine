@@ -5,6 +5,6 @@ namespace Engine {
 	public:
 		Backpack();
 
-		static void registerProperties(ClassDescriptor* desc) {};
+		static void properties(ClassDescriptor* desc) {};
 	};
 }

@@ -7,7 +7,7 @@ namespace Engine {
 		,m_color(0, 0, 0) {
 	}
 
-	void Folder::registerProperties(ClassDescriptor* desc) {
+	void Folder::properties(ClassDescriptor* desc) {
 		desc->addProperty(new TypedProperty<Folder, Color3>(
 			"Color",
 			"Appearance",

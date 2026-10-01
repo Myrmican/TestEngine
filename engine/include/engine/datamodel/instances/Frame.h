@@ -5,6 +5,6 @@ namespace Engine {
 	public:
 		Frame();
 
-		static void registerProperties(ClassDescriptor* desc) {};
+		static void properties(ClassDescriptor* desc) {};
 	};
 }

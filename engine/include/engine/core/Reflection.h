@@ -75,7 +75,7 @@ namespace Engine {
                 reflectFunc(desc.get());
             }
 
-            Instance::registerProperties(desc.get());
+            Instance::properties(desc.get());
 
             reg.descriptors[className] = std::move(desc);
         }
@@ -87,7 +87,7 @@ namespace Engine {
         #className, \
         "Instance", \
         nullptr, \
-        [](::Engine::ClassDescriptor* desc) { className::registerProperties(desc); }, \
+        [](::Engine::ClassDescriptor* desc) { className::properties(desc); }, \
         true \
     )
 
@@ -98,7 +98,7 @@ namespace Engine {
         []() -> std::unique_ptr<::Engine::Creatable> { \
             return std::make_unique<className>(); \
         }, \
-        [](::Engine::ClassDescriptor* desc) { className::registerProperties(desc); }, \
+        [](::Engine::ClassDescriptor* desc) { className::properties(desc); }, \
         true \
     )
 
@@ -107,6 +107,6 @@ namespace Engine {
         #className, \
         "Instance", \
         nullptr, \
-        [](::Engine::ClassDescriptor* desc) { className::registerProperties(desc); }, \
+        [](::Engine::ClassDescriptor* desc) { className::properties(desc); }, \
         false \
     )

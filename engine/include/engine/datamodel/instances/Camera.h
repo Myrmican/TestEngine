@@ -25,7 +25,7 @@ namespace Engine {
 		DirectX::XMMATRIX getViewMatrix() const;
 		DirectX::XMMATRIX getProjectionMatrix(float aspectRatio) const;
 
-		static void registerProperties(ClassDescriptor* desc);
+		static void properties(ClassDescriptor* desc);
 
 	private:
 		float m_FieldOfView = 70.0f;   // degrees - Roblox default is 70

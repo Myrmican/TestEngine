@@ -174,7 +174,7 @@ namespace Engine {
 		setParentInternal(instance, ignoreLock);
 	}
 
-	void Instance::registerProperties(ClassDescriptor* desc) {
+	void Instance::properties(ClassDescriptor* desc) {
 		auto* classNameProperty = new TypedProperty<Instance, std::string_view>(
 			"ClassName", "Data", &Instance::getClassName, nullptr
 		);

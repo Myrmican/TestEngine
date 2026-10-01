@@ -63,8 +63,8 @@ namespace Engine {
 		m_color = color;
 	}
 
-	void BasePart::registerProperties(Engine::ClassDescriptor* desc) {
-		Instance::registerProperties(desc);
+	void BasePart::properties(Engine::ClassDescriptor* desc) {
+		Instance::properties(desc);
 
 		desc->addProperty(new TypedProperty<BasePart, Vector3>(
 			"Size",

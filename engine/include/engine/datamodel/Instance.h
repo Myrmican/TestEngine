@@ -77,7 +77,7 @@ namespace Engine {
 		std::string_view getClassName() const { return className; }
 
 		static void BindAPI(WasmRuntime& wasm);
-		static void registerProperties(ClassDescriptor* desc);
+		static void properties(ClassDescriptor* desc);
 	private:
 		bool setParentInternal(Instance* instance, bool ignoreLock);
 

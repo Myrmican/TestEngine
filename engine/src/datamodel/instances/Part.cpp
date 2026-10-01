@@ -7,8 +7,8 @@ namespace Engine {
 
 	};
 
-	void Part::registerProperties(Engine::ClassDescriptor* desc) {
-		Instance::registerProperties(desc);
+	void Part::properties(Engine::ClassDescriptor* desc) {
+		Instance::properties(desc);
 
 
 	}

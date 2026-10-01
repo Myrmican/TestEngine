@@ -1,7 +1,7 @@
 ﻿cmake_minimum_required(VERSION 3.25...3.31)
 
 if(NOT CMAKE_PREFIX_PATH AND NOT Qt6_DIR)
-    set(CMAKE_PREFIX_PATH "C:/Qt/6.11.2/msvc2022_64")
+    set(CMAKE_PREFIX_PATH "C:/Qt/6.12.0/msvc2022_64")
 endif()
 
 project("TestEngine" LANGUAGES CXX)

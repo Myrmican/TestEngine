@@ -14,7 +14,7 @@ namespace Engine {
 			currentCamera = camera;
 		}
 
-		static void registerProperties(ClassDescriptor* desc);
+		static void properties(ClassDescriptor* desc);
 
 	private:
 		Camera* currentCamera = nullptr;

@@ -7,6 +7,6 @@ namespace Engine {
 	public:
 		Part();
 
-		static void registerProperties(Engine::ClassDescriptor* desc);
+		static void properties(Engine::ClassDescriptor* desc);
 	};
 }

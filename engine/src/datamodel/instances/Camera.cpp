@@ -49,8 +49,8 @@ namespace Engine {
 		return XMMatrixPerspectiveFovLH(fovRadians, aspectRatio, m_NearPlane, m_FarPlane);
 	}
 
-	void Camera::registerProperties(ClassDescriptor* desc) {
-		Instance::registerProperties(desc);
+	void Camera::properties(ClassDescriptor* desc) {
+		Instance::properties(desc);
 
 		desc->addProperty(new TypedProperty<Camera, float>(
 			"FieldOfView",

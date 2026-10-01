@@ -7,6 +7,6 @@ namespace Engine {
 	public:
 		Entity();
 
-		static void registerProperties(ClassDescriptor* desc) {};
+		static void properties(ClassDescriptor* desc) {};
 	};
 }

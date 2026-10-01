@@ -9,6 +9,6 @@ namespace Engine {
 		void pause();
 		void stop();
 
-		static void registerProperties(ClassDescriptor* desc) {};
+		static void properties(ClassDescriptor* desc) {};
 	};
 }
