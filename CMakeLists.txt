@@ -55,6 +55,7 @@ FetchContent_Declare(
     qscintilla
     GIT_REPOSITORY      https://github.com/farleyrunkel/QScintilla.git
     GIT_TAG             main
+    SOURCE_SUBDIR  _no_cmake_here
 )
 
 FetchContent_Declare(
@@ -73,11 +74,35 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets OpenGLWidgets PrintSupport Network)
 
 FetchContent_MakeAvailable(qscintilla qwindowkit yaml-cpp wasmtime)
 
-if(WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(QSCI_TARGET_NAME qscintilla2_qt6d)
-else()
-    set(QSCI_TARGET_NAME qscintilla2_qt6)
-endif()
+file(GLOB QSCI_SRC CONFIGURE_DEPENDS
+    "${qscintilla_SOURCE_DIR}/src/*.cpp"
+    "${qscintilla_SOURCE_DIR}/scintilla/src/*.cpp"
+    "${qscintilla_SOURCE_DIR}/scintilla/lexers/*.cpp"
+    "${qscintilla_SOURCE_DIR}/scintilla/lexlib/*.cpp")
+
+file(GLOB QSCI_HDR CONFIGURE_DEPENDS
+    "${qscintilla_SOURCE_DIR}/src/*.h"
+    "${qscintilla_SOURCE_DIR}/src/Qsci/*.h")
+
+add_library(qscintilla2_qt6 SHARED ${QSCI_SRC} ${QSCI_HDR})
+
+set_target_properties(qscintilla2_qt6 PROPERTIES
+    AUTOMOC ON
+    DEBUG_POSTFIX "d")
+
+target_compile_definitions(qscintilla2_qt6
+    PRIVATE SCINTILLA_QT SCI_LEXER INCLUDE_DEPRECATED_FEATURES QSCINTILLA_MAKE_DLL)
+
+target_include_directories(qscintilla2_qt6
+    PUBLIC  "${qscintilla_SOURCE_DIR}/src"
+    PRIVATE "${qscintilla_SOURCE_DIR}/scintilla/include"
+            "${qscintilla_SOURCE_DIR}/scintilla/lexlib"
+            "${qscintilla_SOURCE_DIR}/scintilla/src")
+
+target_link_libraries(qscintilla2_qt6
+    PUBLIC Qt6::Widgets Qt6::PrintSupport)
+
+set(QSCI_TARGET_NAME qscintilla2_qt6)
 
 configure_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/assets/util/ProgrammingLanguages.yml"

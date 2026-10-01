@@ -11,7 +11,7 @@ namespace Engine::Tools {
 			connect(this, &QToolButton::clicked, this, [this, parent]() {
 				this->setText("Stop");
 
-				Project* project = ProjectManager::getProject(parent->parentWidget());
+				Project* project = ProjectManager::getProject(this);
 				project->scriptEngine->executeFiles();
 				});
 		};

@@ -27,6 +27,7 @@ namespace EditorWindow {
             project->setParent(editorPage);
         }
 
+        window->setProperty("projectInstance", QVariant::fromValue(static_cast<void*>(project)));
         window->setWindowTitle(project->name + " - Test Engine");
 
         auto ribbonBar = Engine::Ribbon::createWidget(window);

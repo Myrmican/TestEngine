@@ -165,6 +165,10 @@ namespace {
 
                     if (ok && !fileName.isEmpty()) {
                         InsertInstanceSet insertResult = Engine::insertInstance("File", item, window);
+						if (!insertResult.instance) {
+							qDebug() << "Failed to create File instance.";
+							return;
+						}
 
                         std::string nameStr = fileName.toStdString();
                         insertResult.instance->setName(nameStr);
@@ -348,11 +352,8 @@ QTreeWidgetItem* Explorer::AddItem(QTreeWidgetItem* parentItem, Instance* instan
     item->setData(0, InstancePointerRole, QVariant::fromValue(static_cast<void*>(instance)));
 
 	if (instance->getClassName() == "File") {
-        item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-
         QMainWindow* mainWindow = qobject_cast<QMainWindow*>(treeWidget->window());
         QTabWidget* documentTabs = mainWindow->findChild<QTabWidget*>("DocumentTabs");
-
         CodeEditor* codeEditor = new CodeEditor(documentTabs);
 
         int newTabIndex = documentTabs->addTab(codeEditor, instanceName);

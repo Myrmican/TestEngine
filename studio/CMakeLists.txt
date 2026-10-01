@@ -53,6 +53,12 @@ if(MSVC)
     )
 endif()
 
+if (MSVC)
+    target_link_options(TestEngine PRIVATE /WHOLEARCHIVE:EngineCore)
+elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    target_link_options(TestEngine PRIVATE -Wl,--whole-archive EngineCore -Wl,--no-whole-archive)
+endif()
+
 if(WIN32)
     get_target_property(QT_CORE_LIB_LOCATION Qt6::Core LOCATION)
     get_filename_component(QT_BIN_DIR "${QT_CORE_LIB_LOCATION}" DIRECTORY)

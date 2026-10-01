@@ -78,6 +78,7 @@ void TabManager::handleTabClose(int index, int projectTabIndex, QTabWidget* tabs
             project->projectFile->close();
         }
 
+        window->setProperty("projectInstance", QVariant());
         window->setWindowTitle("Test Engine");
 
         delete project;

@@ -37,6 +37,10 @@ namespace Engine {
 			}
 		}
 
+		void setCancelled(bool cancelled) {
+			m_cancelled = cancelled;
+		}
+
 	private:
 		void disconnect() {
 			m_callbacks.erase();
@@ -44,5 +48,6 @@ namespace Engine {
 
 		size_t m_nextId = 0;
 		std::unordered_map<size_t, Callback> m_callbacks;
+		bool m_cancelled = false;
 	};
 }

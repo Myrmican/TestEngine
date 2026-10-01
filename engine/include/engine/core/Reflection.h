@@ -60,23 +60,22 @@ namespace Engine {
             bool isEditorVisible = true
         ) {
             auto& reg = GetReflectionRegistry();
-
             reg.classes.push_back(className);
 
-            // 1. Store factory for instantiation
             if (factory) {
                 reg.creatables.push_back(className);
                 reg.factories[className] = factory;
             }
 
-            // 2. Fetch parent ClassDescriptor if it exists
             ClassDescriptor* parentDesc = parentClassName.empty() ? nullptr : GetClassDescriptor(parentClassName);
 
-            // 3. Create ClassDescriptor and execute property reflections
+            //Create ClassDescriptor and execute property reflections
             auto desc = std::make_unique<ClassDescriptor>(className, parentDesc, isEditorVisible);
             if (reflectFunc) {
                 reflectFunc(desc.get());
             }
+
+            Instance::registerProperties(desc.get());
 
             reg.descriptors[className] = std::move(desc);
         }

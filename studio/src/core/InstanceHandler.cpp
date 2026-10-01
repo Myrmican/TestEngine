@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QTreeWidgetItem>
 #include <string>
+#include <iostream>
 
 namespace Engine {
     InsertInstanceSet insertInstance(std::string className, QTreeWidgetItem* parentItem, QMainWindow* mainWindow) {
@@ -19,7 +20,7 @@ namespace Engine {
         if (!parentInstance && explorer->m_project->engine->getDataModel())
             parentInstance = explorer->m_project->engine->getDataModel();
 
-        if (!parentInstance) {
+        if (!parentInstance || !newInstance) {
             return {};
         }
 
