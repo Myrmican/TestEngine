@@ -30,7 +30,7 @@ namespace Engine {
 		this->setIndentationsUseTabs(true);
 		this->setTabWidth(4);
 
-		this->SendScintilla(QsciScintilla::SCI_SETKEYWORDS, 1, "@Override @Deprecated @SuppressWarnings @Target @Retention");
+		//this->SendScintilla(QsciScintilla::SCI_SETKEYWORDS, 1, "@Override @Deprecated @SuppressWarnings @Target @Retention");
 
 		lexer->setColor(defaultFg, QsciLexerJava::Default);
 		lexer->setColor(defaultFg, QsciLexerJava::Identifier);

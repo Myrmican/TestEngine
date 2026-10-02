@@ -1,8 +1,9 @@
 #include <datamodel/Instance.h>
+#include <datamodel/instances/Model.h>
 #include <datamodel/Instances/Camera.h>
 
 namespace Engine {
-	class World : public Instance {
+	class World : public Model {
 	public:
 		World();
 
@@ -14,7 +15,7 @@ namespace Engine {
 			currentCamera = camera;
 		}
 
-		static void properties(ClassDescriptor* desc);
+		//static void properties(ClassDescriptor* desc);
 
 	private:
 		Camera* currentCamera = nullptr;

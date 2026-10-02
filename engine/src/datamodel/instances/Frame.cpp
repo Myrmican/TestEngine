@@ -2,7 +2,7 @@
 #include <core/Reflection.h>
 
 namespace Engine {
-	REGISTER_CREATABLE(Frame);
+	REGISTER_CREATABLE(Frame, Instance);
 	Frame::Frame() : Creatable("Frame") {
 
 	}

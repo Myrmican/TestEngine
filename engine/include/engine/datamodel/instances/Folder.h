@@ -2,11 +2,12 @@
 
 #include <datamodel/Instance.h>
 #include <core/math/Color3.h>
+#include <string>
 
 namespace Engine {
 	class Folder : public Creatable {
 	public:
-		Folder();
+		Folder(std::string_view name = "Folder");
 
 		Color3 getColor() const { return m_color; }
 

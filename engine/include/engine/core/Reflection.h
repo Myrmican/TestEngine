@@ -75,26 +75,26 @@ namespace Engine {
                 reflectFunc(desc.get());
             }
 
-            Instance::properties(desc.get());
+            std::cout << parentClassName << std::endl;
 
             reg.descriptors[className] = std::move(desc);
         }
     };
 }
 
-#define REGISTER_INSTANCE(className) \
+#define REGISTER_INSTANCE(className, parentClassName) \
     inline const ::Engine::ReflectionHelper reflection_##className( \
         #className, \
-        "Instance", \
+        #parentClassName , \
         nullptr, \
         [](::Engine::ClassDescriptor* desc) { className::properties(desc); }, \
         true \
     )
 
-#define REGISTER_CREATABLE(className) \
+#define REGISTER_CREATABLE(className, parentClassName) \
     inline const ::Engine::ReflectionHelper reflection_##className( \
         #className, \
-        "Instance", \
+        #parentClassName, \
         []() -> std::unique_ptr<::Engine::Creatable> { \
             return std::make_unique<className>(); \
         }, \

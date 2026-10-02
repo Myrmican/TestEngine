@@ -3,7 +3,7 @@
 #include <Engine.h>
 
 namespace Engine {
-	REGISTER_CREATABLE(NetworkSignal);
+	REGISTER_CREATABLE(NetworkSignal, Instance);
 	NetworkSignal::NetworkSignal() : Creatable("NetworkSignal") {
 
 	}

@@ -2,7 +2,7 @@
 #include <core/Reflection.h>
 
 namespace Engine {
-	REGISTER_INSTANCE(Players);
+	REGISTER_INSTANCE(Players, Instance);
 	Players::Players() : Instance("Players") {
 		internalLocked = true;
 	}

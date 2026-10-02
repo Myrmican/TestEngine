@@ -2,7 +2,7 @@
 #include <core/Reflection.h>
 
 namespace Engine {
-	REGISTER_INSTANCE(Interface);
+	REGISTER_INSTANCE(Interface, Instance);
 	Interface::Interface() : Instance("Interface") {
 		internalLocked = true;
 		

@@ -3,7 +3,7 @@
 #include <string>
 
 namespace Engine {
-	REGISTER_INSTANCE(Client);
+	REGISTER_INSTANCE(Client, Instance);
 	Client::Client() : Instance("Client") {
 		internalLocked = true;
 	}

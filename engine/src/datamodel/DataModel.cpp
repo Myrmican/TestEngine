@@ -13,6 +13,9 @@
 #include <datamodel/instances/Camera.h>
 #include <services/selection/Selection.h>
 #include <services/logging/Logging.h>
+#include <datamodel/instances/File.h>
+#include <datamodel/instances/AssetsFolder.h>
+#include <datamodel/instances/SourceFolder.h>
 #include <core/Reflection.h>
 
 namespace Engine {
@@ -63,27 +66,29 @@ namespace Engine {
 
         auto serverAssetsFolder = std::make_unique<Folder>();
         serverAssetsFolder->setName("Assets");
+        serverAssetsFolder->internalLocked = true;
         serverService->addChild(std::move(serverAssetsFolder));
 
-        auto serverSourceFolder = std::make_unique<Folder>();
-        serverSourceFolder->setName("Source");
-        serverService->addChild(std::move(serverSourceFolder));
+        auto serverSourceFolderOwned = std::make_unique<SourceFolder>();
+        SourceFolder* serverSourceFolder = serverSourceFolderOwned.get();
+        serverService->addChild(std::move(serverSourceFolderOwned));
 
         auto sharedAssetsFolder = std::make_unique<Folder>();
         sharedAssetsFolder->setName("Assets");
+        sharedAssetsFolder->internalLocked = true;
         sharedService->addChild(std::move(sharedAssetsFolder));
 
-        auto sharedSourceFolder = std::make_unique<Folder>();
-        sharedSourceFolder->setName("Source");
+        auto sharedSourceFolder = std::make_unique<SourceFolder>();
         sharedService->addChild(std::move(sharedSourceFolder));
 
         auto clientAssetsFolder = std::make_unique<Folder>();
         clientAssetsFolder->setName("Assets");
+        clientAssetsFolder->internalLocked = true;
         clientService->addChild(std::move(clientAssetsFolder));
 
-        auto clientSourceFolder = std::make_unique<Folder>();
-        clientSourceFolder->setName("Source");
-        clientService->addChild(std::move(clientSourceFolder));
+        auto clientSourceFolderOwned = std::make_unique<SourceFolder>();
+        SourceFolder* clientSourceFolder = clientSourceFolderOwned.get();
+        clientService->addChild(std::move(clientSourceFolderOwned));
 
         auto playerTemplateOwned = std::make_unique<PlayerTemplate>();
         PlayerTemplate* playerTemplate = playerTemplateOwned.get();
@@ -95,5 +100,15 @@ namespace Engine {
         auto baseplatePart = std::make_unique<Part>();
         baseplatePart->setName("Baseplate");
         worldService->addChild(std::move(baseplatePart));
+
+        //Main entry files
+
+        auto serverMainFile = std::make_unique<File>();
+        serverMainFile->setName("Server.kts");
+        serverSourceFolder->addChild(std::move(serverMainFile));
+
+        auto clientMainFile = std::make_unique<File>();
+        clientMainFile->setName("Client.kts");
+        clientSourceFolder->addChild(std::move(clientMainFile));
     }
 }

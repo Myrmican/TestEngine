@@ -5,7 +5,7 @@ using namespace Engine;
 using namespace DirectX;
 
 namespace Engine {
-	REGISTER_CREATABLE(Camera);
+	REGISTER_CREATABLE(Camera, Instance);
 	Camera::Camera() : Creatable("Camera") {}
 
 	void Camera::setFOV(const float FOV) {

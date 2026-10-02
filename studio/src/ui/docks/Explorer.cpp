@@ -72,10 +72,12 @@ namespace {
 				QTreeWidgetItem* currentIteratedItem = item;
 
 				while (currentIteratedItem) {
-					if (currentIteratedItem->text(0) == "Source") {
+                    Instance* iteratedInstance = Engine::GetEngineInstance(currentIteratedItem);
+					if (iteratedInstance->getClassName() == "SourceFolder") {
 						filesAllowed = true;
 						break;
 					}
+                    
 					currentIteratedItem = currentIteratedItem->parent();
 				}
 
@@ -109,12 +111,14 @@ namespace {
 
                 contextMenu->addSeparator();
 
-                QAction* addFileAction = nullptr;
+                QAction* addInstanceAction = nullptr;
 				if (filesAllowed) {
-					addFileAction = contextMenu->addAction("Add File");
-				}
+                    addInstanceAction = contextMenu->addAction("Add File");
+                }
+                else {
+                    addInstanceAction = contextMenu->addAction("Add Instance");
+                }
 
-                QAction* addInstanceAction = contextMenu->addAction("Add Instance");
                 addInstanceAction->setShortcut(QKeySequence("Ctrl+I"));
                 addInstanceAction->setShortcutContext(Qt::WindowShortcut);
 
@@ -149,39 +153,41 @@ namespace {
                 else if (selectedAction == renameAction) {
                     explorerTree->editItem(item, 0);
                 }
-                else if (filesAllowed && selectedAction == addFileAction) {
-                    QStringList langExtensions = getExtensionsForLanguage(project->primaryLanguage);
-                    QString finalExtension = langExtensions.isEmpty() ? ".txt" : langExtensions.first();
-
-                    bool ok;
-                    QString fileName = QInputDialog::getText(
-                        window,
-                        "Create New File",
-                        "File Name:",
-                        QLineEdit::Normal,
-                        finalExtension,
-                        &ok
-                    );
-
-                    if (ok && !fileName.isEmpty()) {
-                        InsertInstanceSet insertResult = Engine::insertInstance("File", item, window);
-						if (!insertResult.instance) {
-							qDebug() << "Failed to create File instance.";
-							return;
-						}
-
-                        std::string nameStr = fileName.toStdString();
-                        insertResult.instance->setName(nameStr);
-
-                        explorerTree->clearSelection();
-                        explorerTree->setCurrentItem(insertResult.item);
-                    }
-                }
                 else if (selectedAction == addInstanceAction) {
-                    auto* popup = new Engine::InsertObjectPopup(window, item);
-                    QPoint globalPos = Menu::getMenuPosition(window, popup);
-                    popup->move(globalPos);
-                    popup->show();
+                    if (!filesAllowed) {
+                        auto* popup = new Engine::InsertObjectPopup(window, item);
+                        QPoint globalPos = Menu::getMenuPosition(window, popup);
+                        popup->move(globalPos);
+                        popup->show();
+                    }
+                    else {
+                        QStringList langExtensions = getExtensionsForLanguage(project->primaryLanguage);
+                        QString finalExtension = langExtensions.isEmpty() ? ".txt" : langExtensions.first();
+
+                        bool ok;
+                        QString fileName = QInputDialog::getText(
+                            window,
+                            "Create New File",
+                            "File Name:",
+                            QLineEdit::Normal,
+                            finalExtension,
+                            &ok
+                        );
+
+                        if (ok && !fileName.isEmpty()) {
+                            InsertInstanceSet insertResult = Engine::insertInstance("File", item, window);
+                            if (!insertResult.instance) {
+                                qDebug() << "Failed to create File instance.";
+                                return;
+                            }
+
+                            std::string nameStr = fileName.toStdString();
+                            insertResult.instance->setName(nameStr);
+
+                            explorerTree->clearSelection();
+                            explorerTree->setCurrentItem(insertResult.item);
+                        }
+                    }
                 }
             }
         );
@@ -307,7 +313,7 @@ Explorer::Explorer(QMainWindow* window, Project* project)
     explorerTree->viewport()->installEventFilter(this);
     explorerTree->viewport()->installEventFilter(explorerTree);
     explorerTree->setContextMenuPolicy(Qt::CustomContextMenu);
-    explorerTree->setEditTriggers(QAbstractItemView::EditKeyPressed | QAbstractItemView::DoubleClicked);
+    explorerTree->setEditTriggers(QAbstractItemView::EditKeyPressed | QAbstractItemView::SelectedClicked);
     explorerDock->setWidget(containerWidget);
 
     layout->addWidget(searchBar);
@@ -341,6 +347,7 @@ QTreeWidgetItem* Explorer::AddItem(QTreeWidgetItem* parentItem, Instance* instan
 
     QTreeWidgetItem* item = new QTreeWidgetItem();
     item->setText(0, instanceName);
+    item->setFlags(item->flags() | Qt::ItemIsEditable);
 
     if (parentItem) {
         parentItem->addChild(item);
@@ -350,15 +357,6 @@ QTreeWidgetItem* Explorer::AddItem(QTreeWidgetItem* parentItem, Instance* instan
     }
 
     item->setData(0, InstancePointerRole, QVariant::fromValue(static_cast<void*>(instance)));
-
-	if (instance->getClassName() == "File") {
-        QMainWindow* mainWindow = qobject_cast<QMainWindow*>(treeWidget->window());
-        QTabWidget* documentTabs = mainWindow->findChild<QTabWidget*>("DocumentTabs");
-        CodeEditor* codeEditor = new CodeEditor(documentTabs);
-
-        int newTabIndex = documentTabs->addTab(codeEditor, instanceName);
-        documentTabs->setCurrentIndex(newTabIndex);
-	}
 
     instance->changed.connect([item, instance](std::string name, std::any oldValue) {
         item->setText(0, QString::fromStdString(std::string(instance->getName())));
@@ -394,14 +392,35 @@ void Explorer::AssembleRoot() {
 
 bool Explorer::eventFilter(QObject* watched, QEvent* event) {
     if (treeWidget && watched == treeWidget->viewport()) {
+        auto* mouseEvent = static_cast<QMouseEvent*>(event);
         if (event->type() == QEvent::MouseButtonPress) {
-            auto* mouseEvent = static_cast<QMouseEvent*>(event);
+            QTreeWidgetItem* item = treeWidget->itemAt(mouseEvent->pos());
 
-            if (!treeWidget->itemAt(mouseEvent->pos())) {
+            if (!item) {
                 treeWidget->clearSelection();
                 treeWidget->setCurrentItem(nullptr);
             }
         }
+        else {
+            if (event->type() == QEvent::MouseButtonDblClick) {
+                QTreeWidgetItem* item = treeWidget->itemAt(mouseEvent->pos());
+                Instance* instance = Engine::GetEngineInstance(item);
+                if (!instance) return false;
+
+                if (instance->getClassName() == "File") {
+                    QMainWindow* mainWindow = qobject_cast<QMainWindow*>(treeWidget->window());
+                    QTabWidget* documentTabs = mainWindow->findChild<QTabWidget*>("DocumentTabs");
+                    CodeEditor* codeEditor = new CodeEditor(documentTabs);
+
+                    QString instanceName = QString::fromStdString(std::string(instance->getName()));
+
+                    int newTabIndex = documentTabs->addTab(codeEditor, instanceName);
+                    documentTabs->setCurrentIndex(newTabIndex);
+                }
+            }
+        }
+           
+
     }
     return QObject::eventFilter(watched, event);
 }

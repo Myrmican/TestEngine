@@ -3,7 +3,7 @@
 #include <core/Reflection.h>
 
 namespace Engine {
-	REGISTER_INSTANCE(PlayerTemplate);
+	REGISTER_INSTANCE(PlayerTemplate, Instance);
 	PlayerTemplate::PlayerTemplate() : Instance("PlayerTemplate") {
 		internalLocked = true;
 

@@ -4,7 +4,7 @@
 #include <string>
 
 namespace Engine {
-	REGISTER_INSTANCE(BasePart);
+	REGISTER_INSTANCE(BasePart, Instance);
 	BasePart::BasePart(std::string className) : Creatable(className),
 		m_size(1, 1, 1),
 		m_position(0, 0, 0),

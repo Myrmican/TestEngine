@@ -3,18 +3,18 @@
 #include <core/Reflection.h>
 
 namespace Engine {
-	REGISTER_INSTANCE(World);
-	World::World() : Instance("World") {
+	REGISTER_INSTANCE(World, Instance);
+	World::World() : Model("World") {
 		internalLocked = true;
 
 		auto worldCamera = std::make_unique<Camera>();
 		this->addChild(std::move(worldCamera));
 	}
 
-	void World::properties(ClassDescriptor* desc) {
+	/*void World::properties(ClassDescriptor* desc) {
 		auto* currentCameraProperty = new TypedProperty<World, Camera*>(
 			"CurrentCamera", "Data", &World::getCurrentCamera, &World::setCurrentCamera
 		);
 		desc->addProperty(currentCameraProperty);
-	}
+	}*/
 }
