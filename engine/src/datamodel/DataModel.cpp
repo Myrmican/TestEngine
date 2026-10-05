@@ -10,6 +10,7 @@
 #include <datamodel/instances/Folder.h>
 #include <datamodel/instances/Part.h>
 #include <datamodel/instances/PlayerTemplate.h>
+#include <datamodel/instances/SpawnPoint.h>
 #include <datamodel/instances/Camera.h>
 #include <services/selection/Selection.h>
 #include <services/logging/Logging.h>
@@ -31,10 +32,6 @@ namespace Engine {
         Players* playersService = playersServiceOwned.get();
         addChild(std::move(playersServiceOwned));
 
-        auto serverServiceOwned = std::make_unique<Server>();
-        Server* serverService = serverServiceOwned.get();
-        addChild(std::move(serverServiceOwned));
-
         auto clientServiceOwned = std::make_unique<Client>();
         Client* clientService = clientServiceOwned.get();
         addChild(std::move(clientServiceOwned));
@@ -42,6 +39,10 @@ namespace Engine {
         auto sharedServiceOwned = std::make_unique<Shared>();
         Shared* sharedService = sharedServiceOwned.get();
         addChild(std::move(sharedServiceOwned));
+
+        auto serverServiceOwned = std::make_unique<Server>();
+        Server* serverService = serverServiceOwned.get();
+        addChild(std::move(serverServiceOwned));
 
         auto audioServiceOwned = std::make_unique<Audio>();
         Audio* audioService = audioServiceOwned.get();
@@ -100,6 +101,9 @@ namespace Engine {
         auto baseplatePart = std::make_unique<Part>();
         baseplatePart->setName("Baseplate");
         worldService->addChild(std::move(baseplatePart));
+
+        auto spawnPoint = std::make_unique<SpawnPoint>();
+        worldService->addChild(std::move(spawnPoint));
 
         //Main entry files
 

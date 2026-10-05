@@ -48,6 +48,8 @@ namespace Engine {
         TypedProperty(std::string name, std::string category, Getter getter, Setter setter)
             : Property(std::move(name), std::move(category)), m_getter(getter), m_setter(setter) {
             readOnly = m_setter == NULL;
+
+            if (readOnly) { m_setter = NULL; };
         }
 
         Engine::PropertyValue getValue(const Instance* instance) const override {

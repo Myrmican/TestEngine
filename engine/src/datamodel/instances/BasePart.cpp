@@ -64,8 +64,6 @@ namespace Engine {
 	}
 
 	void BasePart::properties(Engine::ClassDescriptor* desc) {
-		Instance::properties(desc);
-
 		desc->addProperty(new TypedProperty<BasePart, Vector3>(
 			"Size",
 			"Transform",

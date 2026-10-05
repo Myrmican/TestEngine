@@ -1,11 +1,21 @@
-class QTabWidget;
+#include <QTabWidget>
+#include <QPoint>
+
 class QToolBar;
 class Project;
 class QWidget;
 
 namespace TabManager {
-	QTabWidget* createWidget(QWidget* parent);
+	class FileTabs : public QTabWidget {
+		Q_OBJECT
 
-	void handleTabClose(int index, int projectTabIndex, QTabWidget* documentTabs, QWidget* editorPage,
-		QMainWindow* window, QToolBar* mainToolBar, Project* project);
+	public:
+		explicit FileTabs(QWidget* parent = nullptr);
+
+		void handleTabClose(int index, int projectTabIndex, QWidget* editorPage,
+			QMainWindow* window, QToolBar* mainToolBar, Project* project);
+
+	private slots:
+		void showTabContextMenu(const QPoint& pos);
+	};
 }

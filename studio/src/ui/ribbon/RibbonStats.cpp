@@ -70,7 +70,7 @@ QMenu* Engine::Ribbon::createStatsToggleMenu(QWidget* parent, QWidget* statsWidg
 
 	for (const auto& className : GetCreatableClasses()) {
 		auto* desc = Engine::GetClassDescriptor(className);
-		if (desc && !desc->isEditorVisible()) continue;
+		if (desc && !desc->isEditorVisible) continue;
 
 		QAction* instanceAction = instanceCount->addAction(QString::fromStdString(className));
 		instanceAction->setCheckable(true);

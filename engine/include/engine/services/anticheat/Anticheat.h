@@ -1,13 +1,13 @@
-#include <datamodel/Instance.h>
+#include <core/Event.h>
 #include <network/Player.h>
 #include <vector>
 
 namespace Engine {
-	class Players : public Instance {
+	class Anticheat : public Instance {
 	public:
-		Players();
+		Event<Player*, int> flagged;
 
-		std::vector<Player*> getPlayers();
+		Anticheat();
 
 		static void properties(ClassDescriptor* desc) {};
 	};

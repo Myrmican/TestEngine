@@ -50,8 +50,6 @@ namespace Engine {
 	}
 
 	void Camera::properties(ClassDescriptor* desc) {
-		Instance::properties(desc);
-
 		desc->addProperty(new TypedProperty<Camera, float>(
 			"FieldOfView",
 			"Viewport",

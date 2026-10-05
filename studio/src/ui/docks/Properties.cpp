@@ -209,7 +209,9 @@ void Properties::InspectInstance(Engine::Instance* selectedInstance) {
     treeWidget->clear();
     if (!selectedInstance) return;
 
-    Engine::ClassDescriptor* desc = Engine::GetClassDescriptor(std::string(selectedInstance->getClassName()));
+    std::string className(selectedInstance->getClassName());
+    Engine::ClassDescriptor* desc = Engine::GetClassDescriptor(className);
+    if (!desc) return;
 
     for (const Engine::Property* prop : desc->getAllProperties()) {
         this->AddProperty(selectedInstance, prop);
@@ -222,8 +224,8 @@ bool Properties::eventFilter(QObject* watched, QEvent* event) {
             auto* mouseEvent = static_cast<QMouseEvent*>(event);
             auto* item = treeWidget->itemAt(mouseEvent->pos());
             if (!item) {
-                //treeWidget->clearSelection();
-                //treeWidget->setCurrentItem(nullptr);
+                treeWidget->clearSelection();
+                treeWidget->setCurrentItem(nullptr);
             }
         }
     }

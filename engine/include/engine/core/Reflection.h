@@ -67,15 +67,11 @@ namespace Engine {
                 reg.factories[className] = factory;
             }
 
-            ClassDescriptor* parentDesc = parentClassName.empty() ? nullptr : GetClassDescriptor(parentClassName);
-
-            //Create ClassDescriptor and execute property reflections
-            auto desc = std::make_unique<ClassDescriptor>(className, parentDesc, isEditorVisible);
+            // Create ClassDescriptor and execute property reflections
+            auto desc = std::make_unique<ClassDescriptor>(className, parentClassName, isEditorVisible);
             if (reflectFunc) {
                 reflectFunc(desc.get());
             }
-
-            std::cout << parentClassName << std::endl;
 
             reg.descriptors[className] = std::move(desc);
         }

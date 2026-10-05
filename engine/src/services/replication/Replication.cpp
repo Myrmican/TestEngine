@@ -24,8 +24,9 @@ namespace Engine {
 		if (!isServer) {
 			throw std::runtime_error("Replication can only be set on the server.");
 		}
+		else {
 
-
+		}
 	};
 
 	void Replication::replicateTo(Instance* instance, std::vector<Player*>& players) {
@@ -34,8 +35,9 @@ namespace Engine {
 		if (!isServer) {
 			throw std::runtime_error("Replication can only be set on the server.");
 		}
+		else {
 
-
+		}
 	};
 
 	std::vector<Player*>& Replication::getTargets(Instance* instance) {
@@ -45,6 +47,9 @@ namespace Engine {
 
 		if (!isServer) {
 			throw std::runtime_error("Can only get replication targets on the server.");
+		}
+		else {
+
 		}
 
 		return targets;

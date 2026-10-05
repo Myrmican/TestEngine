@@ -10,5 +10,6 @@ namespace Engine {
 		int getPing() const;
 		float getPacketLoss() const;
 
+		static void properties(ClassDescriptor* desc) {};
 	};
 }

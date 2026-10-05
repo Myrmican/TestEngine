@@ -6,5 +6,7 @@ namespace Engine {
 	class Client : public Instance {
 	public:
 		Client();
+
+		static void properties(ClassDescriptor* desc) {};
 	};
 }

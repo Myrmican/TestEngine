@@ -16,6 +16,7 @@ namespace Engine {
 		
 	}
 
+	REGISTER_INSTANCE(Instance, );
 	Instance::Instance(std::string name) : parent(nullptr) {
 		this->className = name;
 		this->name = name;
@@ -42,6 +43,10 @@ namespace Engine {
 	}
 
 	std::string Instance::getPath() const {
+		if (parent && parent->getClassName() == "DataModel") {
+			return std::string(getName());
+		}
+
 		if (parent) {
 			return parent->getPath() + "/" + std::string(getName());
 		}

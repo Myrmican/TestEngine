@@ -15,8 +15,7 @@ namespace Engine {
 		}
 		else {
 			if (target == nullptr) {
-				std::runtime_error("Target has to be specified when sending NetworkSignal from server.");
-				std::runtime_error(this->getPath());
+				throw std::runtime_error("Target has to be specified when sending NetworkSignal from server.\n" + this->getPath());
 				return;
 			}
 		}
@@ -26,8 +25,7 @@ namespace Engine {
 		const bool isServer = true; //Replace this with actual networking logic later
 
 		if (!isServer) {
-			throw std::runtime_error("Can only broadcast NetworkSignals from the server.");
-			throw std::runtime_error(this->getPath());
+			throw std::runtime_error("Can only broadcast NetworkSignals from the server.\n" + this->getPath());
 			return;
 		}
 		else {

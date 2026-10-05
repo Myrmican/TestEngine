@@ -5,5 +5,6 @@ namespace Engine {
 	public:
 		Audio();
 
+		static void properties(ClassDescriptor* desc) {};
 	};
 }

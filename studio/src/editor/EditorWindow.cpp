@@ -48,7 +48,7 @@ namespace EditorWindow {
         editorLayout->setContentsMargins(0, 0, 0, 0);
         editorLayout->setSpacing(0);
 
-        QTabWidget* documentTabs = TabManager::createWidget(editorPage);
+        TabManager::FileTabs* documentTabs = new TabManager::FileTabs(editorPage);
         editorLayout->addWidget(documentTabs);
 
         window->setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowNestedDocks);
@@ -62,7 +62,7 @@ namespace EditorWindow {
 
         QObject::connect(documentTabs, &QTabWidget::tabCloseRequested,
             [documentTabs, projectTabIndex, editorPage, window, mainToolBar, project](int index) {
-                TabManager::handleTabClose(index, projectTabIndex, documentTabs, editorPage, window, mainToolBar, project);
+                documentTabs->handleTabClose(index, projectTabIndex, editorPage, window, mainToolBar, project);
             }
         );
 

@@ -11,7 +11,7 @@
 #include <algorithm>
 #include <vector>
 
-std::vector<std::string> ribbonTabNames = { "Home", "Model", "Avatar", "Test", "Plugins" };
+std::vector<std::string> ribbonTabNames = { "Home", "Model", "Avatar", "Test", "Plugins", "Script", "UI" };
 
 void ConnectContextMenu(QWidget* ribbonBar, QTabBar* ribbonTabs, QMainWindow* window, QWidget* statsWidget) {
     QObject::connect(ribbonBar, &QWidget::customContextMenuRequested,

@@ -11,7 +11,7 @@
 #include <QHeaderView>
 #include <string>
 #include <project/Project.h>
-#include <editor/code/CodeEditor.h>
+#include <editor/file/CodeEditor.h>
 #include <util/Languages.h>
 #include <ui/menus/MenuManager.h>
 #include <ui/docks/Explorer.h>
@@ -26,7 +26,10 @@
 #include <memory>
 #include <engine/services/selection/Selection.h>
 #include <engine/core/Reflection.h>
+#include <editor/file/FileManager.h>
 #include <core/InstanceHandler.h>
+#include <QGuiApplication>
+#include <QClipboard>
 
 using namespace Engine;
 
@@ -83,13 +86,17 @@ namespace {
 
                 QMenu* contextMenu = Menu::create(window);
 
+                QAction* copyPathAction = contextMenu->addAction("Copy as path");
+                contextMenu->addSeparator();
+
                 QAction* openAction = nullptr;
                 QMenu* openWithMenu = nullptr;
                 QAction* openWithCode = nullptr;
 
                 if (filesAllowed) {
 					openAction = contextMenu->addAction("Open");
-					openWithMenu = contextMenu->addMenu("Open With");
+					openWithMenu = Menu::create(window, "Open With");
+					contextMenu->addMenu(openWithMenu);
 
 					openWithCode = openWithMenu->addAction("Default Editor");
 
@@ -126,6 +133,13 @@ namespace {
                 if (selectedAction == nullptr) return;
 
                 QString actionText = selectedAction->text();
+
+				if (selectedAction == copyPathAction) {
+					QString path = QString::fromStdString(instance->getPath());
+					QClipboard* clipboard = QGuiApplication::clipboard();
+					clipboard->setText(path);
+				}
+				else
 
                 if (selectedAction == openWithCode) {
                     
@@ -301,6 +315,11 @@ Explorer::Explorer(QMainWindow* window, Project* project)
         "QTreeView::branch:open:has-children:has-siblings {"
         "    image: url(:/assets/icons/chevron-down.png);"
         "}"
+        "QTreeWidget QLineEdit {"
+        "    border: none;"
+        "    outline: none;"
+        "    selection-background: transparent;"
+        "}"
     );
 
     QPalette palette = explorerTree->palette();
@@ -334,7 +353,7 @@ Explorer::Explorer(QMainWindow* window, Project* project)
 
 QTreeWidgetItem* Explorer::AddItem(QTreeWidgetItem* parentItem, Instance* instance) {
     auto* desc = Engine::GetClassDescriptor(std::string(instance->getClassName()));
-    if (desc && !desc->isEditorVisible()) return nullptr;
+    if (desc && !desc->isEditorVisible) return nullptr;
 
     Instance* parentInstance = GetEngineInstance(parentItem);
     QString instanceName = QString::fromStdString(std::string(instance->getName()));
@@ -410,12 +429,8 @@ bool Explorer::eventFilter(QObject* watched, QEvent* event) {
                 if (instance->getClassName() == "File") {
                     QMainWindow* mainWindow = qobject_cast<QMainWindow*>(treeWidget->window());
                     QTabWidget* documentTabs = mainWindow->findChild<QTabWidget*>("DocumentTabs");
-                    CodeEditor* codeEditor = new CodeEditor(documentTabs);
 
-                    QString instanceName = QString::fromStdString(std::string(instance->getName()));
-
-                    int newTabIndex = documentTabs->addTab(codeEditor, instanceName);
-                    documentTabs->setCurrentIndex(newTabIndex);
+                    FileManager::openFile(instance, documentTabs);
                 }
             }
         }
