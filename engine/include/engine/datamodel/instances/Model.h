@@ -6,6 +6,8 @@ namespace Engine {
 	public:
 		Model(std::string name = "Model");
 
+		void pivotTo();
+
 		static void properties(ClassDescriptor* desc);
 	};
 }

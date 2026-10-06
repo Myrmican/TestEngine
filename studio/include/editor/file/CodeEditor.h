@@ -1,5 +1,6 @@
 #include <Qsci/qsciscintilla.h>
 #include <Qsci/qscilexerjava.h>
+#include <QKeyEvent>
 
 namespace Engine {
     class CodeEditor : public QsciScintilla {
@@ -9,5 +10,6 @@ namespace Engine {
         QsciLexer* lexer = nullptr;
 
         explicit CodeEditor(QWidget* parent = nullptr);
+
     };
 }

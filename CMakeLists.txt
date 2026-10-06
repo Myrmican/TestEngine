@@ -4,7 +4,7 @@ if(NOT CMAKE_PREFIX_PATH AND NOT Qt6_DIR)
     set(CMAKE_PREFIX_PATH "C:/Qt/6.12.0/msvc2022_64")
 endif()
 
-project("TestEngine" LANGUAGES CXX)
+project("TestEngine" LANGUAGES C CXX)
 
 if(MSVC)
     add_compile_options(/external:W0 /external:anglebrackets)
@@ -108,6 +108,13 @@ configure_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/assets/util/ProgrammingLanguages.yml"
     "${CMAKE_CURRENT_BINARY_DIR}/assets/util/ProgrammingLanguages.yml"
     COPYONLY
+)
+
+add_library(tree-sitter STATIC
+    "${CMAKE_CURRENT_SOURCE_DIR}/external/tree-sitter/lib/src/lib.c"
+)
+target_include_directories(tree-sitter PUBLIC
+    "${CMAKE_CURRENT_SOURCE_DIR}/external/tree-sitter/lib/include"
 )
 
 add_subdirectory(

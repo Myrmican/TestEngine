@@ -8,6 +8,10 @@ namespace Engine {
 	Model::Model(std::string name) : Creatable(name) {
 	}
 
+	void Model::pivotTo() {
+		
+	}
+
 	void Model::properties(Engine::ClassDescriptor* desc) {
 
 	}

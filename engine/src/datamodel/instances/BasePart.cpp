@@ -47,19 +47,19 @@ namespace Engine {
 
 	void BasePart::setSize(Vector3 size) {
 		if (m_size != size)
-			this->changed.call("Size", m_size);
+			this->changed.call("Size");
 		m_size = size;
 	}
 
 	void BasePart::setPosition(Vector3 position) {
 		if (m_position != position)
-			this->changed.call("Size", m_position);
+			this->changed.call("Size");
 		m_position = position;
 	}
 
 	void BasePart::setColor(const Color3 color) {
 		if (m_color != color)
-			this->changed.call("Color", m_color);
+			this->changed.call("Color");
 		m_color = color;
 	}
 

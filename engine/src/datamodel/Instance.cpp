@@ -30,7 +30,7 @@ namespace Engine {
 		else
 			name = std::string(value);
 
-		this->changed.call("Name", name);
+		this->changed.call("Name");
 	}
 
 	void Instance::destroy() {

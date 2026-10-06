@@ -377,7 +377,7 @@ QTreeWidgetItem* Explorer::AddItem(QTreeWidgetItem* parentItem, Instance* instan
 
     item->setData(0, InstancePointerRole, QVariant::fromValue(static_cast<void*>(instance)));
 
-    instance->changed.connect([item, instance](std::string name, std::any oldValue) {
+    instance->changed.connect([item, instance](std::string name) {
         item->setText(0, QString::fromStdString(std::string(instance->getName())));
         });
 

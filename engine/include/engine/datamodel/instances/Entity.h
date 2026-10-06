@@ -1,5 +1,6 @@
 #pragma once
 
+#include <datamodel/instances/Tool.h>
 #include <datamodel/Instance.h>
 
 namespace Engine {
@@ -10,6 +11,9 @@ namespace Engine {
 		double getHealth() const;
 
 		void setHealth(double health);
+
+		void equipTool(Tool* tool, bool leftHand = false);
+		void unequipTools();
 
 		static void properties(ClassDescriptor* desc);
 

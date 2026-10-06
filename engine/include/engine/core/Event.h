@@ -37,6 +37,10 @@ namespace Engine {
 			}
 		}
 
+		bool isCancelled() const {
+			return m_cancelled;
+		}
+
 		void setCancelled(bool cancelled) {
 			m_cancelled = cancelled;
 		}

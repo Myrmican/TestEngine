@@ -1,7 +1,7 @@
 #include <datamodel/DataModel.h>
 #include <Engine.h>
 #include <services/world/World.h>
-#include <services/players/Players.h>
+#include <network/Players.h>
 #include <services/server/Server.h>
 #include <services/client/Client.h>
 #include <services/shared/Shared.h>

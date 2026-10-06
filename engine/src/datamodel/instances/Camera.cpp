@@ -10,27 +10,27 @@ namespace Engine {
 
 	void Camera::setFOV(const float FOV) {
 		if (m_FieldOfView != FOV)
-			this->changed.call("FOV", m_FieldOfView);
+			this->changed.call("FOV");
 		m_FieldOfView = FOV;
 	}
 
 	void Camera::setNearPlane(const float value) {
 		if (m_NearPlane != value) {
 			m_NearPlane = value;
-			this->changed.call("NearPlane", m_NearPlane);
+			this->changed.call("NearPlane");
 		}
 	}
 
 	void Camera::setFarPlane(const float value) {
 		if (m_FarPlane != value) {
 			m_FarPlane = value;
-			this->changed.call("FarPlane", m_FarPlane);
+			this->changed.call("FarPlane");
 		}
 	}
 
 	void Camera::setCFrame(const XMMATRIX& cframe) {
 		m_CFrame = cframe;
-		this->changed.call("CFrame", 0); // adjust to however your signal expects non-primitive payloads
+		this->changed.call("CFrame"); // adjust to however your signal expects non-primitive payloads
 	}
 
 	XMMATRIX Camera::getViewMatrix() const {

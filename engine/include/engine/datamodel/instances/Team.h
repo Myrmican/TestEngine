@@ -2,12 +2,11 @@
 
 #include <datamodel/Instance.h>
 #include <core/math/Color3.h>
-#include <string>
 
 namespace Engine {
-	class Folder : public Creatable {
+	class Team : public Creatable {
 	public:
-		Folder(std::string_view name = "Folder");
+		Team();
 
 		Color3 getColor() const { return m_color; }
 
@@ -16,12 +15,11 @@ namespace Engine {
 				changing.call("Color", color);
 				m_color = color;
 				changed.call("Color");
-	
+
 			}
 		}
 
-		static void properties(ClassDescriptor* desc);
-
+		static void properties(Engine::ClassDescriptor* desc);
 	private:
 		Color3 m_color;
 	};

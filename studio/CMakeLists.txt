@@ -45,6 +45,7 @@ target_link_libraries(TestEngine PRIVATE
     QWindowKit::Widgets
     ${QSCI_TARGET_NAME}
     yaml-cpp::yaml-cpp
+    tree-sitter
 )
 
 if(MSVC)

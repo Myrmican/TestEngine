@@ -37,7 +37,8 @@ namespace Engine {
 
 		virtual ~Instance() = default;
 
-		Event<std::string, std::any> changed;
+		Event<std::string, std::any> changing;
+		Event<std::string> changed;
 
 		virtual void destroy();
 		void remove();

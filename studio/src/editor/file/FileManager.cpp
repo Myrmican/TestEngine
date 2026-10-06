@@ -1,4 +1,5 @@
 #include <editor/file/FileManager.h>
+#include <editor/file/CodeEditor.h>
 #include <editor/file/FileEditor.h>
 #include <engine/datamodel/Instance.h>
 #include <QString>
@@ -15,7 +16,8 @@ namespace Engine {
 				}
 			}
 
-			FileEditor* fileEditor = new FileEditor(documentTabs);
+			//FileEditor* fileEditor = new FileEditor(documentTabs);
+			CodeEditor* fileEditor = new CodeEditor(documentTabs);
 			fileEditor->setProperty("targetInstance", QVariant::fromValue(file));
 
 			QString instanceName = QString::fromStdString(std::string(file->getName()));
