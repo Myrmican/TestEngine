@@ -20,7 +20,7 @@ namespace DockManager {
 
         window->addDockWidget(Qt::RightDockWidgetArea, explorerDock->dockWidget);
         window->addDockWidget(Qt::LeftDockWidgetArea, propertiesDock->dockWidget);
-        window->addDockWidget(Qt::BottomDockWidgetArea, outputDock->dockWidget);
+        window->addDockWidget(Qt::BottomDockWidgetArea, outputDock);
         window->addDockWidget(Qt::LeftDockWidgetArea, toolboxDock->dockWidget);
 
         return { explorerDock, propertiesDock, outputDock, toolboxDock };

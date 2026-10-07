@@ -7,11 +7,10 @@
 #include <QTextEdit>
 #include <project/Project.h>
 
-class Output : public QObject {
+class Output : public QDockWidget {
     Q_OBJECT
 
 public:
-    QDockWidget* dockWidget;
     QTextEdit* textEdit;
 
     Output(QMainWindow* window, Project* project);

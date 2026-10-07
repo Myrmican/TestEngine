@@ -12,6 +12,7 @@
 #include <QWidgetAction>
 #include <QUrl>
 #include <QVBoxLayout>
+#include <QShortcut>
 #include <QWKWidgets/widgetwindowagent.h>
 #include <ui/menus/FileMenu.h>
 #include <ui/menus/PluginsMenu.h>
@@ -160,6 +161,16 @@ namespace Window {
                 }
                 });
         }
+
+        auto* fullscreenShortcut = new QShortcut(QKeySequence::FullScreen, window);
+        QObject::connect(fullscreenShortcut, &QShortcut::activated, window, [window]() {
+            if (window->isFullScreen()) {
+                window->showNormal();
+            }
+            else {
+                window->showFullScreen();
+            }
+            });
 
         window->setMenuWidget(titleBarPanel);
         window->setCentralWidget(workspaceStack);

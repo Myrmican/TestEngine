@@ -1,8 +1,8 @@
-#include <Qsci/qsciapis.h>
 #include <QWidget>
 #include <QFont>
 #include <QColor>
 #include <Qsci/qsciglobal.h>
+#include <editor/file/Intellisense.h>
 #include <editor/file/CodeEditor.h>
 #include <editor/file/lexers/AssemblyScript.h>
 
@@ -12,7 +12,6 @@ namespace Engine {
         auto* lexer = new EngineEditorLexers::AssemblyScript(this);
         this->setLexer(lexer);
 
-        // Editor styling & features
         this->setAutoIndent(true);
         this->setIndentationGuides(true);
         this->setUtf8(true);
@@ -55,26 +54,21 @@ namespace Engine {
 
         this->setMatchedBraceForegroundColor(QColor(255, 215, 0));
 
-        // Setup APIs
-        auto* api = new QsciAPIs(lexer);
-        const char* keywordList = lexer->keywords(1);
-		const char* annotationList = lexer->annotations();
+        Engine::Intellisense* intellisense = new Engine::Intellisense(this, static_cast<QsciLexer*>(lexer));
 
-        if (keywordList) {
-            QStringList keywords = QString(keywordList).split(QChar(' '), Qt::SkipEmptyParts);
-            for (const QString& keyword : keywords) {
-                api->add(keyword);
-            }
-        }
-
-        if (annotationList) {
-            QStringList annotations = QString(annotationList).split(QChar(';'), Qt::SkipEmptyParts);
-            for (QString& annotation : annotations) {
-                annotation = annotation.trimmed();
-                api->add(annotation);
-            }
-        }
-
-        api->prepare();
+        setStyleSheet(
+            "QsciScintilla QListWidget {"
+            "   font-family: 'Consolas';"
+            "   font-size: 10pt;"
+            "   background-color: #252526;"
+            "   color: #DCDCDC;"
+            "   border-radius: 0px;"
+            "   border: 1px solid #454545;"
+            "}"
+            "QsciScintilla QListWidget::item:selected {"
+            "   background-color: #04395E;"
+            "   color: #FFFFFF;"
+            "}"
+        );
     }
 }

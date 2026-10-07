@@ -24,6 +24,7 @@
 #include <QSettings>
 #include <QProcessEnvironment>
 #include <memory>
+#include <asset/ExportFile.h>
 #include <engine/services/selection/Selection.h>
 #include <engine/core/Reflection.h>
 #include <editor/file/FileManager.h>
@@ -59,6 +60,8 @@ namespace {
             });
     }
 
+    //Set up context menu for right clicking in the Explorer.
+    //The menu is dynamic meaning that it won't have items that makes no sense to have in the given item
     void ConnectContextMenu(QTreeWidget* explorerTree, QMainWindow* window, Project* project, Explorer* self) {
         QTabWidget* documentTabs = window->findChild<QTabWidget*>("DocumentTabs");
 
@@ -66,6 +69,8 @@ namespace {
             [explorerTree, window, project, self](const QPoint& pos) {
                 QTreeWidgetItem* item = explorerTree->itemAt(pos);
                 Instance* instance = Engine::GetEngineInstance(item);
+
+                QClipboard* clipboard = QGuiApplication::clipboard();
 
                 if (!item) {
                     return;
@@ -86,9 +91,6 @@ namespace {
 
                 QMenu* contextMenu = Menu::create(window);
 
-                QAction* copyPathAction = contextMenu->addAction("Copy as path");
-                contextMenu->addSeparator();
-
                 QAction* openAction = nullptr;
                 QMenu* openWithMenu = nullptr;
                 QAction* openWithCode = nullptr;
@@ -106,10 +108,16 @@ namespace {
                 if (!instance->internalLocked) {
                     QAction* cutAction = contextMenu->addAction("Cut");
                     QAction* copyAction = contextMenu->addAction("Copy");
+                }
+
+                QAction* copyPathAction = contextMenu->addAction("Copy path");
+
+                contextMenu->addSeparator();
+
+                if (!clipboard->text().isEmpty())
                     QAction* pasteAction = contextMenu->addAction("Paste");
 
-                    contextMenu->addSeparator();
-
+                if (!instance->internalLocked) {
                     QAction* duplicateAction = contextMenu->addAction("Duplicate");
                     QAction* deleteAction = contextMenu->addAction("Delete");
                 }
@@ -129,6 +137,23 @@ namespace {
                 addInstanceAction->setShortcut(QKeySequence("Ctrl+I"));
                 addInstanceAction->setShortcutContext(Qt::WindowShortcut);
 
+                contextMenu->addSeparator();
+
+                QAction* saveToPlatform = nullptr;
+                QAction* saveToFile = nullptr;
+
+                if (!instance->internalLocked) {
+                    QMenu* exportMenu = Menu::create(window, "Save / Export");
+                    contextMenu->addMenu(exportMenu);
+
+                    saveToPlatform = exportMenu->addAction("Save to Platform");
+                    saveToFile = exportMenu->addAction("Save to File");
+
+                    contextMenu->addSeparator();
+                }
+
+                contextMenu->addAction("Help");
+
                 QAction* selectedAction = contextMenu->exec(explorerTree->viewport()->mapToGlobal(pos));
                 if (selectedAction == nullptr) return;
 
@@ -136,7 +161,6 @@ namespace {
 
 				if (selectedAction == copyPathAction) {
 					QString path = QString::fromStdString(instance->getPath());
-					QClipboard* clipboard = QGuiApplication::clipboard();
 					clipboard->setText(path);
 				}
 				else
@@ -202,6 +226,9 @@ namespace {
                             explorerTree->setCurrentItem(insertResult.item);
                         }
                     }
+                }
+                else if (selectedAction == saveToFile) {
+                    onSaveRequest(instance, explorerTree);
                 }
             }
         );

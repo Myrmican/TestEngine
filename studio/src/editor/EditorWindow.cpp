@@ -53,7 +53,7 @@ namespace EditorWindow {
 
         window->setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowNestedDocks);
 
-        EngineViewport* placeView = new EngineViewport(editorPage);
+        EngineViewport* placeView = new EngineViewport(editorPage, project);
 
         auto windowDocks = DockManager::setup(window, project);
         const int projectTabIndex = documentTabs->addTab(placeView, project->name);
