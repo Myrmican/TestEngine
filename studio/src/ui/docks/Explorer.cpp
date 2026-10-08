@@ -457,7 +457,7 @@ bool Explorer::eventFilter(QObject* watched, QEvent* event) {
                     QMainWindow* mainWindow = qobject_cast<QMainWindow*>(treeWidget->window());
                     QTabWidget* documentTabs = mainWindow->findChild<QTabWidget*>("DocumentTabs");
 
-                    FileManager::openFile(instance, documentTabs);
+                    FileManager::openFile(dynamic_cast<File*>(instance), documentTabs);
                 }
             }
         }

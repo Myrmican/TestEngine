@@ -12,10 +12,7 @@ class QShowEvent;
 class QPaintEngine;
 class Project;
 
-namespace Engine
-{
-    class Camera;
-}
+namespace Engine { class World; class Renderer; }
 
 class EngineViewport : public QWidget
 {
@@ -23,7 +20,7 @@ class EngineViewport : public QWidget
 
 public:
     explicit EngineViewport(QWidget* parent = nullptr, Project* project = nullptr);
-	~EngineViewport() override;
+    ~EngineViewport() override;
 
     QPaintEngine* paintEngine() const override { return nullptr; }
 
@@ -35,10 +32,9 @@ private:
     bool initGpu();
     void renderFrame();
 
+    Project* m_project = nullptr;
+    Engine::World* m_world = nullptr;
     SDL_Window* m_window = nullptr;
-    SDL_GPUDevice* m_device = nullptr;
     QTimer* m_timer = nullptr;
-
-	Project* m_project = nullptr;
-	Engine::Camera* m_camera = nullptr;
+    std::unique_ptr<Engine::Renderer> m_renderer;
 };

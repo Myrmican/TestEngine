@@ -27,12 +27,16 @@ public:
     std::shared_ptr<Engine::EngineInstance> engine;
     std::shared_ptr<Engine::ScriptEngine> scriptEngine;
 
+    bool isSaved = false;
+    bool hasPendingChanges = false;
+
     Project(const std::string& projectName);
     ~Project();
 };
 
 namespace ProjectManager {
     Project* onNewProject(QMainWindow* parent);
-    void onOpenProject(QMainWindow* parent);
+    Project* promptOpenFile(QMainWindow* parent);
+    Project* openProject();
 	Project* getProject(QWidget* contextWidget);
 }

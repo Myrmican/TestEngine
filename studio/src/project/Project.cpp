@@ -122,18 +122,35 @@ namespace ProjectManager {
 
 			Project* newProject = new Project(projectName);
 			newProject->primaryLanguage = javaButton->isChecked() ? "Java" : "Kotlin";
+
+
+
             return newProject;
         }
 
         return nullptr;
     }
 
-	void onOpenProject(QMainWindow* parent) {
+	Project* promptOpenFile(QMainWindow* parent) {
 		QString path = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
 
-		QString dir = QFileDialog::getOpenFileName(parent, "Open Project", path, "Engine Files (*.xml)");
+		QString filePath = QFileDialog::getOpenFileName(parent, "Open Project", path, "Engine Files (*.tep)");
+        if (filePath.isEmpty()) return nullptr;
+
+        QFileInfo fileInfo(filePath);
+        QString fileName = fileInfo.completeBaseName();
+
+        QFile* projectFile = new QFile(filePath);
 		
+        Project* newProject = new Project(fileName.toStdString());
+        newProject->projectFile = projectFile;
+        newProject->primaryLanguage = "Kotlin";
+        return newProject;
 	}
+
+    Project* openProject() {
+        return nullptr;
+    }
 
     Project* getProject(QWidget* contextWidget) {
         QWidget* current = contextWidget;

@@ -39,7 +39,23 @@ FileMenu::FileMenu(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* works
             }
             });
 
-        fileMenu->addAction("Open", [window]() { ProjectManager::onOpenProject(window); });
+        fileMenu->addAction("Open", [window, workspaceStack, editorPage]() {
+            if (Project* project = ProjectManager::promptOpenFile(window)) {
+                auto* loadingDialog = new ProjectLoadingDialog(project->name, window);
+                loadingDialog->setAttribute(Qt::WA_DeleteOnClose);
+                loadingDialog->show();
+
+                QTimer::singleShot(0, window, [window, workspaceStack, editorPage, project, loadingDialog]() {
+                    loadingDialog->setStatus("Building editor...");
+                    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+
+                    EditorWindow::initialize(project, editorPage, window);
+
+                    workspaceStack->setCurrentIndex(1);
+                    loadingDialog->close();
+                    });
+            }
+            });
 
         QMenu* fileRecentMenu = Menu::create(fileMenu, "Recents");
         fileMenu->addMenu(fileRecentMenu);

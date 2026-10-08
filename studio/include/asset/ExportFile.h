@@ -5,6 +5,6 @@
 namespace Engine {
 	class Instance;
 
-	static void onSaveRequest(Instance* instance, QTreeWidget* parent);
+	void onSaveRequest(Instance* instance, QTreeWidget* parent);
 
 }

@@ -1,4 +1,6 @@
 #include <scripting/ScriptEngine.h>
+#include <datamodel/Instance.h>
+#include <datamodel/instances/File.h>
 #include <iostream>
 
 namespace Engine {
@@ -10,10 +12,11 @@ namespace Engine {
 
 	void ScriptEngine::executeFiles() {
 		std::vector<Instance*> descendants = m_dataModel->getDescendants();
-		for (const Instance* instance : descendants) {
+		for (Instance* instance : descendants) {
+			File* file = dynamic_cast<File*>(instance);
 			if (instance->getClassName() != "File") continue;
 
-			std::cout << instance->getName();
+			std::string fileContent = file->getContent();
 		}
 	}
 }

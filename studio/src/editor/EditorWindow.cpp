@@ -51,7 +51,9 @@ namespace EditorWindow {
         TabManager::FileTabs* documentTabs = new TabManager::FileTabs(editorPage);
         editorLayout->addWidget(documentTabs);
 
-        window->setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowNestedDocks);
+        window->setDockOptions(QMainWindow::AllowNestedDocks |
+                QMainWindow::AllowTabbedDocks |
+                QMainWindow::GroupedDragging);
 
         EngineViewport* placeView = new EngineViewport(editorPage, project);
 

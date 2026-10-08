@@ -5,7 +5,7 @@
 
 namespace File {
 	QFile* CreateProjectFile(QString name, QString dir) {
-		QFile* file = new QFile(dir + "/" + name + ".xml");
+		QFile* file = new QFile(dir + "/" + name + ".tep");
 
 		if (!file->open(QIODevice::WriteOnly | QIODevice::Text)) {
 			qWarning() << "Failed to create file:" << file->errorString();

@@ -1,6 +1,9 @@
 #include "editor/EngineViewport.h"
+
+#include <engine/rendering/Renderer.h>   // adjust to match your include path
 #include <project/Project.h>
 #include <services/world/World.h>
+
 #include <QShowEvent>
 #include <QResizeEvent>
 #include <QTimer>
@@ -17,21 +20,22 @@ EngineViewport::EngineViewport(QWidget* parent, Project* project)
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &EngineViewport::renderFrame);
 
-    Engine::World* world = project->engine->getProvider()->getService<Engine::World>();
-    
-	m_camera = world ? world->getCurrentCamera() : nullptr;
+    // Keep the World, not the Camera: the current camera can change at runtime
+    if (project && project->engine && project->engine->getProvider())
+        m_world = project->engine->getProvider()->getService<Engine::World>();
 }
 
 EngineViewport::~EngineViewport()
 {
     if (m_timer) m_timer->stop();
 
-    if (m_device && m_window)
-        SDL_ReleaseWindowFromGPUDevice(m_device, m_window);
-    if (m_device)
-        SDL_DestroyGPUDevice(m_device);
-    if (m_window)
+    // Renderer first: it needs the window to still exist while it shuts down
+    m_renderer.reset();
+
+    if (m_window) {
         SDL_DestroyWindow(m_window);
+        m_window = nullptr;
+    }
 }
 
 void EngineViewport::showEvent(QShowEvent* event)
@@ -78,16 +82,9 @@ bool EngineViewport::initGpu()
         return false;
     }
 
-    m_device = SDL_CreateGPUDevice(
-        SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_DXIL | SDL_GPU_SHADERFORMAT_MSL,
-        true, nullptr); // true = debug mode, turn off for release builds
-    if (!m_device) {
-        SDL_Log("GPU device creation failed: %s", SDL_GetError());
-        return false;
-    }
-
-    if (!SDL_ClaimWindowForGPUDevice(m_device, m_window)) {
-        SDL_Log("Claiming window failed: %s", SDL_GetError());
+    m_renderer = std::make_unique<Engine::Renderer>();
+    if (!m_renderer->init(m_window)) {
+        m_renderer.reset();
         return false;
     }
 
@@ -96,24 +93,10 @@ bool EngineViewport::initGpu()
 
 void EngineViewport::renderFrame()
 {
-    if (!m_device || !m_window) return;
+    if (!m_renderer) return;
 
-    SDL_GPUCommandBuffer* cmd = SDL_AcquireGPUCommandBuffer(m_device);
-    if (!cmd) return;
-
-    SDL_GPUTexture* swapchain = nullptr;
-    SDL_WaitAndAcquireGPUSwapchainTexture(cmd, m_window, &swapchain, nullptr, nullptr);
-
-    if (swapchain) {
-        SDL_GPUColorTargetInfo target = {};
-        target.texture = swapchain;
-        target.clear_color = SDL_FColor{ 0.10f, 0.25f, 0.60f, 1.0f }; // blue
-        target.load_op = SDL_GPU_LOADOP_CLEAR;
-        target.store_op = SDL_GPU_STOREOP_STORE;
-
-        SDL_GPURenderPass* pass = SDL_BeginGPURenderPass(cmd, &target, 1, nullptr);
-        SDL_EndGPURenderPass(pass);
-    }
-
-    SDL_SubmitGPUCommandBuffer(cmd);
+    // Later: fetch the camera here each frame and pass it to the renderer
+    Engine::Camera* camera = m_world ? m_world->getCurrentCamera() : nullptr;
+    //   m_renderer->renderFrame(camera);
+    m_renderer->renderFrame();
 }

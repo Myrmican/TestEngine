@@ -1,11 +1,9 @@
-#pragma once
-
 #include <editor/tools/Tool.h>
 
 namespace Engine::Tools {
-	class Select : public StudioTool {
+	class Scale : public StudioTool {
 	public:
-		Select(QToolBar* parent) : StudioTool(parent, "Select") {
+		Scale(QToolBar* parent) : StudioTool(parent, "Scale") {
 
 			connect(this, &QToolButton::toggled, this, [this]() {
 				

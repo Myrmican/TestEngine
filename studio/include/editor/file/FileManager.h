@@ -1,10 +1,10 @@
 #include <QTabWidget>
 
 namespace Engine {
-	class Instance;
+	class File;
 
 	namespace FileManager {
 
-		void openFile(Engine::Instance* file, QTabWidget* documentTabs);
+		void openFile(Engine::File* file, QTabWidget* documentTabs);
 	}
 }

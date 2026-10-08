@@ -96,7 +96,7 @@ bool SaveDialog(Project* project, QWidget* parent) {
 	mainLayout->addWidget(buttonBox);
 
 	if (dialog->exec() == QDialog::Accepted) {
-		std::string projectPath = pathEdit->text().toStdString();
+		std::string projectPath = pathEdit->text().toUtf8().constData();
 		project->projectPath = projectPath;
 		return true;
 	}
@@ -110,17 +110,18 @@ namespace SaveProject {
 
 		Logger* logger = project->logger;
 
-		if (!System::IsConnectedToNetwork()) {
+		/*if (!System::IsConnectedToNetwork()) {
 			logger->Error("You are not connected to the internet.");
 			return false;
-		}
+		}*/
 
-		//Check if the project has already been saved, true for now - run if it hasn't
-		bool savedProject;
+		bool needsSaveDialog = (project->projectFile == nullptr) || !project->projectFile->exists();
 
-		if (true) {
-			savedProject = SaveDialog(project, parent);
-			if (!savedProject) return false;
+		if (needsSaveDialog) {
+			project->projectFile = nullptr;
+
+			bool isSaved = SaveDialog(project, parent);
+			if (!isSaved) return false;
 
 			QString projectPath = QString::fromStdString(project->projectPath);
 

@@ -1,12 +1,13 @@
 #include <editor/file/FileManager.h>
 #include <editor/file/CodeEditor.h>
 #include <editor/file/FileEditor.h>
-#include <engine/datamodel/Instance.h>
+#include <engine/datamodel/instances/File.h>
 #include <QString>
+#include <string>
 
 namespace Engine {
 	namespace FileManager {
-		void openFile(Engine::Instance* file, QTabWidget* documentTabs) {
+		void openFile(Engine::File* file, QTabWidget* documentTabs) {
 			for (int i = 0; i < documentTabs->count(); ++i) {
 				QWidget* widget = documentTabs->widget(i);
 				auto openInstance = widget->property("targetInstance").value<Engine::Instance*>();
@@ -26,7 +27,16 @@ namespace Engine {
 			documentTabs->setTabToolTip(newTabIndex, QString::fromStdString(file->getPath()));
 			documentTabs->setCurrentIndex(newTabIndex);
 
-			
+			QObject::connect(fileEditor, &QsciScintilla::textChanged, fileEditor, [fileEditor, file]() {
+				QString editorText = fileEditor->text();
+
+				QByteArray bytes = editorText.toUtf8();
+				std::string_view view(bytes.constData(), bytes.length());
+
+				std::string contentStr(view);
+
+				file->setContent(contentStr);
+				});
 
 			/*QObject::connect(file, &Instance::nameChanged, fileEditor, [documentTabs, fileEditor](const std::string& newName) {
 				int idx = documentTabs->indexOf(fileEditor);
