@@ -3,7 +3,7 @@
 #include <QToolBar>
 
 namespace Engine {
-	StudioTool::StudioTool(QToolBar* parent, std::string_view name) : QToolButton(parent) {
+	StudioTool::StudioTool(QWidget* parent, std::string_view name) : QToolButton(parent) {
         this->setFixedSize(64, 64);
 
         //this->setIcon(icon);
@@ -16,8 +16,6 @@ namespace Engine {
 
         this->setFocusPolicy(Qt::NoFocus);
         this->setCheckable(true);
-        
-        parent->addWidget(this);
     }
 
     StudioToolGroup::StudioToolGroup(QToolBar* parent, std::string_view name) : QActionGroup(parent) {

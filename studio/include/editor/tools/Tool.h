@@ -12,7 +12,7 @@ namespace Engine {
 		Q_OBJECT
 
 	public:
-		explicit StudioTool(QToolBar* parent = nullptr, std::string_view name = "");
+		explicit StudioTool(QWidget* parent = nullptr, std::string_view name = "");
 	};
 
 	class StudioToolGroup : public QActionGroup {

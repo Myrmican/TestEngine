@@ -1,3 +1,5 @@
+#pragma once
+
 #include <editor/tools/Tool.h>
 #include <project/Project.h>
 #include <QToolBar>

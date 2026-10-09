@@ -1,9 +1,17 @@
+#pragma once
+
+#include <QFrame>
+
 class QFrame;
 class QMainWindow;
 class QWidget;
+class QStackedWidget;
 
 namespace Engine {
-	namespace Ribbon {
-		QFrame* createWidget(QMainWindow* parent);
-	}
+	class Ribbon : public QFrame {
+	public:
+		QStackedWidget* tabBar;
+
+		Ribbon(QMainWindow* parent);
+	};
 }

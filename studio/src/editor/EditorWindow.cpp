@@ -18,6 +18,7 @@
 #include <ui/TabManager.h>
 #include <ui/ribbon/Ribbon.h>
 #include <ui/Toolbar.h>
+#include <editor/tools/ToolManager.h>
 
 namespace EditorWindow {
     void initialize(Project* project, QWidget* editorPage, QMainWindow* window) {
@@ -30,8 +31,8 @@ namespace EditorWindow {
         window->setProperty("projectInstance", QVariant::fromValue(static_cast<void*>(project)));
         window->setWindowTitle(project->name + " - Test Engine");
 
-        auto ribbonBar = Engine::Ribbon::createWidget(window);
-
+        Engine::Ribbon* ribbonBar = new Engine::Ribbon(window);
+        
         QToolBar* ribbonToolBar = new QToolBar("RibbonToolBar", window);
         ribbonToolBar->setMovable(false);
         ribbonToolBar->setFloatable(false);
@@ -39,6 +40,8 @@ namespace EditorWindow {
         ribbonToolBar->addWidget(ribbonBar);
 
         QToolBar* mainToolBar = Toolbar::create(window);
+
+        ribbonBar->tabBar->addWidget(ToolManager::createTools(mainToolBar, "Home"));
 
         window->addToolBar(Qt::TopToolBarArea, ribbonToolBar);
         window->addToolBarBreak(Qt::TopToolBarArea);
@@ -54,6 +57,12 @@ namespace EditorWindow {
         window->setDockOptions(QMainWindow::AllowNestedDocks |
                 QMainWindow::AllowTabbedDocks |
                 QMainWindow::GroupedDragging);
+
+        /*window->setStyleSheet(
+            "QMainWindow::separator {"
+            "    background-color: #666666;"
+            "}"
+        );*/
 
         EngineViewport* placeView = new EngineViewport(editorPage, project);
 

@@ -1,8 +1,10 @@
 #include <ui/menus/MenuManager.h>
 #include <editor/tools/ToolManager.h>
+#include <ui/ribbon/Ribbon.h>
 #include <ui/ribbon/RibbonStats.h>
 #include <QMenu>
 #include <QFrame>
+#include <QStackedWidget>
 #include <QTabBar>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -40,7 +42,7 @@ void ConnectContextMenu(QWidget* ribbonBar, QTabBar* ribbonTabs, QMainWindow* wi
 				QMenu* ribbonTabsList = Menu::create(ribbonTabMenu, "Toggle");
                 ribbonTabMenu->addMenu(ribbonTabsList);
 
-                QMenu* ribbonStats = Engine::Ribbon::createStatsToggleMenu(contextMenu, statsWidget);
+                QMenu* ribbonStats = Engine::RibbonStats::createStatsToggleMenu(contextMenu, statsWidget);
                 contextMenu->addMenu(ribbonStats);
 
                 QList<QAction*> tabActions = ribbonTabs->findChildren<QAction*>();
@@ -108,72 +110,78 @@ QWidget* setupQuickActions(QWidget* parent) {
 }
 
 namespace Engine {
-    namespace Ribbon {
-        QFrame* createWidget(QMainWindow* parent) {
+    Ribbon::Ribbon(QMainWindow* parent) : QFrame(parent) {
 
-            QFrame* ribbonBar = new QFrame(parent);
-            ribbonBar->setObjectName("RibbonFrame");
-            ribbonBar->setStyleSheet("QFrame { background-color: #1c1c1c; }");
-            ribbonBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-            ribbonBar->setContextMenuPolicy(Qt::CustomContextMenu);
-            ribbonBar->setFixedHeight(36);
+        setObjectName("RibbonFrame");
+        setStyleSheet("QFrame { background-color: #1c1c1c; }");
+        setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        setContextMenuPolicy(Qt::CustomContextMenu);
+        setFixedHeight(36);
 
-            QTabBar* ribbonTabs = new QTabBar(ribbonBar);
-            ribbonTabs->setObjectName("RibbonTabs");
-            ribbonTabs->setDrawBase(false);
-            ribbonTabs->setElideMode(Qt::ElideRight);
-            ribbonTabs->setUsesScrollButtons(false);
-            ribbonTabs->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-            ribbonTabs->setExpanding(false);
-            ribbonTabs->setFixedHeight(32);
+        QTabBar* ribbonTabs = new QTabBar(this);
+        ribbonTabs->setObjectName("RibbonTabs");
+        ribbonTabs->setDrawBase(false);
+        ribbonTabs->setElideMode(Qt::ElideRight);
+        ribbonTabs->setUsesScrollButtons(false);
+        ribbonTabs->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        ribbonTabs->setExpanding(false);
+        ribbonTabs->setFixedHeight(32);
 
-            ribbonTabs->setStyleSheet(
-                "QTabBar {"
-                "    background: transparent;"
-                "    border: none;"
-                "    outline: none;"
-                "}"
-                "QTabBar::tab {"
-                "   background: transparent;"
-                "   color: #9ca3af;"
-                "   height: 32px;"
-                "   min-width: 36px;"
-                "   padding: 0 16px;"
-                "   margin-right: 2px;"
-                "   border-top-left-radius: 5px;"
-                "   border-top-right-radius: 5px;"
-                "   border-top: 2px solid transparent;"
-                "}"
-                "QTabBar::tab:hover {"
-                "    background-color: #252525;"
-                "    color: #cccccc;"
-                "}"
-                "QTabBar::tab:selected {"
-                "    background-color: #161616;"
-                "    color: #ffffff;"
-                "    font-weight: 750;"
-                "    border-top: 2px solid #3b82f6;"
-                "}"
-            );
+        QStackedWidget* ribbonStack = new QStackedWidget(parent);
 
-            QWidget* statsWidget = setupStats(ribbonBar);
-			QWidget* quickActions = setupQuickActions(ribbonBar);
+        tabBar = ribbonStack;
 
-            QHBoxLayout* layout = new QHBoxLayout(ribbonBar);
-            layout->setContentsMargins(8, 4, 8, 0);
-            layout->setSpacing(16);
-            layout->addWidget(ribbonTabs);
-			layout->addWidget(quickActions);
-            layout->addStretch();
-            layout->addWidget(statsWidget);
+        ribbonTabs->setStyleSheet(
+            "QTabBar {"
+            "    background: transparent;"
+            "    border: none;"
+            "    outline: none;"
+            "}"
+            "QTabBar::tab {"
+            "   background: transparent;"
+            "   color: #9ca3af;"
+            "   height: 32px;"
+            "   min-width: 36px;"
+            "   padding: 0 16px;"
+            "   margin-right: 2px;"
+            "   border-top-left-radius: 5px;"
+            "   border-top-right-radius: 5px;"
+            "   border-top: 2px solid transparent;"
+            "}"
+            "QTabBar::tab:hover {"
+            "    background-color: #252525;"
+            "    color: #cccccc;"
+            "}"
+            "QTabBar::tab:selected {"
+            "    background-color: #161616;"
+            "    color: #ffffff;"
+            "    font-weight: 750;"
+            "    border-top: 2px solid #3b82f6;"
+            "}"
+        );
 
-			for (const auto& tabName : ribbonTabNames) {
-				auto ribbonTab = ribbonTabs->addTab(QString::fromStdString(tabName));
-			}
+        QWidget* statsWidget = setupStats(this);
+		QWidget* quickActions = setupQuickActions(this);
 
-			ConnectContextMenu(ribbonBar, ribbonTabs, parent, statsWidget);
+        QHBoxLayout* layout = new QHBoxLayout(this);
+        layout->setContentsMargins(8, 4, 8, 0);
+        layout->setSpacing(16);
+        layout->addWidget(ribbonTabs);
+		layout->addWidget(quickActions);
+        layout->addStretch();
+        layout->addWidget(statsWidget);
 
-            return ribbonBar;
-        }
+		for (const auto& tabName : ribbonTabNames) {
+			auto ribbonTab = ribbonTabs->addTab(QString::fromStdString(tabName));
+		}
+
+		ConnectContextMenu(this, ribbonTabs, parent, statsWidget);
+
+        QObject::connect(ribbonTabs, &QTabBar::currentChanged,
+            ribbonStack, &QStackedWidget::setCurrentIndex);
+
+        QObject::connect(ribbonTabs, &QTabBar::tabBarDoubleClicked, [ribbonStack](int index) {
+            ribbonStack->setVisible(!ribbonStack->isVisible());
+            });
     }
 }

@@ -10,9 +10,9 @@
 #include <QString>
 #include <string>
 
-using namespace Engine::Ribbon;
+using namespace Engine::RibbonStats;
 
-GetStatistic Engine::Ribbon::getStatistic(std::string statName, QWidget* statsWidget) {
+GetStatistic Engine::RibbonStats::getStatistic(std::string statName, QWidget* statsWidget) {
 	QString statNameString = QString::fromStdString(statName);
 	QStringList statNameSplit = statNameString.split("_");
 
@@ -40,7 +40,7 @@ GetStatistic Engine::Ribbon::getStatistic(std::string statName, QWidget* statsWi
 	return { QString::fromStdString(statName), "0"};
 }
 
-static QLabel* Engine::Ribbon::statisticLabel(QWidget* parent, std::string statName) {
+static QLabel* Engine::RibbonStats::statisticLabel(QWidget* parent, std::string statName) {
 
 	QLabel* existingLabel = parent->findChild<QLabel*>(statName);
 	if (existingLabel) return existingLabel;
@@ -60,7 +60,7 @@ static QLabel* Engine::Ribbon::statisticLabel(QWidget* parent, std::string statN
 	return statLabel;
 }
 
-QMenu* Engine::Ribbon::createStatsToggleMenu(QWidget* parent, QWidget* statsWidget) {
+QMenu* Engine::RibbonStats::createStatsToggleMenu(QWidget* parent, QWidget* statsWidget) {
 	QMenu* mainMenu = Menu::create(parent, "Stats");
 
 	QMenu* instanceCount = Menu::create(parent, "Instance count");

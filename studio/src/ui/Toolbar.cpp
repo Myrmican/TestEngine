@@ -23,8 +23,6 @@ QToolBar* Toolbar::create(QMainWindow* window) {
     QActionGroup* transformToolsGroup = new QActionGroup(mainToolBar);
     transformToolsGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::ExclusiveOptional);
 
-    ToolManager::createTools(mainToolBar);
-
     mainToolBar->setStyleSheet(
         "QToolBar {"
         "    border: none;"

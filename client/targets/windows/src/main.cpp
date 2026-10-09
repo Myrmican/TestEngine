@@ -60,9 +60,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     ShowWindow(hWnd, SW_SHOWMAXIMIZED);
     UpdateWindow(hWnd);
 
-    /*if (!Engine::initialize()) {
+    auto engine = std::make_unique<Engine::EngineInstance>();
+    if (!engine) {
         return 1;
-    }*/
+    }
 
     MSG msg;
     while (GetMessage(&msg, NULL, 0, 0))

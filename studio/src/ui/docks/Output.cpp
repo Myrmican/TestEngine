@@ -46,7 +46,7 @@ Output::Output(QMainWindow* window, Project* project)
     clearLogBtn->setAutoRaise(true);
 
     QComboBox* moreOptionsBtn = new QComboBox(toolbarStrip);
-	moreOptionsBtn->setCurrentIndex(-1);
+    moreOptionsBtn->setCurrentIndex(-1);
     moreOptionsBtn->addItems({ "Show timestamps", "Option 1", "Option 2" });
 
     toolbarLayout->addWidget(msgFilterCombo);
