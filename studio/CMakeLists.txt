@@ -22,6 +22,7 @@ target_include_directories(TestEngine PRIVATE
     "${Qt6_INCLUDE_DIRS}"
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
     "${CMAKE_SOURCE_DIR}/engine/include"
+    "${CMAKE_SOURCE_DIR}/client/include"
     "${CMAKE_SOURCE_DIR}/external"
     "${CMAKE_SOURCE_DIR}/external/SDL/include"
     "${CMAKE_SOURCE_DIR}/external/velopack_libc_1.2.0/include"

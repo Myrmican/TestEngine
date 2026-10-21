@@ -2,15 +2,13 @@
 
 #include <QFrame>
 
-class QFrame;
 class QMainWindow;
-class QWidget;
-class QStackedWidget;
+class QToolBar;
 
 namespace Engine {
 	class Ribbon : public QFrame {
 	public:
-		QStackedWidget* tabBar;
+		QToolBar* toolbar;
 
 		Ribbon(QMainWindow* parent);
 	};

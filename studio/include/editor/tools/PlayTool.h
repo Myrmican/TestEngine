@@ -7,7 +7,7 @@
 namespace Engine::Tools {
 	class Play : public StudioTool {
 	public:
-		Play(QToolBar* parent) : StudioTool(parent, "Play") {
+		Play(QWidget* parent) : StudioTool(parent, "Play") {
 			this->setCheckable(false);
 			
 			connect(this, &QToolButton::clicked, this, [this, parent]() {

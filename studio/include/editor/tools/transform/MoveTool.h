@@ -3,7 +3,7 @@
 namespace Engine::Tools {
 	class Move : public StudioTool {
 	public:
-		Move(QToolBar* parent) : StudioTool(parent, "Move") {
+		Move(QWidget* parent) : StudioTool(parent, "Move") {
 
 			connect(this, &QToolButton::toggled, this, [this]() {
 				

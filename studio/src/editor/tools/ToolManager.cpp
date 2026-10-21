@@ -4,26 +4,30 @@
 #include <editor/tools/transform/MoveTool.h>
 #include <editor/tools/transform/ScaleTool.h>
 #include <editor/tools/transform/RotateTool.h>
-
+#include <QHBoxLayout>
 #include <QWidget>
 
 namespace ToolManager {
-    QWidget* createTools(QToolBar* parent, std::string tabName) {
+    QWidget* createTools(QStackedWidget* parent, std::string tabName) {
         QWidget* pageWidget = new QWidget(parent);
 
         if (tabName == "Home") {
-            new Engine::Tools::Select(parent);
-            new Engine::Tools::Move(parent);
-            new Engine::Tools::Scale(parent);
-            new Engine::Tools::Rotate(parent);
+            QHBoxLayout* layout = new QHBoxLayout(pageWidget);
+            layout->setContentsMargins(4, 2, 4, 2);
+            layout->setSpacing(4);
 
-            parent->addSeparator();
+            layout->addWidget(new Engine::Tools::Select(pageWidget));
+            layout->addWidget(new Engine::Tools::Move(pageWidget));
+            layout->addWidget(new Engine::Tools::Scale(pageWidget));
+            layout->addWidget(new Engine::Tools::Rotate(pageWidget));
 
-            new Engine::Tools::Play(parent);
+            //layout->addSpacing(10);
 
-            parent->addSeparator();
+            layout->addWidget(new Engine::Tools::Play(pageWidget));
 
-            return pageWidget;
+            layout->addStretch();
         }
-    };
+
+        return pageWidget;
+    }
 }

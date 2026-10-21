@@ -31,21 +31,15 @@ namespace EditorWindow {
         window->setProperty("projectInstance", QVariant::fromValue(static_cast<void*>(project)));
         window->setWindowTitle(project->name + " - Test Engine");
 
-        Engine::Ribbon* ribbonBar = new Engine::Ribbon(window);
-        
-        QToolBar* ribbonToolBar = new QToolBar("RibbonToolBar", window);
+        QToolBar* ribbonToolBar = new QToolBar(window);
         ribbonToolBar->setMovable(false);
         ribbonToolBar->setFloatable(false);
-        ribbonToolBar->toggleViewAction()->setVisible(false);
-        ribbonToolBar->addWidget(ribbonBar);
+        ribbonToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
 
-        QToolBar* mainToolBar = Toolbar::create(window);
-
-        ribbonBar->tabBar->addWidget(ToolManager::createTools(mainToolBar, "Home"));
+        Engine::Ribbon* editorRibbon = new Engine::Ribbon(window);
+        ribbonToolBar->addWidget(editorRibbon);
 
         window->addToolBar(Qt::TopToolBarArea, ribbonToolBar);
-        window->addToolBarBreak(Qt::TopToolBarArea);
-        window->addToolBar(Qt::TopToolBarArea, mainToolBar);
 
         auto* editorLayout = new QVBoxLayout(editorPage);
         editorLayout->setContentsMargins(0, 0, 0, 0);
@@ -72,8 +66,8 @@ namespace EditorWindow {
         window->show();
 
         QObject::connect(documentTabs, &QTabWidget::tabCloseRequested,
-            [documentTabs, projectTabIndex, editorPage, window, mainToolBar, project](int index) {
-                documentTabs->handleTabClose(index, projectTabIndex, editorPage, window, mainToolBar, project);
+            [documentTabs, projectTabIndex, editorPage, window, editorRibbon, project](int index) {
+                documentTabs->handleTabClose(index, projectTabIndex, editorPage, window, editorRibbon->toolbar, project);
             }
         );
 

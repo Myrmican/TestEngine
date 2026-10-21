@@ -1,5 +1,6 @@
 #include <ui/menus/MenuManager.h>
 #include <editor/tools/ToolManager.h>
+#include <ui/Toolbar.h>
 #include <ui/ribbon/Ribbon.h>
 #include <ui/ribbon/RibbonStats.h>
 #include <QMenu>
@@ -111,12 +112,10 @@ QWidget* setupQuickActions(QWidget* parent) {
 
 namespace Engine {
     Ribbon::Ribbon(QMainWindow* parent) : QFrame(parent) {
-
         setObjectName("RibbonFrame");
         setStyleSheet("QFrame { background-color: #1c1c1c; }");
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
         setContextMenuPolicy(Qt::CustomContextMenu);
-        setFixedHeight(36);
 
         QTabBar* ribbonTabs = new QTabBar(this);
         ribbonTabs->setObjectName("RibbonTabs");
@@ -126,10 +125,6 @@ namespace Engine {
         ribbonTabs->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         ribbonTabs->setExpanding(false);
         ribbonTabs->setFixedHeight(32);
-
-        QStackedWidget* ribbonStack = new QStackedWidget(parent);
-
-        tabBar = ribbonStack;
 
         ribbonTabs->setStyleSheet(
             "QTabBar {"
@@ -160,22 +155,35 @@ namespace Engine {
             "}"
         );
 
+        QStackedWidget* ribbonStack = new QStackedWidget(this);
+
         QWidget* statsWidget = setupStats(this);
-		QWidget* quickActions = setupQuickActions(this);
+        QWidget* quickActions = setupQuickActions(this);
 
-        QHBoxLayout* layout = new QHBoxLayout(this);
-        layout->setContentsMargins(8, 4, 8, 0);
-        layout->setSpacing(16);
-        layout->addWidget(ribbonTabs);
-		layout->addWidget(quickActions);
-        layout->addStretch();
-        layout->addWidget(statsWidget);
+        QHBoxLayout* topLayout = new QHBoxLayout();
+        topLayout->setContentsMargins(0, 4, 8, 0);
+        topLayout->setSpacing(0);
+        topLayout->addWidget(ribbonTabs);
+        topLayout->addWidget(quickActions);
+        topLayout->addStretch();
+        topLayout->addWidget(statsWidget);
 
-		for (const auto& tabName : ribbonTabNames) {
-			auto ribbonTab = ribbonTabs->addTab(QString::fromStdString(tabName));
-		}
+        for (const auto& tabName : ribbonTabNames) {
+            //QWidget* pageWidget = ToolManager::createTools(ribbonStack, tabName);
+            //ribbonStack->addWidget(pageWidget);
+            ribbonTabs->addTab(QString::fromStdString(tabName));
+        }
 
-		ConnectContextMenu(this, ribbonTabs, parent, statsWidget);
+        QVBoxLayout* mainLayout = new QVBoxLayout(this);
+        mainLayout->setContentsMargins(0, 0, 0, 0);
+        mainLayout->setSpacing(0);
+        mainLayout->addLayout(topLayout);
+        mainLayout->addWidget(ribbonStack);
+        setLayout(mainLayout);
+
+        toolbar = Toolbar::create(parent);
+
+        ConnectContextMenu(this, ribbonTabs, parent, statsWidget);
 
         QObject::connect(ribbonTabs, &QTabBar::currentChanged,
             ribbonStack, &QStackedWidget::setCurrentIndex);
