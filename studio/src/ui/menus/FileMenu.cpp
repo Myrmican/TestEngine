@@ -31,7 +31,7 @@ FileMenu::FileMenu(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* works
                     loadingDialog->setStatus("Building editor...");
                     QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
-                    EditorWindow::initialize(project, editorPage, window);
+                    new Engine::EditorWindow(project, editorPage, window);
 
                     workspaceStack->setCurrentIndex(1);
                     loadingDialog->close();
@@ -49,7 +49,7 @@ FileMenu::FileMenu(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* works
                     loadingDialog->setStatus("Building editor...");
                     QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
-                    EditorWindow::initialize(project, editorPage, window);
+                    new Engine::EditorWindow(project, editorPage, window);
 
                     workspaceStack->setCurrentIndex(1);
                     loadingDialog->close();

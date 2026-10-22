@@ -2,8 +2,8 @@
 #include <core/Reflection.h>
 
 namespace Engine {
-	REGISTER_CREATABLE(Frame, Instance);
-	Frame::Frame() : Creatable("Frame") {
+	REGISTER_CREATABLE(Frame, GuiBase);
+	Frame::Frame() : GuiBase(), Creatable("Frame") {
 
 	}
 }

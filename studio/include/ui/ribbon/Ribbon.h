@@ -9,6 +9,7 @@ namespace Engine {
 	class Ribbon : public QFrame {
 	public:
 		QToolBar* toolbar;
+		QToolBar* ribbonToolbar;
 
 		Ribbon(QMainWindow* parent);
 	};

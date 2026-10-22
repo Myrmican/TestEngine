@@ -2,6 +2,9 @@ class QWidget;
 class QMainWindow;
 class Project;
 
-namespace EditorWindow {
-	void initialize(Project* project, QWidget* editorPageContainer, QMainWindow* mainWindow);
+namespace Engine {
+	class EditorWindow {
+	public:
+		EditorWindow(Project* project, QWidget* editorPageContainer, QMainWindow* mainWindow);
+	};
 }

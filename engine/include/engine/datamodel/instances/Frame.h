@@ -1,7 +1,7 @@
-#include <datamodel/Instance.h>
+#include <datamodel/instances/GuiBase.h>
 
 namespace Engine {
-	class Frame : public Creatable {
+	class Frame : public GuiBase, public Creatable {
 	public:
 		Frame();
 

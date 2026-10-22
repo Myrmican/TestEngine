@@ -16,12 +16,13 @@
 #include <util/Languages.h>
 #include <ui/docks/DockManager.h>
 #include <ui/TabManager.h>
+#include <editor/EditorWindow.h>
 #include <ui/ribbon/Ribbon.h>
 #include <ui/Toolbar.h>
 #include <editor/tools/ToolManager.h>
 
-namespace EditorWindow {
-    void initialize(Project* project, QWidget* editorPage, QMainWindow* window) {
+namespace Engine {
+    EditorWindow::EditorWindow(Project* project, QWidget* editorPage, QMainWindow* window) {
         if (editorPage) {
             editorPage->setObjectName("ProjectEditorTopWidget");
             editorPage->setProperty("projectInstance", QVariant::fromValue(static_cast<void*>(project)));
@@ -31,15 +32,7 @@ namespace EditorWindow {
         window->setProperty("projectInstance", QVariant::fromValue(static_cast<void*>(project)));
         window->setWindowTitle(project->name + " - Test Engine");
 
-        QToolBar* ribbonToolBar = new QToolBar(window);
-        ribbonToolBar->setMovable(false);
-        ribbonToolBar->setFloatable(false);
-        ribbonToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
-
         Engine::Ribbon* editorRibbon = new Engine::Ribbon(window);
-        ribbonToolBar->addWidget(editorRibbon);
-
-        window->addToolBar(Qt::TopToolBarArea, ribbonToolBar);
 
         auto* editorLayout = new QVBoxLayout(editorPage);
         editorLayout->setContentsMargins(0, 0, 0, 0);
@@ -66,8 +59,8 @@ namespace EditorWindow {
         window->show();
 
         QObject::connect(documentTabs, &QTabWidget::tabCloseRequested,
-            [documentTabs, projectTabIndex, editorPage, window, editorRibbon, project](int index) {
-                documentTabs->handleTabClose(index, projectTabIndex, editorPage, window, editorRibbon->toolbar, project);
+            [documentTabs, placeView, editorPage, window, editorRibbon, project](int index) {
+                documentTabs->handleTabClose(index, placeView, editorPage, window, editorRibbon->toolbar, project);
             }
         );
 
@@ -82,7 +75,7 @@ namespace EditorWindow {
             }
 
             QAction* recentAction = fileRecentMenu->addAction(project->name, [project, editorPage, window]() {
-                EditorWindow::initialize(project, editorPage, window);
+                new EditorWindow(project, editorPage, window);
                 });
             recentAction->setObjectName("RecentProject_" + project->name);
         }

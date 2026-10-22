@@ -10,6 +10,7 @@
 #include <ui/TabManager.h>
 #include <ui/ribbon/Ribbon.h>
 #include <ui/menus/MenuManager.h>
+#include <editor/EngineViewport.h>
 
 namespace TabManager {
 	FileTabs::FileTabs(QWidget* parent) : QTabWidget(parent) {
@@ -99,12 +100,13 @@ namespace TabManager {
         }
     }
 
-    void FileTabs::handleTabClose(int index, int projectTabIndex, QWidget * editorPage,
-        QMainWindow * window, QToolBar * mainToolBar, Project * project) {
-        
+    void FileTabs::handleTabClose(int index, EngineViewport* placeView, QWidget* editorPage,
+        QMainWindow* window, QToolBar* mainToolBar, Project * project) {
+
+        QWidget* tabWidget = this->widget(index);
         removeTab(index);
 
-        if (projectTabIndex != index) return;
+        if (tabWidget != placeView) return;
 
         if (!editorPage) return;
 
@@ -114,8 +116,6 @@ namespace TabManager {
                 window->removeDockWidget(oldDock);
                 delete oldDock;
             }
-
-            delete mainToolBar;
 
             workspaceStack->setCurrentIndex(0);
             if (project->projectFile) {

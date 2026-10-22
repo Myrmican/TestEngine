@@ -4,6 +4,7 @@
 class QToolBar;
 class Project;
 class QWidget;
+class EngineViewport;
 
 namespace TabManager {
 	class FileTabs : public QTabWidget {
@@ -12,7 +13,7 @@ namespace TabManager {
 	public:
 		explicit FileTabs(QWidget* parent = nullptr);
 
-		void handleTabClose(int index, int projectTabIndex, QWidget* editorPage,
+		void handleTabClose(int index, EngineViewport* placeView, QWidget* editorPage,
 			QMainWindow* window, QToolBar* mainToolBar, Project* project);
 
 	private slots:

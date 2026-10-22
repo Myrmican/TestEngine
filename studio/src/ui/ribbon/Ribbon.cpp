@@ -18,10 +18,10 @@ std::vector<std::string> ribbonTabNames = { "Home", "Model", "Avatar", "Test", "
 
 void ConnectContextMenu(QWidget* ribbonBar, QTabBar* ribbonTabs, QMainWindow* window, QWidget* statsWidget) {
     QObject::connect(ribbonBar, &QWidget::customContextMenuRequested,
-        [ribbonBar, ribbonTabs, statsWidget](const QPoint& pos) {
+        [ribbonBar, ribbonTabs, statsWidget, window](const QPoint& pos) {
             QPoint tabBarPos = ribbonBar->mapFrom(ribbonBar, pos);
 
-            QMenu* contextMenu = Menu::create(ribbonBar);
+            QMenu* contextMenu = Menu::create(window);
 
             int index = ribbonTabs->tabAt(tabBarPos);
 
@@ -117,6 +117,14 @@ namespace Engine {
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
         setContextMenuPolicy(Qt::CustomContextMenu);
 
+        QToolBar* ribbonToolBar = new QToolBar("RibbonToolBar", parent);
+        ribbonToolBar->setMovable(false);
+        ribbonToolBar->setFloatable(false);
+        ribbonToolBar->toggleViewAction()->setVisible(false);
+        ribbonToolBar->addWidget(this);
+
+        ribbonToolbar = ribbonToolBar;
+
         QTabBar* ribbonTabs = new QTabBar(this);
         ribbonTabs->setObjectName("RibbonTabs");
         ribbonTabs->setDrawBase(false);
@@ -161,16 +169,16 @@ namespace Engine {
         QWidget* quickActions = setupQuickActions(this);
 
         QHBoxLayout* topLayout = new QHBoxLayout();
-        topLayout->setContentsMargins(0, 4, 8, 0);
-        topLayout->setSpacing(0);
+        topLayout->setContentsMargins(8, 4, 8, 0);
+        topLayout->setSpacing(16);
         topLayout->addWidget(ribbonTabs);
         topLayout->addWidget(quickActions);
         topLayout->addStretch();
         topLayout->addWidget(statsWidget);
 
         for (const auto& tabName : ribbonTabNames) {
-            //QWidget* pageWidget = ToolManager::createTools(ribbonStack, tabName);
-            //ribbonStack->addWidget(pageWidget);
+            QWidget* pageWidget = ToolManager::createTools(ribbonStack, tabName);
+            ribbonStack->addWidget(pageWidget);
             ribbonTabs->addTab(QString::fromStdString(tabName));
         }
 
@@ -178,10 +186,15 @@ namespace Engine {
         mainLayout->setContentsMargins(0, 0, 0, 0);
         mainLayout->setSpacing(0);
         mainLayout->addLayout(topLayout);
-        mainLayout->addWidget(ribbonStack);
         setLayout(mainLayout);
 
         toolbar = Toolbar::create(parent);
+
+        toolbar->addWidget(ribbonStack);
+
+        parent->addToolBar(Qt::TopToolBarArea, ribbonToolbar);
+        parent->addToolBarBreak(Qt::TopToolBarArea);
+        parent->addToolBar(Qt::TopToolBarArea, toolbar);
 
         ConnectContextMenu(this, ribbonTabs, parent, statsWidget);
 
