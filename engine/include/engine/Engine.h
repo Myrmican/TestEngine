@@ -19,5 +19,6 @@ namespace Engine {
 	private:
 		std::unique_ptr<DataModel> m_dataModel;
 		Engine::ServiceProvider* m_sProvider;
+
 	};
 }

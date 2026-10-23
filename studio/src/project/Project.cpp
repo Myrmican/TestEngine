@@ -20,8 +20,8 @@
 
 using namespace std;
 
-Project::Project(const std::string& projectName) {
-    name = QString::fromStdString(projectName);
+Project::Project(QFileInfo fileInfo) {
+    name = QString::fromStdString(fileInfo.baseName().toStdString());
     savingInCloud = false;
 
     try {
@@ -42,8 +42,7 @@ Project::Project(const std::string& projectName) {
 Project::~Project() = default;
 
 namespace ProjectManager {
-
-    Project* onNewProject(QMainWindow* parent) {
+    Project* ProjectManager::createNew(QMainWindow* parent) {
         QDialog dialog(parent);
         dialog.setWindowTitle("Create Project");
         dialog.setMinimumSize(480, 250);
@@ -58,83 +57,60 @@ namespace ProjectManager {
         formLayout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
 
         QLineEdit* nameEdit = new QLineEdit("Untitled Game");
-        nameEdit->setMinimumHeight(2);
-
         formLayout->addRow("Project Name", nameEdit);
-
-        QHBoxLayout* languageLayout = new QHBoxLayout();
-        languageLayout->setSpacing(10);
-
-        QPushButton* javaButton = new QPushButton("Java");
-        QPushButton* kotlinButton = new QPushButton("Kotlin");
-
-        javaButton->setCheckable(true);
-        kotlinButton->setCheckable(true);
-        kotlinButton->setChecked(true);
-
-        QButtonGroup* languageGroup = new QButtonGroup(&dialog);
-        languageGroup->setExclusive(true);
-        languageGroup->addButton(javaButton);
-        languageGroup->addButton(kotlinButton);
-
-        languageLayout->addWidget(javaButton);
-        languageLayout->addWidget(kotlinButton);
-        languageLayout->addStretch();
-
-        formLayout->addRow("Language", languageLayout);
 
         QComboBox* dimensionBox = new QComboBox();
         dimensionBox->addItem("3D");
         dimensionBox->addItem("2D");
-
         formLayout->addRow("Dimension", dimensionBox);
+
+        QPushButton* importRobloxButton = new QPushButton(&dialog);
+        importRobloxButton->setText("Import RBXLX");
+        formLayout->addRow(importRobloxButton);
 
         mainLayout->addLayout(formLayout);
         mainLayout->addStretch();
 
         QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Save | QDialogButtonBox::Cancel);
 
+        QString selectedRobloxFile;
+
+        QObject::connect(importRobloxButton, &QPushButton::pressed, [&dialog, parent, &selectedRobloxFile]() {
+            QString path = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+            QString filePath = QFileDialog::getOpenFileName(parent, "Select Place File", path, "Roblox Place (*.rbxlx)");
+            if (!filePath.isEmpty()) {
+                selectedRobloxFile = filePath;
+                dialog.accept();
+            }
+            });
+
         QObject::connect(buttonBox, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
         QObject::connect(buttonBox, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
 
         if (QPushButton* saveButton = buttonBox->button(QDialogButtonBox::Save)) {
-            saveButton->setObjectName("saveButton");
-            saveButton->setAutoDefault(false);
-            saveButton->setDefault(false);
             saveButton->setText("Create");
-        }
-
-        if (QPushButton* cancelButton = buttonBox->button(QDialogButtonBox::Cancel)) {
-            cancelButton->setObjectName("cancelButton");
         }
 
         mainLayout->addWidget(buttonBox);
 
-        QFile file(":/styles.qss");
-        if (file.open(QFile::ReadOnly | QFile::Text)) {
-            QTextStream stream(&file);
-            dialog.setStyleSheet(stream.readAll());
-            file.close();
+        if (dialog.exec() != QDialog::Accepted) {
+            return nullptr;
         }
 
-        if (dialog.exec() == QDialog::Accepted) {
-            std::string projectName = nameEdit->text().toStdString();
-
-			Project* newProject = new Project(projectName);
-			newProject->primaryLanguage = javaButton->isChecked() ? "Java" : "Kotlin";
-
-
-
-            return newProject;
+        if (!selectedRobloxFile.isEmpty()) {
+            QFileInfo fileInfo(selectedRobloxFile);
+            return new Project(fileInfo);
         }
 
-        return nullptr;
+        QFileInfo fileInfo(nameEdit->text());
+
+        return new Project(fileInfo);
     }
 
-	Project* promptOpenFile(QMainWindow* parent) {
+	Project* openFile(QMainWindow* parent) {
 		QString path = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
 
-		QString filePath = QFileDialog::getOpenFileName(parent, "Open Project", path, "Engine Files (*.tep)");
+		QString filePath = QFileDialog::getOpenFileName(parent, "Open Project", path, "Engine Files (*.tep);;Roblox Place (*.rbxlx)");
         if (filePath.isEmpty()) return nullptr;
 
         QFileInfo fileInfo(filePath);
@@ -142,9 +118,8 @@ namespace ProjectManager {
 
         QFile* projectFile = new QFile(filePath);
 		
-        Project* newProject = new Project(fileName.toStdString());
+        Project* newProject = new Project(fileInfo);
         newProject->projectFile = projectFile;
-        newProject->primaryLanguage = "Kotlin";
         return newProject;
 	}
 

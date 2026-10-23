@@ -22,7 +22,7 @@ FileMenu::FileMenu(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* works
         fileMenu->clear();
 
         fileMenu->addAction("New", [window, workspaceStack, editorPage]() {
-            if (Project* project = ProjectManager::onNewProject(window)) {
+            if (Project* project = ProjectManager::createNew(window)) {
                 auto* loadingDialog = new ProjectLoadingDialog(project->name, window);
                 loadingDialog->setAttribute(Qt::WA_DeleteOnClose);
                 loadingDialog->show();
@@ -40,7 +40,7 @@ FileMenu::FileMenu(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* works
             });
 
         fileMenu->addAction("Open", [window, workspaceStack, editorPage]() {
-            if (Project* project = ProjectManager::promptOpenFile(window)) {
+            if (Project* project = ProjectManager::openFile(window)) {
                 auto* loadingDialog = new ProjectLoadingDialog(project->name, window);
                 loadingDialog->setAttribute(Qt::WA_DeleteOnClose);
                 loadingDialog->show();

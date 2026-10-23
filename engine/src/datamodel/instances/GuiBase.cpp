@@ -2,7 +2,7 @@
 #include <core/Reflection.h>
 
 namespace Engine {
-	REGISTER_INSTANCE(GuiBase);
+	REGISTER_INSTANCE(GuiBase, Instance);
 	GuiBase::GuiBase() : Instance("GuiBase") {
 
 	}

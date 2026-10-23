@@ -123,8 +123,11 @@ add_subdirectory(
     EXCLUDE_FROM_ALL
 )
 
+add_subdirectory(external/pugixml)
 add_subdirectory(engine)
 add_subdirectory(studio)
 add_subdirectory(client)
+
+target_link_libraries(EngineCore PRIVATE pugixml)
 
 include_directories(SYSTEM ${CMAKE_CURRENT_SOURCE_DIR}/external)

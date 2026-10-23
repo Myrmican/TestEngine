@@ -9,7 +9,6 @@ namespace Engine {
 
 		static void properties(ClassDescriptor* desc);
 
-	private:
-		Camera* currentCamera = nullptr;
+	
 	};
 }

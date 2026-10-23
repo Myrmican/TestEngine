@@ -4,12 +4,12 @@
 #include <QString>
 #include <QObject>
 #include <QFile>
+#include <QFileInfo>
 #include <core/Logger.h>
 #include <engine/Engine.h>
 #include <engine/scripting/ScriptEngine.h>
 
 class QMainWindow;
-class QFile;
 class Explorer;
 
 class Project : public QObject {
@@ -18,9 +18,11 @@ public:
     QString name;
     std::string projectPath;
     QFile* projectFile = nullptr;
+    QFileInfo fileInfo;
 
     bool savingInCloud = false;
-	std::string primaryLanguage = "Kotlin";
+	std::string primaryLanguage = "Kotlin"; //Remove
+
     Logger* logger = nullptr;
 	Explorer* explorer = nullptr;
 
@@ -30,13 +32,13 @@ public:
     bool isSaved = false;
     bool hasPendingChanges = false;
 
-    Project(const std::string& projectName);
+    Project(QFileInfo fileInfo);
     ~Project();
 };
 
 namespace ProjectManager {
-    Project* onNewProject(QMainWindow* parent);
-    Project* promptOpenFile(QMainWindow* parent);
+    Project* createNew(QMainWindow* parent);
+    Project* openFile(QMainWindow* parent);
     Project* openProject();
 	Project* getProject(QWidget* contextWidget);
 }
