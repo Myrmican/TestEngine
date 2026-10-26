@@ -19,12 +19,12 @@ public:
     std::string projectPath;
     QFile* projectFile = nullptr;
     QFileInfo fileInfo;
+    bool is2D = false;
 
     bool savingInCloud = false;
 	std::string primaryLanguage = "Kotlin"; //Remove
 
     Logger* logger = nullptr;
-	Explorer* explorer = nullptr;
 
     std::shared_ptr<Engine::EngineInstance> engine;
     std::shared_ptr<Engine::ScriptEngine> scriptEngine;

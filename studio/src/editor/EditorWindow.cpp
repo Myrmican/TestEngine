@@ -47,7 +47,7 @@ namespace Engine {
 
         /*window->setStyleSheet(
             "QMainWindow::separator {"
-            "    background-color: #666666;"
+            "    background-color: #1e1e1e;"
             "}"
         );*/
 
@@ -82,6 +82,5 @@ namespace Engine {
 
         Logger* outputLogger = new Logger(windowDocks.output, project);
         project->logger = outputLogger;
-        project->explorer = windowDocks.explorer;
     }
 }

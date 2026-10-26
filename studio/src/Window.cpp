@@ -48,13 +48,13 @@ QIcon makeRoundIcon(const QIcon& originalIcon, int size) {
     return QIcon(targetPixmap);
 }
 
-void createLeftDropdownsMain(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage) {
+static void createLeftDropdownsMain(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage) {
     new FileMenu(menuBar, window, workspaceStack, editorPage);
     new PluginsMenu(menuBar);
     new HelpMenu(menuBar);
 }
 
-void createLeftDropdownsEditor(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage) {
+static void createLeftDropdownsEditor(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage) {
     new FileMenu(menuBar, window, workspaceStack, editorPage);
     new EditMenu(menuBar);
     new ViewMenu(menuBar, window);

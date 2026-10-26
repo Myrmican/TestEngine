@@ -18,11 +18,8 @@
 #include <engine/Engine.h>
 #include <memory>
 
-using namespace std;
-
 Project::Project(QFileInfo fileInfo) {
     name = QString::fromStdString(fileInfo.baseName().toStdString());
-    savingInCloud = false;
 
     try {
         engine = std::make_unique<Engine::EngineInstance>();
@@ -104,7 +101,11 @@ namespace ProjectManager {
 
         QFileInfo fileInfo(nameEdit->text());
 
-        return new Project(fileInfo);
+        Project* newProject = new Project(fileInfo);
+
+        newProject->is2D = dimensionBox->currentText() == "2D";
+
+        return newProject;
     }
 
 	Project* openFile(QMainWindow* parent) {

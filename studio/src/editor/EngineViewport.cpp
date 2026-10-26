@@ -1,6 +1,6 @@
 #include "editor/EngineViewport.h"
 
-#include <engine/rendering/Renderer.h>   // adjust to match your include path
+#include <engine/rendering/Renderer.h>
 #include <project/Project.h>
 #include <services/world/World.h>
 
@@ -11,7 +11,7 @@
 EngineViewport::EngineViewport(QWidget* parent, Project* project)
     : QWidget(parent), m_project(project)
 {
-    setAttribute(Qt::WA_NativeWindow);
+    setAttribute(Qt::WA_DontCreateNativeAncestors);
     setAttribute(Qt::WA_PaintOnScreen);
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_OpaquePaintEvent);
@@ -20,7 +20,6 @@ EngineViewport::EngineViewport(QWidget* parent, Project* project)
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &EngineViewport::renderFrame);
 
-    // Keep the World, not the Camera: the current camera can change at runtime
     if (project && project->engine && project->engine->getProvider())
         m_world = project->engine->getProvider()->getService<Engine::World>();
 }
@@ -42,7 +41,10 @@ void EngineViewport::showEvent(QShowEvent* event)
 {
     QWidget::showEvent(event);
 
-    // Only set up once, the first time the widget is shown
+    if (m_window) return;
+
+    setAttribute(Qt::WA_NativeWindow);
+
     if (!m_window && initGpu())
         m_timer->start(16); // roughly 60 fps
 }
@@ -62,7 +64,6 @@ bool EngineViewport::initGpu()
         return false;
     }
 
-    // Wrap Qt's native window handle in an SDL window
     SDL_PropertiesID props = SDL_CreateProperties();
 #if defined(Q_OS_WIN)
     SDL_SetPointerProperty(props, SDL_PROP_WINDOW_CREATE_WIN32_HWND_POINTER,
