@@ -59,8 +59,8 @@ namespace Engine {
         window->show();
 
         QObject::connect(documentTabs, &QTabWidget::tabCloseRequested,
-            [documentTabs, placeView, editorPage, window, editorRibbon, project](int index) {
-                documentTabs->handleTabClose(index, placeView, editorPage, window, editorRibbon->toolbar, project);
+            [documentTabs, placeView, editorPage, window, project](int index) {
+                documentTabs->handleTabClose(index, placeView, editorPage, window, project);
             }
         );
 
@@ -73,11 +73,6 @@ namespace Engine {
             if (projectInRecents) {
                 delete projectInRecents;
             }
-
-            QAction* recentAction = fileRecentMenu->addAction(project->name, [project, editorPage, window]() {
-                new EditorWindow(project, editorPage, window);
-                });
-            recentAction->setObjectName("RecentProject_" + project->name);
         }
 
         Logger* outputLogger = new Logger(windowDocks.output, project);

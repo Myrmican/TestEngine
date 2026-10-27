@@ -101,7 +101,7 @@ namespace TabManager {
     }
 
     void FileTabs::handleTabClose(int index, EngineViewport* placeView, QWidget* editorPage,
-        QMainWindow* window, QToolBar* mainToolBar, Project * project) {
+        QMainWindow* window, Project * project) {
 
         QWidget* tabWidget = this->widget(index);
         removeTab(index);

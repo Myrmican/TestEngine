@@ -10,7 +10,7 @@ namespace Engine {
 	public:
 		NetworkSignal();
 
-		Event<Player*, const std::vector<Variant>&> OnReceived;
+		Event<Player*, const std::vector<Engine::Globals::Variant>&> OnReceived;
 
 		void Send(Player* target, const std::vector<uint8_t>& payload);
 		void Broadcast(const std::vector<uint8_t>& payload);

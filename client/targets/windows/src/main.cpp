@@ -2,6 +2,7 @@
 #include <tchar.h>
 #include <memory>
 #include <engine/Engine.h>
+#include <chrono>
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
@@ -55,14 +56,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
     // 3. Initialize Engine Instance
     auto engine = std::make_unique<Engine::EngineInstance>();
-    if (!engine) {
-        DeleteObject(hBrush);
-        return 1;
-    }
+
+    engine->init();
 
     // 4. Non-Blocking Game Loop (PeekMessage)
     MSG msg{};
     bool isRunning = true;
+
+    auto lastTime = std::chrono::high_resolution_clock::now();
 
     while (isRunning) {
         // Process all pending Windows OS events
@@ -80,6 +81,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
         // --- GAME ENGINE FRAME TICK ---
         // engine->tick(deltaTime);
         // engine->render(hWnd);
+
+        auto currentTime = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<float> elapsed = currentTime - lastTime;
+        lastTime = currentTime;
+        float dt = elapsed.count();
+
+        engine->update(dt);
     }
 
     // 5. Cleanup OS resources

@@ -2,24 +2,13 @@
 
 #include <core/math/Color3.h>
 #include <core/math/Vector3.h>
+#include <util/Globals.h>
 #include <string>
 #include <variant>
 #include <any>
 
 namespace Engine {
 	class Instance;
-
-    using PropertyValue = std::variant<
-        std::monostate,
-        std::string,
-        std::string_view,
-        Instance*,
-        Color3,
-        Vector3,
-        float,
-        int,
-        bool
-    >;
 
 	class Property {
 	public:
@@ -31,7 +20,7 @@ namespace Engine {
 
 		virtual ~Property() = default;
 
-		virtual Engine::PropertyValue getValue(const Instance* instance) const = 0;
+		virtual Engine::Globals::Variant getValue(const Instance* instance) const = 0;
 		virtual void setValue(Instance* instance, const std::any& value) const = 0;
         virtual std::string getFormatted(const Instance* instance) const;
 	};
@@ -52,13 +41,13 @@ namespace Engine {
             if (readOnly) { m_setter = NULL; };
         }
 
-        Engine::PropertyValue getValue(const Instance* instance) const override {
+        Engine::Globals::Variant getValue(const Instance* instance) const override {
             auto typedInst = static_cast<const ClassType*>(instance);
 
             if constexpr (std::is_convertible_v<ValueType, Engine::Instance*>) {
                 return static_cast<Engine::Instance*>((typedInst->*m_getter)());
             }
-            else if constexpr (std::is_constructible_v<Engine::PropertyValue, ValueType>) {
+            else if constexpr (std::is_constructible_v<Engine::Globals::Variant, ValueType>) {
                 return (typedInst->*m_getter)();
             }
             else {

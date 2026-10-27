@@ -8,11 +8,11 @@ namespace Engine {
 	}
 
 	void SpawnPoint::properties(Engine::ClassDescriptor* desc) {
-		desc->addProperty(new TypedProperty<SpawnPoint, Team*>(
+		desc->addProperty(new TypedProperty<SpawnPoint, double>(
 			"SpawnProtection",
 			"Spawning",
-			&SpawnPoint::getTeam,
-			&SpawnPoint::setTeam
+			&SpawnPoint::getSpawnProtection,
+			&SpawnPoint::setSpawnProtection
 		));
 		desc->addProperty(new TypedProperty<SpawnPoint, Team*>(
 			"Team",

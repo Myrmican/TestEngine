@@ -11,14 +11,18 @@ namespace Engine {
 
 	public:
 		EngineInstance();
-		~EngineInstance() = default;
+		~EngineInstance();
+
+		void init();
+		void update(float dt);
+		void shutdown();
 
 		DataModel* getDataModel() { return m_dataModel.get(); }
-
 		Engine::ServiceProvider* getProvider() { return m_sProvider; }
 	private:
 		std::unique_ptr<DataModel> m_dataModel;
-		Engine::ServiceProvider* m_sProvider;
+		ServiceProvider* m_sProvider;
 
+		bool m_isInitialized = false;
 	};
 }

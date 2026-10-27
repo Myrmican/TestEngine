@@ -28,7 +28,6 @@ EngineViewport::~EngineViewport()
 {
     if (m_timer) m_timer->stop();
 
-    // Renderer first: it needs the window to still exist while it shuts down
     m_renderer.reset();
 
     if (m_window) {

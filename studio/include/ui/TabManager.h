@@ -14,7 +14,7 @@ namespace TabManager {
 		explicit FileTabs(QWidget* parent = nullptr);
 
 		void handleTabClose(int index, EngineViewport* placeView, QWidget* editorPage,
-			QMainWindow* window, QToolBar* mainToolBar, Project* project);
+			QMainWindow* window, Project* project);
 
 	private slots:
 		void showTabContextMenu(const QPoint& pos);
