@@ -11,10 +11,10 @@ namespace Engine {
 
     template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
 
-    std::string Property::getFormatted(const Instance* instance) const {
+    Engine::Globals::Variant Property::getFormatted(const Instance* instance) const {
         Engine::Globals::Variant rawValue = this->getValue(instance);
 
-        return std::visit(overloaded{
+        return std::visit<Engine::Globals::Variant>(overloaded{
             [](std::monostate) { return std::string(""); },
             [](std::string& s) { return s; },
             [](std::string_view sv) { return std::string(sv); },
@@ -26,9 +26,9 @@ namespace Engine {
                 return std::format("{}, {}, {}", vector3.x, vector3.y, vector3.z);
             },
             [](float floatValue) { return std::format("{:.0f}", floatValue); },
-            [](double doubleValue) { return std::format("{}", doubleValue); },
-            [](int intValue) { return std::format("{}", intValue); },
-            [](bool b) { return b ? std::string("true") : std::string("false"); }
+            [](double doubleValue) { return doubleValue; },
+            [](int intValue) { return intValue; },
+            [](bool b) { return b; }
             }, rawValue);
     }
 }

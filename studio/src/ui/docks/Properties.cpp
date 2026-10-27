@@ -10,6 +10,8 @@
 #include <QMouseEvent>
 #include <QHeaderView>
 #include <QLabel>
+#include <QSpinBox>
+#include <QDoubleSpinBox>
 #include <project/Project.h>
 #include <util/Languages.h>
 #include <ui/docks/Properties.h>
@@ -19,6 +21,8 @@
 #include <engine/core/Reflection.h>
 #include <engine/datamodel/ClassDescriptor.h>
 #include <engine/services/selection/Selection.h>
+#include <util/CheckType.h>
+#include <QCheckBox>
 #include <cmath>
 
 namespace {
@@ -111,6 +115,29 @@ Properties::Properties(QMainWindow* window, Project* project)
         "QTreeWidget::branch:has-children:open {"
         "    image: url(:/icons/branch_open.png);"
         "}"
+        "QLineEdit {"
+        "   background: transparent;"
+        "   border: none;"
+        "   padding-left: 2px;"
+        "}"
+        "QLineEdit:enabled {"
+        "   color: #cccccc;"
+        "}"
+        "QLineEdit:focus {"
+        "   background-color: #2a2a2a;"
+        "}"
+
+        "QSpinBox {"
+        "   background: transparent;"
+        "   border: none;"
+        "   padding-left: 2px;"
+        "}"
+
+        "QDoubleSpinBox {"
+        "   background: transparent;"
+        //"   border: none;"
+        "   padding-left: 2px;"
+        "}"
     );
 
     QPalette palette = propertiesTree->palette();
@@ -180,29 +207,43 @@ void Properties::AddProperty(Engine::Instance* instance, const Engine::Property*
     QTreeWidgetItem* propertyItem = new QTreeWidgetItem(categoryItem);
     propertyItem->setText(0, QString::fromStdString(property->m_name));
 
-    std::string propertyValue = property->getFormatted(instance);
+    Engine::Globals::Variant propertyValue = property->getFormatted(instance);
 
     bool readOnly = property->readOnly || instance->internalLocked && property->m_name == "Parent";
 
-    auto* valueEdit = new QLineEdit();
-    valueEdit->setText(QString::fromStdString(propertyValue));
-    valueEdit->setDisabled(readOnly);
-    valueEdit->setReadOnly(readOnly);
-    valueEdit->setObjectName("PropertyValueEdit");
-    valueEdit->setParent(treeWidget);
-    valueEdit->setStyleSheet(
-        "QLineEdit {"
-        "   background: transparent;"
-        "   border: none;"
-        "   color: #cccccc;"
-        "   padding-left: 2px;"
-        "}"
-        "QLineEdit:focus {"
-        "   background-color: #2a2a2a;"
-        "}"
-    );
+    std::visit([&](auto&& value) {
+        using T = std::decay_t<decltype(value)>;
 
-    treeWidget->setItemWidget(propertyItem, 1, valueEdit);
+        if constexpr (Engine::CheckType::StringLike<T>) {
+            auto* edit = new QLineEdit();
+            edit->setText(QString::fromStdString(std::string(value)));
+            edit->setDisabled(readOnly);
+            edit->setReadOnly(readOnly);
+            edit->setObjectName("PropertyValueEdit");
+            treeWidget->setItemWidget(propertyItem, 1, edit);
+        }
+        else if constexpr (std::is_same_v<T, bool>) {
+            auto* check = new QCheckBox();
+            check->setChecked(value);
+            check->setDisabled(readOnly);
+            treeWidget->setItemWidget(propertyItem, 1, check);
+        }
+        else if constexpr (std::is_same_v<T, int>) {
+            auto* spin = new QSpinBox();
+            spin->setRange(INT_MIN, INT_MAX);
+            spin->setValue(value);
+            spin->setMinimum(0);
+            spin->setEnabled(!readOnly);
+            treeWidget->setItemWidget(propertyItem, 1, spin);
+        }
+        else if constexpr (std::is_same_v<T, double>) {
+            auto* spin = new QDoubleSpinBox();
+            spin->setRange(0, 1e12);
+            spin->setValue(value);
+            spin->setEnabled(!readOnly);
+            treeWidget->setItemWidget(propertyItem, 1, spin);
+        }
+        }, propertyValue);
 }
 
 void Properties::InspectInstance(Engine::Instance* selectedInstance) {

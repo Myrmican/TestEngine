@@ -22,7 +22,7 @@ namespace Engine {
 
 		virtual Engine::Globals::Variant getValue(const Instance* instance) const = 0;
 		virtual void setValue(Instance* instance, const std::any& value) const = 0;
-        virtual std::string getFormatted(const Instance* instance) const;
+        virtual Engine::Globals::Variant getFormatted(const Instance* instance) const;
 	};
 
     template<typename ClassType, typename ValueType>

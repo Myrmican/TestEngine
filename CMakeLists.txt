@@ -117,6 +117,10 @@ target_include_directories(tree-sitter PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/external/tree-sitter/lib/include"
 )
 
+set_target_properties(tree-sitter PROPERTIES
+    C_STANDARD 11
+    C_STANDARD_REQUIRED ON)
+
 add_subdirectory(
     "${CMAKE_SOURCE_DIR}/external/SDL"
     "${CMAKE_CURRENT_BINARY_DIR}/external/SDL"
