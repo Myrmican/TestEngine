@@ -9,6 +9,7 @@
 #include <QToolBar>
 #include <QLabel>
 #include <QTimer>
+#include <QElapsedTimer>
 #include <QMenu>
 #include <QStackedWidget>
 #include <QActionGroup>
@@ -57,6 +58,25 @@ namespace Engine {
         const int projectTabIndex = documentTabs->addTab(placeView, project->name);
 
         window->show();
+
+        auto* frameTimer = new QTimer(window);
+        frameTimer->setInterval(0);
+
+        static QElapsedTimer elapsedTimer;
+        elapsedTimer.start();
+
+        QObject::connect(frameTimer, &QTimer::timeout, window, [project]() {
+            static qint64 lastTime = elapsedTimer.nsecsElapsed();
+            qint64 currentTime = elapsedTimer.nsecsElapsed();
+            float deltaTime = (currentTime - lastTime) / 1000000000.0f;
+            lastTime = currentTime;
+
+            if (project && project->getEngine()) {
+                project->getEngine()->update(deltaTime);
+            }
+            });
+
+        frameTimer->start();
 
         QObject::connect(documentTabs, &QTabWidget::tabCloseRequested,
             [documentTabs, placeView, editorPage, window, project](int index) {

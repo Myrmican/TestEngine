@@ -17,8 +17,8 @@ namespace Engine {
         std::unique_ptr<Engine::Creatable> newInstance = Engine::CreateInstance(className);
         Instance* parentInstance = Engine::GetEngineInstance(parentItem);
 
-        if (!parentInstance && explorer->m_project->engine->getDataModel())
-            parentInstance = explorer->m_project->engine->getDataModel();
+        if (!parentInstance && explorer->m_project->getEngine()->getDataModel())
+            parentInstance = explorer->m_project->getEngine()->getDataModel();
 
         if (!parentInstance || !newInstance) {
             return {};

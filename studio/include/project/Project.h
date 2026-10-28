@@ -26,14 +26,18 @@ public:
 
     Logger* logger = nullptr;
 
-    std::shared_ptr<Engine::EngineInstance> engine;
-    std::shared_ptr<Engine::ScriptEngine> scriptEngine;
-
     bool isSaved = false;
     bool hasPendingChanges = false;
 
-    Project(QFileInfo fileInfo);
+    explicit Project(const QFileInfo fileInfo);
     ~Project();
+
+    Engine::EngineInstance* getEngine() const { return engine.get(); }
+    Engine::ScriptEngine* getScriptEngine() const { return scriptEngine.get(); }
+
+private:
+    std::unique_ptr<Engine::EngineInstance> engine;
+    std::unique_ptr<Engine::ScriptEngine> scriptEngine;
 };
 
 namespace ProjectManager {

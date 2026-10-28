@@ -20,8 +20,8 @@ EngineViewport::EngineViewport(QWidget* parent, Project* project)
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &EngineViewport::renderFrame);
 
-    if (project && project->engine && project->engine->getProvider())
-        m_world = project->engine->getProvider()->getService<Engine::World>();
+    if (project && project->getEngine() && project->getEngine()->getProvider())
+        m_world = project->getEngine()->getProvider()->getService<Engine::World>();
 }
 
 EngineViewport::~EngineViewport()

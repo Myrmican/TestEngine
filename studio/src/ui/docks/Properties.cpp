@@ -163,7 +163,7 @@ Properties::Properties(QMainWindow* window, Project* project)
 
     connectSearch(searchBar, propertiesTree);
 
-    Engine::Selection* selectionService = project->engine->getProvider()->getService<Engine::Selection>();
+    Engine::Selection* selectionService = project->getEngine()->getProvider()->getService<Engine::Selection>();
 
     selectionService->selectionChanged.connect([this](Engine::Instance* instance) {
         if (instance == nullptr) {

@@ -2,6 +2,7 @@
 #include <tchar.h>
 #include <memory>
 #include <engine/Engine.h>
+#include <util/System.h>
 #include <chrono>
 
 #define WINDOW_WIDTH 800
@@ -14,7 +15,6 @@ HINSTANCE hInst;
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow) {
-    // 1. Create dark/grey GDI background brush
     HBRUSH hBrush = CreateSolidBrush(RGB(30, 30, 30));
 
     WNDCLASSEX wcex{};
@@ -38,10 +38,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
     hInst = hInstance;
 
-    // 2. Create the Window
+    //Create client window
     HWND hWnd = CreateWindowEx(
         0, szWindowClass, szTitle,
-        WS_OVERLAPPEDWINDOW | WS_VISIBLE,
+        WS_POPUP | WS_VISIBLE,
         CW_USEDEFAULT, CW_USEDEFAULT, WINDOW_WIDTH, WINDOW_HEIGHT,
         NULL, NULL, hInstance, NULL
     );
@@ -51,22 +51,20 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
         return 1;
     }
 
-    ShowWindow(hWnd, nCmdShow);
+    ShowWindow(hWnd, SW_MAXIMIZE);
     UpdateWindow(hWnd);
 
-    // 3. Initialize Engine Instance
     auto engine = std::make_unique<Engine::EngineInstance>();
 
     engine->init();
 
-    // 4. Non-Blocking Game Loop (PeekMessage)
     MSG msg{};
     bool isRunning = true;
 
     auto lastTime = std::chrono::high_resolution_clock::now();
 
     while (isRunning) {
-        // Process all pending Windows OS events
+        //Process all pending Windows OS events
         while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
             if (msg.message == WM_QUIT) {
                 isRunning = false;
@@ -78,19 +76,23 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
         if (!isRunning) break;
 
-        // --- GAME ENGINE FRAME TICK ---
-        // engine->tick(deltaTime);
-        // engine->render(hWnd);
+        if (IsIconic(hWnd)) {
+            WaitMessage(); //Blocks until a new Windows message arrives
+            lastTime = std::chrono::high_resolution_clock::now(); //Reset delta time to avoid huge dt jumps on resume
+            continue;
+        }
 
+        //Calculate the delta time and update the engine loop
         auto currentTime = std::chrono::high_resolution_clock::now();
         std::chrono::duration<float> elapsed = currentTime - lastTime;
         lastTime = currentTime;
         float dt = elapsed.count();
 
+        if (dt > 0.25f) dt = 0.25f;
+
         engine->update(dt);
     }
 
-    // 5. Cleanup OS resources
     DeleteObject(hBrush);
 
     return (int)msg.wParam;
@@ -107,6 +109,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
+    case WM_KEYDOWN:
+        if (wParam == VK_F11) {
+            
+        }
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }

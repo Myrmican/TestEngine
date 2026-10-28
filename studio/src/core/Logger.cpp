@@ -14,31 +14,28 @@ Logger::Logger(Output* parent, Project* project) {
     this->outputDock = parent;
     this->project = project;
 
-    auto services = project->engine->getProvider()->m_services;
+    auto serviceProvider = project->getEngine()->getProvider();
 
-    Engine::Logging* logging = nullptr;
+    Engine::Logging* loggingService = serviceProvider->getService<Engine::Logging>();
 
-    for (const auto& [name, instance] : services) {
-        if (name == "Logging") {
-            logging = dynamic_cast<Engine::Logging*>(instance);
-            break;
-        }
+    if (!loggingService) {
+        qDebug() << "CRITICAL: Logging service not found!";
+        return;
     }
 
-    logging->messageOut.connect([this](std::string_view message, Engine::LoggerMessageType type) {
+    loggingService->messageOut.connect([this](std::string_view message, Engine::LoggerMessageType type) {
         int messageLevel = static_cast<int>(type);
         switch (messageLevel) {
         case 0:
             Logger::Info(message);
             break;
         case 1:
-            qDebug() << messageLevel;
+            Logger::Warn(message);
             break;
         case 2:
             Logger::Error(message);
             break;
         }
-
         });
 }
 
@@ -54,13 +51,25 @@ void Logger::Info(std::string_view message) {
     outputDock->textEdit->append(formattedLog);
 }
 
+void Logger::Warn(std::string_view message) {
+    auto now = system_clock::now();
+
+    QString logTimestamp = QDateTime::currentDateTime().toString("hh:mm:ss");
+    QString logMessage = QString::fromUtf8(message.data(), static_cast<qsizetype>(message.size()));
+
+    QString formattedLog = QString("<span style=\"color: gray;\">%1</span> <span style=\"color: #FBBF24;\">%2</span>")
+        .arg(logTimestamp.toHtmlEscaped(), logMessage.toHtmlEscaped());
+
+    outputDock->textEdit->append(formattedLog);
+}
+
 void Logger::Error(std::string_view message) {
     auto now = system_clock::now();
 
     QString logTimestamp = QDateTime::currentDateTime().toString("hh:mm:ss");
     QString logMessage = QString::fromUtf8(message.data(), static_cast<qsizetype>(message.size()));
 
-    QString formattedLog = QString("<span style=\"color: gray;\">%1</span> <span style=\"color: #cc6666;\">%2</span>")
+    QString formattedLog = QString("<span style=\"color: gray;\">%1</span> <span style=\"color: #F87171;\">%2</span>")
         .arg(logTimestamp.toHtmlEscaped(), logMessage.toHtmlEscaped());
 
     outputDock->textEdit->append(formattedLog);

@@ -236,7 +236,7 @@ namespace {
 
     void SelectionChanged(Explorer* self) {
         Project* project = self->m_project;
-        Selection* selectionService = project->engine->getProvider()->getService<Selection>();
+        Selection* selectionService = project->getEngine()->getProvider()->getService<Selection>();
 
         QObject::connect(self->treeWidget, &QTreeWidget::currentItemChanged, self->treeWidget, [self, selectionService](QTreeWidgetItem* current, QTreeWidgetItem* previous) {
             if (!selectionService) return;
@@ -385,8 +385,8 @@ QTreeWidgetItem* Explorer::AddItem(QTreeWidgetItem* parentItem, Instance* instan
     Instance* parentInstance = GetEngineInstance(parentItem);
     QString instanceName = QString::fromStdString(std::string(instance->getName()));
 
-    if (!parentInstance && m_project->engine->getDataModel()) {
-        parentInstance = m_project->engine->getDataModel();
+    if (!parentInstance && m_project->getEngine()->getDataModel()) {
+        parentInstance = m_project->getEngine()->getDataModel();
     }
 
     if (!parentInstance) return nullptr;
@@ -413,7 +413,7 @@ QTreeWidgetItem* Explorer::AddItem(QTreeWidgetItem* parentItem, Instance* instan
 
 void Explorer::AssembleRoot() {
 
-    for (auto& service : m_project->engine->getDataModel()->getChildren()) {
+    for (auto& service : m_project->getEngine()->getDataModel()->getChildren()) {
         AddItem(nullptr, service.get());
 
         const auto& children = service->getChildren();

@@ -14,7 +14,7 @@ namespace Engine::Tools {
 				this->setText("Stop");
 
 				Project* project = ProjectManager::getProject(this);
-				project->scriptEngine->executeFiles();
+				project->getScriptEngine()->executeFiles();
 				});
 		};
 	};

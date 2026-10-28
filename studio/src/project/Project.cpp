@@ -15,24 +15,24 @@
 #include <QPushButton>
 #include <QButtonGroup>
 #include <project/Project.h>
-#include <engine/Engine.h>
 #include <memory>
 
-Project::Project(QFileInfo fileInfo) {
-    name = QString::fromStdString(fileInfo.baseName().toStdString());
+Project::Project(const QFileInfo fileInfo) {
+    name = fileInfo.baseName();
 
     try {
         engine = std::make_unique<Engine::EngineInstance>();
+        engine->init();
 
         try {
             scriptEngine = std::make_unique<Engine::ScriptEngine>(engine->getDataModel());
         }
         catch (const std::exception& e) {
-            qCritical() << "Failed to initialize ScriptEngine:";
+            qCritical() << "Failed to initialize ScriptEngine:" << e.what();
         }
     }
     catch (const std::exception& e) {
-        qCritical() << "Failed to initialize EngineInstance:";
+        qCritical() << "Failed to initialize EngineInstance:" << e.what();
     }
 }
 
@@ -100,9 +100,7 @@ namespace ProjectManager {
         }
 
         QFileInfo fileInfo(nameEdit->text());
-
         Project* newProject = new Project(fileInfo);
-
         newProject->is2D = dimensionBox->currentText() == "2D";
 
         return newProject;

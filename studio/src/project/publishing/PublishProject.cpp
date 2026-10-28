@@ -2,7 +2,7 @@
 
 namespace PublishProject {
 	void initPublish(Project* project) {
-		const Engine::DataModel* dataModel = project->engine->getDataModel();
+		const Engine::DataModel* dataModel = project->getEngine()->getDataModel();
 		
 	}
 }
