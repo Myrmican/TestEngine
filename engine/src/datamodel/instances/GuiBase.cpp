@@ -3,7 +3,7 @@
 
 namespace Engine {
 	REGISTER_INSTANCE(GuiBase, Instance);
-	GuiBase::GuiBase() : Instance("GuiBase") {
+	GuiBase::GuiBase(std::string name) : Instance(name) {
 
 	}
 }

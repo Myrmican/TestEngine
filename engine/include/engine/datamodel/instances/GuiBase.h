@@ -6,7 +6,7 @@
 namespace Engine {
 	class GuiBase : public Instance {
 	public:
-		GuiBase();
+		GuiBase(std::string name);
 
 		static void properties(ClassDescriptor* desc) {};
 	};

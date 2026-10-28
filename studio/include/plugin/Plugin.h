@@ -1,16 +1,21 @@
 #pragma once
 
+#include <QMainWindow>
+#include <string>
+
 class QWidget;
 
 namespace Engine {
 	class EditorPlugin {
 	public:
-		EditorPlugin(QWidget* editorPage);
+		EditorPlugin(std::string_view pluginId, QWidget* editorPage);
 		~EditorPlugin();
 
-		QWidget* getEditor() { return m_editorPage; }
+		std::string_view getName() const { return name; }
+		QMainWindow* getWindow() { return m_window; }
 
 	private:
-		QWidget* m_editorPage;
+		std::string_view name;
+		QMainWindow* m_window;
 	};
 }

@@ -3,7 +3,7 @@
 
 namespace Engine {
 	REGISTER_CREATABLE(Frame, GuiBase);
-	Frame::Frame() : GuiBase(), Creatable("Frame") {
+	Frame::Frame() : GuiBase("Frame"), Creatable("Frame") {
 
 	}
 }
