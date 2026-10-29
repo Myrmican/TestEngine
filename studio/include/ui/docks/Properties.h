@@ -12,12 +12,11 @@ namespace Engine {
     class Property;
 }
 
-class Properties : public QObject {
+class Properties : public QDockWidget {
     Q_OBJECT
 
 public:
     Project* m_project;
-    QDockWidget* dockWidget;
     QTreeWidget* treeWidget;
 
     Properties(QMainWindow* window, Project* project);

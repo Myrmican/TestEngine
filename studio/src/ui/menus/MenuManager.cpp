@@ -17,12 +17,16 @@ namespace Menu {
         palette.setColor(QPalette::Text, QColor(242, 242, 242));
         palette.setColor(QPalette::Highlight, QColor(26, 26, 26));
         menu->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
+        menu->setAttribute(Qt::WA_TranslucentBackground);
 
         menu->setPalette(palette);
-        if (QStyle* fusion = QStyleFactory::create("Fusion")) {
-            fusion->setParent(menu);
-            menu->setStyle(fusion);
-        }
+
+        menu->setStyleSheet(
+            "QMenu { border-radius: 6px; }"
+            "QMenu::item { border: none; background: transparent; }"
+            "QMenu::seperator { background-color: #666666; }"
+            "QMenu::item:selected { border: none; background-color: #1a1a1a; }"
+        );
 
         return menu;
     }

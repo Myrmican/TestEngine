@@ -34,13 +34,12 @@ namespace {
 }
 
 Toolbox::Toolbox(QMainWindow* window, Project* project)
-    : QObject(window) {
+    : QDockWidget("Toolbox", window) {
 
-    auto* toolboxDock = new QDockWidget("Toolbox", window);
-    toolboxDock->setWindowFlags(Qt::SubWindow);
-    toolboxDock->setObjectName("ToolboxDock");
+    setWindowFlags(Qt::SubWindow);
+    setObjectName("ToolboxDock");
 
-    auto* containerWidget = new QWidget(toolboxDock);
+    auto* containerWidget = new QWidget(this);
     auto* layout = new QVBoxLayout(containerWidget);
     layout->setContentsMargins(4, 4, 4, 4);
     layout->setSpacing(4);
@@ -61,15 +60,14 @@ Toolbox::Toolbox(QMainWindow* window, Project* project)
         "}"
     );
 
-    dockWidget = toolboxDock;
-    toolboxDock->setWidget(containerWidget);
+    this->setWidget(containerWidget);
 
     layout->addWidget(searchBar);
 
     
 
-    QTimer::singleShot(0, window, [window, toolboxDock]() {
-        window->resizeDocks({ toolboxDock }, { 400 }, Qt::Horizontal);
+    QTimer::singleShot(0, window, [window, this]() {
+        window->resizeDocks({ this }, { 400 }, Qt::Horizontal);
         });
 }
 

@@ -69,7 +69,7 @@ Output::Output(QMainWindow* window, Project* project)
     logOutput->setPalette(palette);
 
     setStyleSheet(
-        "QTextEdit { outline: 0; border-radius: 0px }"
+        "QTextEdit { outline: 0; border-radius: 0px; background-color: #161616; }"
     );
 
     textEdit = logOutput;

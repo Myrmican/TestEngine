@@ -2,18 +2,13 @@
 #include <core/Reflection.h>
 
 namespace Engine {
-	REGISTER_CREATABLE(Overlay, Instance);
-	Overlay::Overlay(std::string_view name) : Creatable(name.data()) {
+	REGISTER_CREATABLE(Overlay, OverlayBase);
+	Overlay::Overlay(std::string_view name) : OverlayBase(name.data()) {
 
 	}
 
 	void Overlay::properties(ClassDescriptor* desc) {
-		desc->addProperty(new TypedProperty<Overlay, bool>(
-			"Enabled",
-			"Data",
-			&Overlay::isEnabled,
-			&Overlay::setEnabled
-		));
+		
 	}
 
 }

@@ -13,13 +13,11 @@ namespace Engine {
 	Instance* GetEngineInstance(QTreeWidgetItem* item);
 }
 
-class Explorer : public QObject {
+class Explorer : public QDockWidget {
     Q_OBJECT
 
 public:
     Project* m_project;
-
-    QDockWidget* dockWidget;
 	QTreeWidget* treeWidget;
 
     Explorer(QMainWindow* window, Project* project);

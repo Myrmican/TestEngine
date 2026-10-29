@@ -7,6 +7,14 @@ namespace Engine {
 		,m_color(0, 0, 0) {
 	}
 
+	void Folder::setColor(const Color3 color) {
+		if (m_color != color) {
+			changing.call("Color", color);
+			m_color = color;
+			changed.call("Color");
+		}
+	}
+
 	void Folder::properties(ClassDescriptor* desc) {
 		desc->addProperty(new TypedProperty<Folder, Color3>(
 			"Color",

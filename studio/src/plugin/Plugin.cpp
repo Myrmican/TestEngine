@@ -6,6 +6,6 @@ namespace Engine {
 		m_window = qobject_cast<QMainWindow*>(editorPage->window());
 
 		//API call from the plugin id to set the name of the plugin
-
+		name = "Test plugin";
 	}
 }

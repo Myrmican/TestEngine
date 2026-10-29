@@ -14,16 +14,16 @@ namespace Engine {
 		DirectX::XMMATRIX getWorldMatrix() const;
 
 		Vector3 getSize() const { return m_size; }
-
 		void setSize(Vector3 size);
 
 		Vector3 getPosition() const { return m_position; }
-
 		void setPosition(Vector3 position);
 
 		Color3 getColor() const { return m_color; }
-
 		void setColor(const Color3 color);
+
+		bool isStatic() const { return m_static; }
+		void setStatic(const bool makeStatic);
 
 		static void properties(ClassDescriptor* desc);
 	protected:
@@ -33,5 +33,6 @@ namespace Engine {
 		Vector3 m_position;
 		Vector3 m_rotation;
 		Color3 m_color;
+		bool m_static = true;
 	};
 }

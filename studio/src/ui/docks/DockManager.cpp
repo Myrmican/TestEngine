@@ -14,14 +14,14 @@ namespace DockManager {
         Output* outputDock = new Output(window, project);
         Toolbox* toolboxDock = new Toolbox(window, project);
 
-        toolboxDock->dockWidget->setVisible(false);
+        toolboxDock->setVisible(false);
 
         window->setDockNestingEnabled(true);
 
-        window->addDockWidget(Qt::RightDockWidgetArea, explorerDock->dockWidget);
-        window->addDockWidget(Qt::LeftDockWidgetArea, propertiesDock->dockWidget);
+        window->addDockWidget(Qt::RightDockWidgetArea, explorerDock);
+        window->addDockWidget(Qt::LeftDockWidgetArea, propertiesDock);
         window->addDockWidget(Qt::BottomDockWidgetArea, outputDock);
-        window->addDockWidget(Qt::LeftDockWidgetArea, toolboxDock->dockWidget);
+        window->addDockWidget(Qt::LeftDockWidgetArea, toolboxDock);
 
         return { explorerDock, propertiesDock, outputDock, toolboxDock };
 	}

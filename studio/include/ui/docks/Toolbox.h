@@ -6,12 +6,10 @@
 #include <QEvent>
 #include <project/Project.h>
 
-class Toolbox : public QObject {
+class Toolbox : public QDockWidget {
     Q_OBJECT
 
 public:
-    QDockWidget* dockWidget;
-
     Toolbox(QMainWindow* window, Project* project);
 
 protected:

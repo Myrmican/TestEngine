@@ -63,19 +63,32 @@ namespace Engine {
 		m_color = color;
 	}
 
-	void BasePart::properties(Engine::ClassDescriptor* desc) {
-		desc->addProperty(new TypedProperty<BasePart, Vector3>(
-			"Size",
-			"Transform",
-			&BasePart::getSize,
-			&BasePart::setSize
-		));
+	void BasePart::setStatic(const bool makeStatic) {
+		if (m_static != makeStatic)
+			this->changed.call("Static");
+		m_static = makeStatic;
+	}
 
+	void BasePart::properties(Engine::ClassDescriptor* desc) {
 		desc->addProperty(new TypedProperty<BasePart, Color3>(
 			"Color",
 			"Data",
 			&BasePart::getColor,
 			&BasePart::setColor
+		));
+
+		desc->addProperty(new TypedProperty<BasePart, bool>(
+			"Static",
+			"Data",
+			&BasePart::isStatic,
+			&BasePart::setStatic
+		));
+
+		desc->addProperty(new TypedProperty<BasePart, Vector3>(
+			"Size",
+			"Transform",
+			&BasePart::getSize,
+			&BasePart::setSize
 		));
 	}
 }

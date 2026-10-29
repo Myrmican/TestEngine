@@ -1,9 +1,9 @@
 #pragma once
 
-#include <datamodel/Instance.h>
+#include <datamodel/instances/OverlayBase.h>
 
 namespace Engine {
-	class Overlay : public Creatable {
+	class Overlay : public OverlayBase {
 	public:
 		Overlay(std::string_view name = "Overlay");
 

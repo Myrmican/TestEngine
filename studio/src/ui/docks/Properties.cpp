@@ -50,13 +50,12 @@ namespace {
 }
 
 Properties::Properties(QMainWindow* window, Project* project)
-    : QObject(window), m_project(project) {
+    : QDockWidget("Properties", window), m_project(project) {
 
-    auto* propertiesDock = new QDockWidget("Properties", window);
-    propertiesDock->setWindowFlags(Qt::SubWindow);
-    propertiesDock->setObjectName("PropertiesDock");
+    setWindowFlags(Qt::SubWindow);
+    setObjectName("PropertiesDock");
 
-    auto* containerWidget = new QWidget(propertiesDock);
+    auto* containerWidget = new QWidget(this);
     auto* layout = new QVBoxLayout(containerWidget);
     layout->setContentsMargins(4, 4, 4, 4);
     layout->setSpacing(4);
@@ -144,12 +143,11 @@ Properties::Properties(QMainWindow* window, Project* project)
     palette.setColor(QPalette::Base, QColor(22, 22, 22));
     propertiesTree->setPalette(palette);
 
-    dockWidget = propertiesDock;
     treeWidget = propertiesTree;
     treeWidget->setAttribute(Qt::WA_Hover, false);
 
     propertiesTree->viewport()->installEventFilter(this);
-    propertiesDock->setWidget(containerWidget);
+    this->setWidget(containerWidget);
 
     layout->addWidget(searchBar);
     layout->addWidget(propertiesTree);
@@ -157,8 +155,8 @@ Properties::Properties(QMainWindow* window, Project* project)
     propertiesTree->setMaximumWidth(1310);
     propertiesTree->setMinimumWidth(200);
 
-    QTimer::singleShot(0, window, [window, propertiesDock]() {
-        window->resizeDocks({ propertiesDock }, { 400 }, Qt::Horizontal);
+    QTimer::singleShot(0, window, [window, this]() {
+        window->resizeDocks({ this }, { 400 }, Qt::Horizontal);
         });
 
     connectSearch(searchBar, propertiesTree);

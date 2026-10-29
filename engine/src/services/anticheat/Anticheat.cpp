@@ -2,7 +2,7 @@
 #include <core/Reflection.h>
 
 namespace Engine {
-	REGISTER_INTERNAL(Anticheat, Instance);
+	REGISTER_INTERNAL(Anticheat);
 	Anticheat::Anticheat() : Instance("Anticheat") {
 		internalLocked = true;
 	}

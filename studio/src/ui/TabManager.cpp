@@ -28,6 +28,7 @@ namespace TabManager {
             "}"
             "QTabBar {"
             "    background: transparent;"
+            "    qproperty-drawBase: 0;"
             "}"
             "QTabBar::tab {"
             "    background-color: #1e1e1e;"

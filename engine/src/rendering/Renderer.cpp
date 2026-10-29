@@ -1,4 +1,5 @@
-#include "rendering/Renderer.h"
+#include <rendering/Renderer.h>
+#include <rendering/util/Shader.h>
 
 namespace Engine
 {
@@ -20,12 +21,51 @@ namespace Engine
             SDL_Log("Claiming window failed: %s", SDL_GetError());
             return false;
         }
+
+        /*SDL_GPUShader* vertexShader = Shader::loadShader(m_device, "RawTriangle.vert");
+        SDL_GPUShader* fragmentShader = Shader::loadShader(m_device, "SolidColor.frag");
+
+        SDL_GPUColorTargetDescription colorTargetDesc = {};
+        colorTargetDesc.format = SDL_GetGPUSwapchainTextureFormat(m_device, m_window);
+
+        SDL_GPUGraphicsPipelineCreateInfo pipelineInfo = {};
+        pipelineInfo.vertex_shader = vertexShader;
+        pipelineInfo.fragment_shader = fragmentShader;
+        pipelineInfo.primitive_type = SDL_GPU_PRIMITIVETYPE_TRIANGLELIST;
+        pipelineInfo.target_info.num_color_targets = 1;
+        pipelineInfo.target_info.color_target_descriptions = &colorTargetDesc;
+
+        SDL_GPUGraphicsPipeline* pipeline = SDL_CreateGPUGraphicsPipeline(m_device, &pipelineInfo);
+        if (!pipeline) {
+            SDL_Log("Pipeline creation failed: %s", SDL_GetError());
+        }
+
+        fillPipeline = SDL_CreateGPUGraphicsPipeline(m_device, &pipelineInfo);
+        if (fillPipeline == NULL)
+        {
+            SDL_Log("Failed to create fill pipeline!");
+            return -1;
+        }
+
+        linePipeline = SDL_CreateGPUGraphicsPipeline(m_device, &pipelineInfo);
+        if (linePipeline == NULL)
+        {
+            SDL_Log("Failed to create line pipeline!");
+            return -1;
+        }
+
+        SDL_ReleaseGPUShader(m_device, vertexShader);
+        SDL_ReleaseGPUShader(m_device, fragmentShader);*/
+
         return true;
     }
 
     void Renderer::shutdown()
     {
         if (m_device) {
+            //SDL_ReleaseGPUGraphicsPipeline(m_device, fillPipeline);
+            //SDL_ReleaseGPUGraphicsPipeline(m_device, linePipeline);
+
             SDL_ReleaseWindowFromGPUDevice(m_device, m_window);
             SDL_DestroyGPUDevice(m_device);
             m_device = nullptr;

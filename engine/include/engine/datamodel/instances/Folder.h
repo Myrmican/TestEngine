@@ -11,14 +11,7 @@ namespace Engine {
 
 		Color3 getColor() const { return m_color; }
 
-		void setColor(const Color3 color) {
-			if (m_color != color) {
-				changing.call("Color", color);
-				m_color = color;
-				changed.call("Color");
-	
-			}
-		}
+		void setColor(const Color3 color);
 
 		static void properties(ClassDescriptor* desc);
 

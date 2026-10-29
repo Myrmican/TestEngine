@@ -126,16 +126,16 @@ namespace {
 
                 contextMenu->addSeparator();
 
-                QAction* addInstanceAction = nullptr;
+                QAction* insertObjectAction = nullptr;
 				if (filesAllowed) {
-                    addInstanceAction = contextMenu->addAction("Add File");
+                    insertObjectAction = contextMenu->addAction("Insert File");
                 }
                 else {
-                    addInstanceAction = contextMenu->addAction("Add Instance");
+                    insertObjectAction = contextMenu->addAction("Insert Object");
                 }
 
-                addInstanceAction->setShortcut(QKeySequence("Ctrl+I"));
-                addInstanceAction->setShortcutContext(Qt::WindowShortcut);
+                insertObjectAction->setShortcut(QKeySequence("Ctrl+I"));
+                insertObjectAction->setShortcutContext(Qt::WindowShortcut);
 
                 contextMenu->addSeparator();
 
@@ -191,7 +191,7 @@ namespace {
                 else if (selectedAction == renameAction) {
                     explorerTree->editItem(item, 0);
                 }
-                else if (selectedAction == addInstanceAction) {
+                else if (selectedAction == insertObjectAction) {
                     if (!filesAllowed) {
                         auto* popup = new Engine::InsertObjectPopup(window, item);
                         QPoint globalPos = Menu::getMenuPosition(window, popup);
@@ -282,13 +282,12 @@ namespace Engine {
 }
 
 Explorer::Explorer(QMainWindow* window, Project* project)
-    : QObject(window), m_project(project) {
+    : QDockWidget("Explorer", window), m_project(project) {
 
-    auto* explorerDock = new QDockWidget("Explorer", window);
-    explorerDock->setWindowFlags(Qt::SubWindow);
-    explorerDock->setObjectName("ExplorerDock");
+    setWindowFlags(Qt::SubWindow);
+    setObjectName("ExplorerDock");
 
-    auto* containerWidget = new QWidget(explorerDock);
+    auto* containerWidget = new QWidget(this);
     auto* layout = new QVBoxLayout(containerWidget);
     layout->setContentsMargins(4, 4, 4, 4);
     layout->setSpacing(4);
@@ -345,7 +344,6 @@ Explorer::Explorer(QMainWindow* window, Project* project)
         "QTreeWidget QLineEdit {"
         "    border: none;"
         "    outline: none;"
-        "    selection-background: transparent;"
         "}"
     );
 
@@ -353,14 +351,13 @@ Explorer::Explorer(QMainWindow* window, Project* project)
     palette.setColor(QPalette::Base, QColor(22, 22, 22));
     explorerTree->setPalette(palette);
 
-    dockWidget = explorerDock;
     treeWidget = explorerTree;
 
     explorerTree->viewport()->installEventFilter(this);
     explorerTree->viewport()->installEventFilter(explorerTree);
     explorerTree->setContextMenuPolicy(Qt::CustomContextMenu);
     explorerTree->setEditTriggers(QAbstractItemView::EditKeyPressed | QAbstractItemView::SelectedClicked);
-    explorerDock->setWidget(containerWidget);
+    this->setWidget(containerWidget);
 
     layout->addWidget(searchBar);
     layout->addWidget(explorerTree);
@@ -368,8 +365,8 @@ Explorer::Explorer(QMainWindow* window, Project* project)
     explorerTree->setMaximumWidth(1310);
     explorerTree->setMinimumWidth(200);
 
-    QTimer::singleShot(0, window, [window, explorerDock]() {
-        window->resizeDocks({ explorerDock }, { 400 }, Qt::Horizontal);
+    QTimer::singleShot(0, window, [window, this]() {
+        window->resizeDocks({ this }, { 400 }, Qt::Horizontal);
         });
 
     ConnectSearch(searchBar, explorerTree);

@@ -3,6 +3,7 @@
 #include <windows.h>
 #include "Velopack.h"
 #include <QApplication>
+#include <QStyleFactory>
 #include <QMainWindow>
 #include <engine/Engine.h>
 
@@ -27,6 +28,8 @@ int main(int argc, char *argv[]) {
 	int result = 0;
 	{
 		QApplication app(argc, argv);
+
+		app.setStyle(QStyleFactory::create("Fusion"));
 
 		QMainWindow window;
 		window.resize(1024, 768);
