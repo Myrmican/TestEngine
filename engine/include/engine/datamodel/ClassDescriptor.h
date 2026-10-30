@@ -28,6 +28,7 @@ namespace Engine {
 
 		void addProperty(Property* prop) {
 			if (!prop) return;
+
 			m_properties.push_back(std::unique_ptr<Property>(prop));
 			m_propertyMap[prop->m_name] = prop;
 		}
@@ -40,10 +41,16 @@ namespace Engine {
 
 		std::vector<const Property*> getAllProperties() const {
 			std::vector<const Property*> allProps;
-			if (auto* super = getSuperClass())
-				allProps = super->getAllProperties();
-			for (const auto& prop : m_properties)
+
+			for (const auto& prop : m_properties) {
 				allProps.push_back(prop.get());
+			}
+
+			if (auto* super = getSuperClass()) {
+				auto superProps = super->getAllProperties();
+				allProps.insert(allProps.end(), superProps.begin(), superProps.end());
+			}
+
 			return allProps;
 		}
 	};

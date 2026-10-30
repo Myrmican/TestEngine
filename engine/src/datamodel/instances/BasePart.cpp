@@ -6,7 +6,7 @@
 namespace Engine {
 	REGISTER_INSTANCE(BasePart, Instance);
 	BasePart::BasePart(std::string className) : Creatable(className),
-		m_size(1, 1, 1),
+		m_scale(1, 1, 1),
 		m_position(0, 0, 0),
 		m_rotation(0, 0, 0),
 		m_color(0.639f, 0.635f, 0.647f)
@@ -40,21 +40,27 @@ namespace Engine {
 		// long thin part) would get its axes mixed up by the rotation
 		// instead of scaling along its own local axes correctly.
 		DirectX::XMMATRIX scale = DirectX::XMMatrixScaling(
-			m_size.x, m_size.y, m_size.z);
+			m_scale.x, m_scale.y, m_scale.z);
 
 		return scale * getCFrame();
 	}
 
-	void BasePart::setSize(Vector3 size) {
-		if (m_size != size)
-			this->changed.call("Size");
-		m_size = size;
+	void BasePart::setScale(Vector3 scale) {
+		if (m_scale != scale)
+			this->changed.call("Scale");
+		m_scale = scale;
 	}
 
 	void BasePart::setPosition(Vector3 position) {
 		if (m_position != position)
-			this->changed.call("Size");
+			this->changed.call("Position");
 		m_position = position;
+	}
+
+	void BasePart::setRotation(Vector3 rotation) {
+		if (m_rotation != rotation)
+			this->changed.call("Rotation");
+		m_rotation = rotation;
 	}
 
 	void BasePart::setColor(const Color3 color) {
@@ -69,26 +75,79 @@ namespace Engine {
 		m_static = makeStatic;
 	}
 
+	void BasePart::setShadows(const bool shadows) {
+		if (m_shadows != shadows)
+			this->changing.call("Shadows", shadows);
+		m_shadows = shadows;
+	}
+
+	void BasePart::setOpacity(const float opacity) {
+		if (m_opacity != opacity)
+			this->changing.call("Opacity", opacity);
+		m_opacity = opacity;
+	}
+
+	void BasePart::setCollidable(const bool collidable) {
+		if (m_collidable != collidable)
+			this->changing.call("Collidable", collidable);
+		m_collidable = collidable;
+	}
+
 	void BasePart::properties(Engine::ClassDescriptor* desc) {
 		desc->addProperty(new TypedProperty<BasePart, Color3>(
 			"Color",
-			"Data",
+			"Appearance",
 			&BasePart::getColor,
 			&BasePart::setColor
 		));
 
 		desc->addProperty(new TypedProperty<BasePart, bool>(
+			"Shadows",
+			"Appearance",
+			&BasePart::hasShadows,
+			&BasePart::setShadows
+		));
+
+		desc->addProperty(new TypedProperty<BasePart, float>(
+			"Opacity",
+			"Appearance",
+			&BasePart::getOpacity,
+			&BasePart::setOpacity
+		));
+
+		desc->addProperty(new TypedProperty<BasePart, bool>(
 			"Static",
-			"Data",
+			"Part",
 			&BasePart::isStatic,
 			&BasePart::setStatic
 		));
 
+		desc->addProperty(new TypedProperty<BasePart, bool>(
+			"Collidable",
+			"Part",
+			&BasePart::isCollidable,
+			&BasePart::setCollidable
+		));
+
 		desc->addProperty(new TypedProperty<BasePart, Vector3>(
-			"Size",
+			"Position",
 			"Transform",
-			&BasePart::getSize,
-			&BasePart::setSize
+			&BasePart::getPosition,
+			&BasePart::setPosition
+		));
+
+		desc->addProperty(new TypedProperty<BasePart, Vector3>(
+			"Rotation",
+			"Transform",
+			&BasePart::getRotation,
+			&BasePart::setRotation
+		));
+
+		desc->addProperty(new TypedProperty<BasePart, Vector3>(
+			"Scale",
+			"Transform",
+			&BasePart::getScale,
+			&BasePart::setScale
 		));
 	}
 }

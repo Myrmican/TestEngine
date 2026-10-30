@@ -110,9 +110,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         PostQuitMessage(0);
         break;
     case WM_KEYDOWN:
-        if (wParam == VK_F11) {
+        if (wParam == VK_F11) { //Toggle fullscreen using F11
             
         }
+
+        break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }

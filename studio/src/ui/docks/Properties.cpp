@@ -209,6 +209,8 @@ void Properties::AddProperty(Engine::Instance* instance, const Engine::Property*
 
     bool readOnly = property->readOnly || instance->internalLocked && property->m_name == "Parent";
 
+    setWindowTitle("Properties - " + instance->getClassName());
+
     std::visit([&](auto&& value) {
         using T = std::decay_t<decltype(value)>;
 
@@ -265,6 +267,7 @@ bool Properties::eventFilter(QObject* watched, QEvent* event) {
             if (!item) {
                 treeWidget->clearSelection();
                 treeWidget->setCurrentItem(nullptr);
+                setWindowTitle("Properties");
             }
         }
     }
