@@ -189,7 +189,7 @@ QTreeWidgetItem* Properties::GetOrCreateCategory(const std::string& categoryName
     auto* categoryItem = new QTreeWidgetItem(this->treeWidget);
     categoryItem->setText(0, qname);
     categoryItem->setFirstColumnSpanned(true);
-    categoryItem->setFont(0, QFont("Segoe UI", 10, QFont::Bold));
+    categoryItem->setFont(0, QFont("Segoe UI", 8, QFont::Bold));
     categoryItem->setExpanded(true);
 
 	//categoryItem->setBackground(0, QBrush(QColor(102, 102, 102)));
@@ -267,7 +267,6 @@ bool Properties::eventFilter(QObject* watched, QEvent* event) {
             if (!item) {
                 treeWidget->clearSelection();
                 treeWidget->setCurrentItem(nullptr);
-                setWindowTitle("Properties");
             }
         }
     }
