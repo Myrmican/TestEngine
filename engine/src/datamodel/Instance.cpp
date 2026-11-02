@@ -35,7 +35,7 @@ namespace Engine {
 
 	void Instance::destroy() {
 		removeAllChildren();
-		setParent(nullptr); // after this returns, `this` has been deleted — don't touch it again
+		setParent(nullptr);
 	}
 
 	void Instance::removeAllChildren() {
@@ -93,8 +93,6 @@ namespace Engine {
 		}
 
 		if (newParent) {
-			// `self` must be valid here — this instance must already have been
-			// owned by an old parent (or use addChild() for brand-new instances).
 			if (self) {
 				newParent->children.push_back(std::move(self));
 			}

@@ -1,15 +1,32 @@
 #pragma once
 
-#include <QMenu>
+#include <QMenuBar>
+#include <QMainWindow>
 #include <QStackedWidget>
+#include <QWidget>
+#include <QMenu>
+#include <QAction>
 
-class QMainWindow;
-class QWidget;
-class QMenuBar;
-
-class FileMenu : public QMenu {
-	Q_OBJECT
-
+class FileMenu : public QObject {
+    Q_OBJECT
 public:
-	explicit FileMenu(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage);
+    FileMenu(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage);
+
+private:
+    void updateMenuState();
+
+    QMenu* fileMenu = nullptr;
+    QMenu* fileRecentMenu = nullptr;
+
+	QAction* newAction = nullptr;
+	QAction* openAction = nullptr;
+    QAction* saveAction = nullptr;
+    QAction* publishAction = nullptr;
+    QAction* gameSettingsAction = nullptr;
+    QAction* studioSettingsAction = nullptr;
+    QAction* aboutAction = nullptr;
+    QAction* exitAction = nullptr;
+
+    QStackedWidget* m_workspaceStack;
+    QWidget* m_editorPage;
 };
