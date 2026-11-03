@@ -113,7 +113,7 @@ QWidget* setupQuickActions(QWidget* parent) {
 namespace Engine {
     Ribbon::Ribbon(QMainWindow* parent) : QFrame(parent) {
         setObjectName("RibbonFrame");
-        setStyleSheet("QFrame { background-color: #1c1c1c; }");
+        setStyleSheet("QFrame { background-color: #252526; }");
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
         setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -156,7 +156,7 @@ namespace Engine {
             "    color: #cccccc;"
             "}"
             "QTabBar::tab:selected {"
-            "    background-color: #161616;"
+            "    background-color: #1A1A1A;"
             "    color: #ffffff;"
             "    font-weight: 750;"
             "    border-top: 2px solid #3b82f6;"

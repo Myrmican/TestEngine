@@ -317,6 +317,7 @@ Explorer::Explorer(QMainWindow* window, Project* project)
 	explorerTree->setDropIndicatorShown(true);
     explorerTree->setStyleSheet(
         "QTreeView {"
+        "    background-color: #1A1A1A;"
         "    outline: 0;"
         "    border-radius: 0px;"
         "    show-decoration-selected: 1;"
@@ -346,10 +347,6 @@ Explorer::Explorer(QMainWindow* window, Project* project)
         "    outline: none;"
         "}"
     );
-
-    QPalette palette = explorerTree->palette();
-    palette.setColor(QPalette::Base, QColor(22, 22, 22));
-    explorerTree->setPalette(palette);
 
     treeWidget = explorerTree;
 

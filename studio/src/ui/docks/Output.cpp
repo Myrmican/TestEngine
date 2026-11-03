@@ -31,10 +31,22 @@ Output::Output(QMainWindow* window, Project* project)
     toolbarLayout->setSpacing(6);
 
     QComboBox* msgFilterCombo = new QComboBox(toolbarStrip);
-    msgFilterCombo->addItems({ "All Messages", "Errors Only", "Warnings Only" });
+    msgFilterCombo->addItems({ "All Messages", "Errors", "Warnings" });
 
-    QComboBox* contextCombo = new QComboBox(toolbarStrip);
-    contextCombo->addItems({ "All Contexts", "Client", "Server" });
+    QToolButton* contextButton = new QToolButton(toolbarStrip);
+    contextButton->setText("Contexts");
+    contextButton->setPopupMode(QToolButton::InstantPopup);
+
+    QMenu* outputContexts = new QMenu(contextButton);
+
+    QAction* actAll = outputContexts->addAction("All Contexts");
+    actAll->setCheckable(true);
+
+    QAction* actClient = outputContexts->addAction("Client");
+    actClient->setCheckable(true);
+
+    QAction* actServer = outputContexts->addAction("Server");
+    actServer->setCheckable(true);
 
     QLineEdit* searchField = new QLineEdit(toolbarStrip);
     searchField->setPlaceholderText("Filter...");
@@ -44,13 +56,16 @@ Output::Output(QMainWindow* window, Project* project)
     clearLogBtn->setToolTip("Clear Log");
     clearLogBtn->setIcon(QIcon(":/icons/broom.png"));
     clearLogBtn->setAutoRaise(true);
-
+    
     QComboBox* moreOptionsBtn = new QComboBox(toolbarStrip);
     moreOptionsBtn->setCurrentIndex(-1);
     moreOptionsBtn->addItems({ "Show timestamps", "Option 1", "Option 2" });
 
     toolbarLayout->addWidget(msgFilterCombo);
-    toolbarLayout->addWidget(contextCombo);
+
+    contextButton->setMenu(outputContexts);
+    toolbarLayout->addWidget(contextButton);
+
     toolbarLayout->addStretch();
     toolbarLayout->addWidget(searchField);
     toolbarLayout->addWidget(clearLogBtn);
@@ -68,8 +83,12 @@ Output::Output(QMainWindow* window, Project* project)
     palette.setColor(QPalette::Highlight, QColor(51, 153, 255));
     logOutput->setPalette(palette);
 
+	toolbarStrip->setStyleSheet(
+		"QWidget { border-bottom: 1px solid #000000; }"
+	);
+
     setStyleSheet(
-        "QTextEdit { outline: 0; border-radius: 0px; background-color: #161616; }"
+        "QTextEdit { outline: 0; border-radius: 0px; background-color: #1E1E1E; }"
     );
 
     textEdit = logOutput;

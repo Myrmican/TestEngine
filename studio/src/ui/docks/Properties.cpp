@@ -86,7 +86,7 @@ Properties::Properties(QMainWindow* window, Project* project)
     propertiesTree->setUniformRowHeights(true);
     propertiesTree->setStyleSheet(
         "QTreeWidget {"
-        "    background-color: #161616;"
+        "    background-color: #1A1A1A;"
         "    outline: none;"
         "    border: none;"
         "    show-decoration-selected: 0;"
@@ -134,14 +134,9 @@ Properties::Properties(QMainWindow* window, Project* project)
 
         "QDoubleSpinBox {"
         "   background: transparent;"
-        //"   border: none;"
         "   padding-left: 2px;"
         "}"
     );
-
-    QPalette palette = propertiesTree->palette();
-    palette.setColor(QPalette::Base, QColor(22, 22, 22));
-    propertiesTree->setPalette(palette);
 
     treeWidget = propertiesTree;
     treeWidget->setAttribute(Qt::WA_Hover, false);
