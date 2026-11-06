@@ -118,9 +118,11 @@ namespace TabManager {
                 delete oldDock;
             }
 
+			QFileInfo fileInfo(project->fileInfo.absoluteFilePath());
+
             workspaceStack->setCurrentIndex(0);
-            if (project->projectFile) {
-                project->projectFile->close();
+            if (fileInfo.exists()) {
+                //fileInfo.clo
             }
 
             window->setProperty("projectInstance", QVariant());

@@ -303,7 +303,7 @@ Explorer::Explorer(QMainWindow* window, Project* project)
         "    padding-right: 4px;"
         "    border: 0px;"
         "    border-radius: 3px;"
-        "    background-color: #1e1e1e;"
+        "    background-color: #0A0A0A;"
         "    color: #f2f2f2;"
         "}"
     );

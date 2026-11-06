@@ -16,8 +16,7 @@ class Project : public QObject {
     Q_OBJECT
 public:
     QString name;
-    std::string projectPath;
-    QFile* projectFile = nullptr;
+    std::string projectPath = "";
     QFileInfo fileInfo;
     bool is2D = false;
 
@@ -29,7 +28,7 @@ public:
     bool isSaved = false;
     bool hasPendingChanges = false;
 
-    explicit Project(const QFileInfo fileInfo);
+    explicit Project(const QFileInfo fileInfo, const QString projectName = "");
     ~Project();
 
     Engine::EngineInstance* getEngine() const { return engine.get(); }

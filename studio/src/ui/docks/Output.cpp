@@ -33,20 +33,9 @@ Output::Output(QMainWindow* window, Project* project)
     QComboBox* msgFilterCombo = new QComboBox(toolbarStrip);
     msgFilterCombo->addItems({ "All Messages", "Errors", "Warnings" });
 
-    QToolButton* contextButton = new QToolButton(toolbarStrip);
-    contextButton->setText("Contexts");
-    contextButton->setPopupMode(QToolButton::InstantPopup);
-
-    QMenu* outputContexts = new QMenu(contextButton);
-
-    QAction* actAll = outputContexts->addAction("All Contexts");
-    actAll->setCheckable(true);
-
-    QAction* actClient = outputContexts->addAction("Client");
-    actClient->setCheckable(true);
-
-    QAction* actServer = outputContexts->addAction("Server");
-    actServer->setCheckable(true);
+    QComboBox* outputContexts = new QComboBox(toolbarStrip);
+    outputContexts->setCurrentIndex(-1);
+    outputContexts->addItems({ "All contexts", "Server", "Client", "Studio"});
 
     QLineEdit* searchField = new QLineEdit(toolbarStrip);
     searchField->setPlaceholderText("Filter...");
@@ -62,10 +51,7 @@ Output::Output(QMainWindow* window, Project* project)
     moreOptionsBtn->addItems({ "Show timestamps", "Option 1", "Option 2" });
 
     toolbarLayout->addWidget(msgFilterCombo);
-
-    contextButton->setMenu(outputContexts);
-    toolbarLayout->addWidget(contextButton);
-
+	toolbarLayout->addWidget(outputContexts);
     toolbarLayout->addStretch();
     toolbarLayout->addWidget(searchField);
     toolbarLayout->addWidget(clearLogBtn);

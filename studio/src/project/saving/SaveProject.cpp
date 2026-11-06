@@ -115,18 +115,17 @@ namespace SaveProject {
 			return false;
 		}*/
 
-		bool needsSaveDialog = (project->projectFile == nullptr) || !project->projectFile->exists();
+		bool needsSaveDialog = (project->projectPath.empty());
 
 		if (needsSaveDialog) {
-			project->projectFile = nullptr;
-
 			bool isSaved = SaveDialog(project, parent);
 			if (!isSaved) return false;
 
 			QString projectPath = QString::fromStdString(project->projectPath);
 
 			QFile* projectFile = File::CreateProjectFile(project->name, projectPath);
-			project->projectFile = projectFile;
+
+			project->projectPath = projectFile->fileName().toUtf8().constData();
 		}
 
 		logger->Info("Saving the current project...");

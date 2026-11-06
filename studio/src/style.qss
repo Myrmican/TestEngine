@@ -1,5 +1,5 @@
 QMainWindow {
-    background-color: #1A1A1A;
+    background-color: #1E1E1E;
     border: none;
 }
 
@@ -11,7 +11,7 @@ QToolBar {
 }
 
 QWidget#TitleBarPanel {
-    background-color: #252526;
+    background-color: #161616;
     font-size: 13px;
     color: #9ca3af;
 }

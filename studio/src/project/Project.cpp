@@ -15,23 +15,22 @@
 #include <QPushButton>
 #include <QButtonGroup>
 #include <project/Project.h>
+#include <engine/serialization/PlaceSerializer.h>
 #include <memory>
 
-Project::Project(const QFileInfo fileInfo) {
-    name = fileInfo.baseName();
+Project::Project(const QFileInfo fileInfo, const QString projectName) {
+    name = projectName.isEmpty() ? fileInfo.baseName() : projectName;
 
     try {
         engine = std::make_unique<Engine::EngineInstance>();
         engine->init();
 
-        try {
-            scriptEngine = std::make_unique<Engine::ScriptEngine>(engine->getDataModel());
-        }
-        catch (const std::exception& e) {
-            qCritical() << "Failed to initialize ScriptEngine:" << e.what();
-        }
-    }
-    catch (const std::exception& e) {
+        scriptEngine = std::make_unique<Engine::ScriptEngine>(engine->getDataModel());
+
+		QString filePath = fileInfo.absoluteFilePath();
+
+        Engine::PlaceSerializer::loadFromFile(filePath.toUtf8().constData(), engine->getDataModel());
+    } catch (const std::exception& e) {
         qCritical() << "Failed to initialize EngineInstance:" << e.what();
     }
 }
@@ -99,8 +98,8 @@ namespace ProjectManager {
             return new Project(fileInfo);
         }
 
-        QFileInfo fileInfo(nameEdit->text());
-        Project* newProject = new Project(fileInfo);
+        QFileInfo fileInfo("studio/content/Place1.rbxlx");
+        Project* newProject = new Project(fileInfo, nameEdit->text());
         newProject->is2D = dimensionBox->currentText() == "2D";
 
         return newProject;
@@ -118,7 +117,6 @@ namespace ProjectManager {
         QFile* projectFile = new QFile(filePath);
 		
         Project* newProject = new Project(fileInfo);
-        newProject->projectFile = projectFile;
         return newProject;
 	}
 

@@ -86,9 +86,6 @@ namespace Window {
         auto* leftMenuToolBars = new QStackedWidget(titleBarPanel);
         titleLayout->addWidget(leftMenuToolBars, 0, Qt::AlignVCenter);
 
-        QWidget* cornerBranding = new QWidget(titleBarPanel);
-        titleLayout->addWidget(cornerBranding);
-
         auto createSubMenuBar = [&](auto setupFunc) {
             auto* menuBar = new QMenuBar(leftMenuToolBars);
             menuBar->setObjectName("TitleMenuBar");
@@ -100,6 +97,8 @@ namespace Window {
 
         createSubMenuBar(createLeftDropdownsMain);
         createSubMenuBar(createLeftDropdownsEditor);
+
+        titleLayout->addStretch();
 
         QObject::connect(workspaceStack, &QStackedWidget::currentChanged, leftMenuToolBars, &QStackedWidget::setCurrentIndex);
 
@@ -172,12 +171,18 @@ namespace Window {
             }
             });
 
+        leftMenuToolBars->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
+        rightMenuBar->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
+
         window->setMenuWidget(titleBarPanel);
         window->setCentralWidget(workspaceStack);
 
+        agent->setTitleBar(titleBarPanel);
         agent->setHitTestVisible(leftMenuToolBars, true);
         agent->setHitTestVisible(rightMenuBar, true);
-        agent->setTitleBar(titleBarPanel);
+        agent->setHitTestVisible(minBtn, true);
+        agent->setHitTestVisible(maxBtn, true);
+        agent->setHitTestVisible(closeBtn, true);
 
         if (QFile file(":/style.qss"); file.open(QFile::ReadOnly | QFile::Text)) {
             app.setStyleSheet(QTextStream(&file).readAll());

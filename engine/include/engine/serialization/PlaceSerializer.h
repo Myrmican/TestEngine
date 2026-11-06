@@ -5,6 +5,7 @@
 
 namespace Engine {
 	class Instance;
+	class DataModel;
 
 	class PlaceSerializer {
 	public:
@@ -12,8 +13,8 @@ namespace Engine {
 
 		virtual bool saveToFile(const std::shared_ptr<Instance>& game, const std::string& filePath) = 0;
 
-		virtual void loadFromFile(const std::string& filePath) = 0;
+		static bool loadFromFile(const std::string& filePath, DataModel* dataModel);
 
-		virtual void loadRBXLX(std::string_view filePath) = 0;
+		static bool loadRBXLX(std::string_view filePath, DataModel* dataModel);
 	};
 }

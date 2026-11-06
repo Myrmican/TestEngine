@@ -21,9 +21,7 @@ namespace Engine {
 
 		template <typename T>
 		T* getService() {
-			// Find by matching the existing dynamic type or stored instances
 			for (const auto& [serviceName, instance] : m_services) {
-				// Check if instance can be cast to T*
 				if (auto typedInstance = dynamic_cast<T*>(instance)) {
 					return typedInstance;
 				}
