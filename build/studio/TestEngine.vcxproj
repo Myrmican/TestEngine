@@ -1,0 +1,877 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1C14203A-D935-35D2-99AD-4980C68953C6}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>TestEngine</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\tc\source\repos\TestEngine\build\studio\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TestEngine.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TestEngine</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\tc\source\repos\TestEngine\build\studio\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">TestEngine.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">TestEngine</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\tc\source\repos\TestEngine\build\studio\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">TestEngine.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">TestEngine</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\tc\source\repos\TestEngine\build\studio\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">TestEngine.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">TestEngine</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\tc\source\repos\TestEngine\studio;C:\Users\tc\source\repos\TestEngine\studio\include;C:\Users\tc\source\repos\TestEngine\engine\include;C:\Users\tc\source\repos\TestEngine\client\include;C:\Users\tc\source\repos\TestEngine\external;C:\Users\tc\source\repos\TestEngine\external\SDL\include;C:\Users\tc\source\repos\TestEngine\external\velopack_libc_1.2.0\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\src;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\src;C:\Users\tc\source\repos\TestEngine\build\_deps\wasmtime-src\include;C:\Users\tc\source\repos\TestEngine\engine\include\engine;C:\Users\tc\source\repos\TestEngine\external\SDL;C:\Users\tc\source\repos\TestEngine\build\external\SDL\include-revision;C:\Users\tc\source\repos\TestEngine\build\_deps\qwindowkit-build\out\include;C:\Users\tc\source\repos\TestEngine\build\_deps\yaml-cpp-src\include;C:\Users\tc\source\repos\TestEngine\external\tree-sitter\lib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Users/tc/source/repos/TestEngine/build/studio/TestEngine_autogen/include_Debug" /external:I "C:/Qt/6.12.0/msvc2022_64/include/QtWidgets" /external:I "C:/Qt/6.12.0/msvc2022_64/include" /external:I "C:/Qt/6.12.0/msvc2022_64/include/QtCore" /external:I "C:/Qt/6.12.0/msvc2022_64/mkspecs/win32-msvc" /external:I "C:/Qt/6.12.0/msvc2022_64/include/QtGui" /external:I "C:/Qt/6.12.0/msvc2022_64/include/QtNetwork" /external:I "C:/Qt/6.12.0/msvc2022_64/include/QtPrintSupport" -Zc:__cplusplus -utf-8</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BufferSecurityCheck></BufferSecurityCheck>
+      <CallingConvention></CallingConvention>
+      <ConformanceMode>true</ConformanceMode>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <FloatingPointModel></FloatingPointModel>
+      <ForceConformanceInForLoopScope></ForceConformanceInForLoopScope>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RemoveUnreferencedCodeData></RemoveUnreferencedCodeData>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
+      <TreatWChar_tAsBuiltInType></TreatWChar_tAsBuiltInType>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;UNICODE;_UNICODE;QSCINTILLA_DLL;LANGUAGES_YML_PATH="C:/Users/tc/source/repos/TestEngine/build/assets/util/ProgrammingLanguages.yml";QT_WIDGETS_LIB;QT_CORE_LIB;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;_WIN64;QT_GUI_LIB;QT_NETWORK_LIB;QT_PRINTSUPPORT_LIB;YAML_CPP_STATIC_DEFINE;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;UNICODE;_UNICODE;QSCINTILLA_DLL;LANGUAGES_YML_PATH=\"C:/Users/tc/source/repos/TestEngine/build/assets/util/ProgrammingLanguages.yml\";QT_WIDGETS_LIB;QT_CORE_LIB;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;_WIN64;QT_GUI_LIB;QT_NETWORK_LIB;QT_PRINTSUPPORT_LIB;YAML_CPP_STATIC_DEFINE;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\tc\source\repos\TestEngine\studio;C:\Users\tc\source\repos\TestEngine\studio\include;C:\Users\tc\source\repos\TestEngine\engine\include;C:\Users\tc\source\repos\TestEngine\client\include;C:\Users\tc\source\repos\TestEngine\external;C:\Users\tc\source\repos\TestEngine\external\SDL\include;C:\Users\tc\source\repos\TestEngine\external\velopack_libc_1.2.0\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\src;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\src;C:\Users\tc\source\repos\TestEngine\build\_deps\wasmtime-src\include;C:\Users\tc\source\repos\TestEngine\engine\include\engine;C:\Users\tc\source\repos\TestEngine\external\SDL;C:\Users\tc\source\repos\TestEngine\build\external\SDL\include-revision;C:\Users\tc\source\repos\TestEngine\build\_deps\qwindowkit-build\out\include;C:\Users\tc\source\repos\TestEngine\build\_deps\yaml-cpp-src\include;C:\Users\tc\source\repos\TestEngine\external\tree-sitter\lib\include;C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\include_Debug;C:\Qt\6.12.0\msvc2022_64\include\QtWidgets;C:\Qt\6.12.0\msvc2022_64\include;C:\Qt\6.12.0\msvc2022_64\include\QtCore;C:\Qt\6.12.0\msvc2022_64\mkspecs\win32-msvc;C:\Qt\6.12.0\msvc2022_64\include\QtGui;C:\Qt\6.12.0\msvc2022_64\include\QtNetwork;C:\Qt\6.12.0\msvc2022_64\include\QtPrintSupport;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\tc\source\repos\TestEngine\studio;C:\Users\tc\source\repos\TestEngine\studio\include;C:\Users\tc\source\repos\TestEngine\engine\include;C:\Users\tc\source\repos\TestEngine\client\include;C:\Users\tc\source\repos\TestEngine\external;C:\Users\tc\source\repos\TestEngine\external\SDL\include;C:\Users\tc\source\repos\TestEngine\external\velopack_libc_1.2.0\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\src;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\src;C:\Users\tc\source\repos\TestEngine\build\_deps\wasmtime-src\include;C:\Users\tc\source\repos\TestEngine\engine\include\engine;C:\Users\tc\source\repos\TestEngine\external\SDL;C:\Users\tc\source\repos\TestEngine\build\external\SDL\include-revision;C:\Users\tc\source\repos\TestEngine\build\_deps\qwindowkit-build\out\include;C:\Users\tc\source\repos\TestEngine\build\_deps\yaml-cpp-src\include;C:\Users\tc\source\repos\TestEngine\external\tree-sitter\lib\include;C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\include_Debug;C:\Qt\6.12.0\msvc2022_64\include\QtWidgets;C:\Qt\6.12.0\msvc2022_64\include;C:\Qt\6.12.0\msvc2022_64\include\QtCore;C:\Qt\6.12.0\msvc2022_64\mkspecs\win32-msvc;C:\Qt\6.12.0\msvc2022_64\include\QtGui;C:\Qt\6.12.0\msvc2022_64\include\QtNetwork;C:\Qt\6.12.0\msvc2022_64\include\QtPrintSupport;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PreBuildEvent>
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message>Automatic MOC and UIC for target TestEngine</Message>
+      <Command>setlocal
+cd C:\Users\tc\source\repos\TestEngine\build\studio
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E cmake_autogen C:/Users/tc/source/repos/TestEngine/build/studio/CMakeFiles/TestEngine_autogen.dir/AutogenInfo.json Debug
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Message>Copying DLLs and running windeployqt</Message>
+      <Command>setlocal
+cd C:\Users\tc\source\repos\TestEngine\build\studio\Debug
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E copy_if_different C:/Users/tc/source/repos/TestEngine/build/_deps/qwindowkit-build/out/bin/Debug/QWKCored.dll C:/Users/tc/source/repos/TestEngine/build/studio/Debug
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E copy_if_different C:/Users/tc/source/repos/TestEngine/build/_deps/qwindowkit-build/out/bin/Debug/QWKWidgetsd.dll C:/Users/tc/source/repos/TestEngine/build/studio/Debug
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E copy_if_different C:/Users/tc/source/repos/TestEngine/build/Debug/qscintilla2_qt6d.dll C:/Users/tc/source/repos/TestEngine/build/studio/Debug
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E copy_if_different C:/Users/tc/source/repos/TestEngine/build/_deps/wasmtime-src/lib/wasmtime.dll C:/Users/tc/source/repos/TestEngine/build/studio/Debug
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E copy_directory C:/Users/tc/source/repos/TestEngine/studio/../assets/shaders C:/Users/tc/source/repos/TestEngine/build/studio/Debug/assets/shaders
+if %errorlevel% neq 0 goto :cmEnd
+C:\Qt\6.12.0\msvc2022_64\bin\windeployqt.exe --no-compiler-runtime C:/Users/tc/source/repos/TestEngine/build/studio/Debug/TestEngine.exe
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>..\engine\Debug\EngineCore.lib;..\external\SDL\Debug\SDL3-static.lib;C:\Users\tc\source\repos\TestEngine\external\velopack_libc_1.2.0\lib-static\velopack_libc_win_x64_msvc.lib;..\_deps\wasmtime-src\lib\wasmtime.dll.lib;ws2_32.lib;bcrypt.lib;ntdll.lib;C:\Qt\6.12.0\msvc2022_64\lib\Qt6Widgetsd.lib;C:\Qt\6.12.0\msvc2022_64\lib\Qt6Networkd.lib;C:\Qt\6.12.0\msvc2022_64\lib\Qt6PrintSupportd.lib;..\_deps\qwindowkit-build\out\lib\Debug\QWKWidgetsd.lib;..\Debug\qscintilla2_qt6d.lib;..\_deps\yaml-cpp-build\Debug\yaml-cppd.lib;..\Debug\tree-sitter.lib;kernel32.lib;user32.lib;gdi32.lib;winmm.lib;imm32.lib;ole32.lib;oleaut32.lib;version.lib;uuid.lib;advapi32.lib;setupapi.lib;shell32.lib;hid.lib;mincore.lib;dinput8.lib;..\external\pugixml\Debug\pugixml.lib;..\_deps\qwindowkit-build\out\lib\Debug\QWKCored.lib;C:\Qt\6.12.0\msvc2022_64\lib\Qt6Guid.lib;C:\Qt\6.12.0\msvc2022_64\lib\Qt6Cored.lib;mpr.lib;userenv.lib;d3d11.lib;dxgi.lib;dxguid.lib;d3d12.lib;comdlg32.lib;winspool.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64 /WHOLEARCHIVE:EngineCore</AdditionalOptions>
+      <DataExecutionPrevention></DataExecutionPrevention>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers></ImageHasSafeExceptionHandlers>
+      <ImportLibrary>C:/Users/tc/source/repos/TestEngine/build/studio/Debug/TestEngine.lib</ImportLibrary>
+      <LinkErrorReporting></LinkErrorReporting>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ProgramDataBaseFile>C:/Users/tc/source/repos/TestEngine/build/studio/Debug/TestEngine.pdb</ProgramDataBaseFile>
+      <RandomizedBaseAddress></RandomizedBaseAddress>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\tc\source\repos\TestEngine\studio;C:\Users\tc\source\repos\TestEngine\studio\include;C:\Users\tc\source\repos\TestEngine\engine\include;C:\Users\tc\source\repos\TestEngine\client\include;C:\Users\tc\source\repos\TestEngine\external;C:\Users\tc\source\repos\TestEngine\external\SDL\include;C:\Users\tc\source\repos\TestEngine\external\velopack_libc_1.2.0\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\src;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\src;C:\Users\tc\source\repos\TestEngine\build\_deps\wasmtime-src\include;C:\Users\tc\source\repos\TestEngine\engine\include\engine;C:\Users\tc\source\repos\TestEngine\external\SDL;C:\Users\tc\source\repos\TestEngine\build\external\SDL\include-revision;C:\Users\tc\source\repos\TestEngine\build\_deps\qwindowkit-build\out\include;C:\Users\tc\source\repos\TestEngine\build\_deps\yaml-cpp-src\include;C:\Users\tc\source\repos\TestEngine\external\tree-sitter\lib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Users/tc/source/repos/TestEngine/build/studio/TestEngine_autogen/include_Release" /external:I "C:/Qt/6.12.0/msvc2022_64/include/QtWidgets" /external:I "C:/Qt/6.12.0/msvc2022_64/include" /external:I "C:/Qt/6.12.0/msvc2022_64/include/QtCore" /external:I "C:/Qt/6.12.0/msvc2022_64/mkspecs/win32-msvc" /external:I "C:/Qt/6.12.0/msvc2022_64/include/QtGui" /external:I "C:/Qt/6.12.0/msvc2022_64/include/QtNetwork" /external:I "C:/Qt/6.12.0/msvc2022_64/include/QtPrintSupport" -Zc:__cplusplus -utf-8</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck></BufferSecurityCheck>
+      <CallingConvention></CallingConvention>
+      <ConformanceMode>true</ConformanceMode>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <FloatingPointModel></FloatingPointModel>
+      <ForceConformanceInForLoopScope></ForceConformanceInForLoopScope>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RemoveUnreferencedCodeData></RemoveUnreferencedCodeData>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
+      <TreatWChar_tAsBuiltInType></TreatWChar_tAsBuiltInType>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;UNICODE;_UNICODE;QSCINTILLA_DLL;LANGUAGES_YML_PATH="C:/Users/tc/source/repos/TestEngine/build/assets/util/ProgrammingLanguages.yml";QT_WIDGETS_LIB;QT_CORE_LIB;QT_NO_DEBUG;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;_WIN64;QT_GUI_LIB;QT_NETWORK_LIB;QT_PRINTSUPPORT_LIB;YAML_CPP_STATIC_DEFINE;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;UNICODE;_UNICODE;QSCINTILLA_DLL;LANGUAGES_YML_PATH=\"C:/Users/tc/source/repos/TestEngine/build/assets/util/ProgrammingLanguages.yml\";QT_WIDGETS_LIB;QT_CORE_LIB;QT_NO_DEBUG;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;_WIN64;QT_GUI_LIB;QT_NETWORK_LIB;QT_PRINTSUPPORT_LIB;YAML_CPP_STATIC_DEFINE;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\tc\source\repos\TestEngine\studio;C:\Users\tc\source\repos\TestEngine\studio\include;C:\Users\tc\source\repos\TestEngine\engine\include;C:\Users\tc\source\repos\TestEngine\client\include;C:\Users\tc\source\repos\TestEngine\external;C:\Users\tc\source\repos\TestEngine\external\SDL\include;C:\Users\tc\source\repos\TestEngine\external\velopack_libc_1.2.0\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\src;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\src;C:\Users\tc\source\repos\TestEngine\build\_deps\wasmtime-src\include;C:\Users\tc\source\repos\TestEngine\engine\include\engine;C:\Users\tc\source\repos\TestEngine\external\SDL;C:\Users\tc\source\repos\TestEngine\build\external\SDL\include-revision;C:\Users\tc\source\repos\TestEngine\build\_deps\qwindowkit-build\out\include;C:\Users\tc\source\repos\TestEngine\build\_deps\yaml-cpp-src\include;C:\Users\tc\source\repos\TestEngine\external\tree-sitter\lib\include;C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\include_Release;C:\Qt\6.12.0\msvc2022_64\include\QtWidgets;C:\Qt\6.12.0\msvc2022_64\include;C:\Qt\6.12.0\msvc2022_64\include\QtCore;C:\Qt\6.12.0\msvc2022_64\mkspecs\win32-msvc;C:\Qt\6.12.0\msvc2022_64\include\QtGui;C:\Qt\6.12.0\msvc2022_64\include\QtNetwork;C:\Qt\6.12.0\msvc2022_64\include\QtPrintSupport;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\tc\source\repos\TestEngine\studio;C:\Users\tc\source\repos\TestEngine\studio\include;C:\Users\tc\source\repos\TestEngine\engine\include;C:\Users\tc\source\repos\TestEngine\client\include;C:\Users\tc\source\repos\TestEngine\external;C:\Users\tc\source\repos\TestEngine\external\SDL\include;C:\Users\tc\source\repos\TestEngine\external\velopack_libc_1.2.0\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\src;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\src;C:\Users\tc\source\repos\TestEngine\build\_deps\wasmtime-src\include;C:\Users\tc\source\repos\TestEngine\engine\include\engine;C:\Users\tc\source\repos\TestEngine\external\SDL;C:\Users\tc\source\repos\TestEngine\build\external\SDL\include-revision;C:\Users\tc\source\repos\TestEngine\build\_deps\qwindowkit-build\out\include;C:\Users\tc\source\repos\TestEngine\build\_deps\yaml-cpp-src\include;C:\Users\tc\source\repos\TestEngine\external\tree-sitter\lib\include;C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\include_Release;C:\Qt\6.12.0\msvc2022_64\include\QtWidgets;C:\Qt\6.12.0\msvc2022_64\include;C:\Qt\6.12.0\msvc2022_64\include\QtCore;C:\Qt\6.12.0\msvc2022_64\mkspecs\win32-msvc;C:\Qt\6.12.0\msvc2022_64\include\QtGui;C:\Qt\6.12.0\msvc2022_64\include\QtNetwork;C:\Qt\6.12.0\msvc2022_64\include\QtPrintSupport;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PreBuildEvent>
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message>Automatic MOC and UIC for target TestEngine</Message>
+      <Command>setlocal
+cd C:\Users\tc\source\repos\TestEngine\build\studio
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E cmake_autogen C:/Users/tc/source/repos/TestEngine/build/studio/CMakeFiles/TestEngine_autogen.dir/AutogenInfo.json Release
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Message>Copying DLLs and running windeployqt</Message>
+      <Command>setlocal
+cd C:\Users\tc\source\repos\TestEngine\build\studio\Release
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E copy_if_different C:/Users/tc/source/repos/TestEngine/build/_deps/qwindowkit-build/out/bin/Release/QWKCore.dll C:/Users/tc/source/repos/TestEngine/build/studio/Release
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E copy_if_different C:/Users/tc/source/repos/TestEngine/build/_deps/qwindowkit-build/out/bin/Release/QWKWidgets.dll C:/Users/tc/source/repos/TestEngine/build/studio/Release
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E copy_if_different C:/Users/tc/source/repos/TestEngine/build/Release/qscintilla2_qt6.dll C:/Users/tc/source/repos/TestEngine/build/studio/Release
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E copy_if_different C:/Users/tc/source/repos/TestEngine/build/_deps/wasmtime-src/lib/wasmtime.dll C:/Users/tc/source/repos/TestEngine/build/studio/Release
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E copy_directory C:/Users/tc/source/repos/TestEngine/studio/../assets/shaders C:/Users/tc/source/repos/TestEngine/build/studio/Release/assets/shaders
+if %errorlevel% neq 0 goto :cmEnd
+C:\Qt\6.12.0\msvc2022_64\bin\windeployqt.exe --no-compiler-runtime C:/Users/tc/source/repos/TestEngine/build/studio/Release/TestEngine.exe
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>..\engine\Release\EngineCore.lib;..\external\SDL\Release\SDL3-static.lib;C:\Users\tc\source\repos\TestEngine\external\velopack_libc_1.2.0\lib-static\velopack_libc_win_x64_msvc.lib;..\_deps\wasmtime-src\lib\wasmtime.dll.lib;ws2_32.lib;bcrypt.lib;ntdll.lib;C:\Qt\6.12.0\msvc2022_64\lib\Qt6Widgets.lib;C:\Qt\6.12.0\msvc2022_64\lib\Qt6Network.lib;C:\Qt\6.12.0\msvc2022_64\lib\Qt6PrintSupport.lib;..\_deps\qwindowkit-build\out\lib\Release\QWKWidgets.lib;..\Release\qscintilla2_qt6.lib;..\_deps\yaml-cpp-build\Release\yaml-cpp.lib;..\Release\tree-sitter.lib;kernel32.lib;user32.lib;gdi32.lib;winmm.lib;imm32.lib;ole32.lib;oleaut32.lib;version.lib;uuid.lib;advapi32.lib;setupapi.lib;shell32.lib;hid.lib;mincore.lib;dinput8.lib;..\external\pugixml\Release\pugixml.lib;..\_deps\qwindowkit-build\out\lib\Release\QWKCore.lib;C:\Qt\6.12.0\msvc2022_64\lib\Qt6Gui.lib;C:\Qt\6.12.0\msvc2022_64\lib\Qt6Core.lib;mpr.lib;userenv.lib;d3d11.lib;dxgi.lib;dxguid.lib;d3d12.lib;comdlg32.lib;winspool.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64 /WHOLEARCHIVE:EngineCore</AdditionalOptions>
+      <DataExecutionPrevention></DataExecutionPrevention>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers></ImageHasSafeExceptionHandlers>
+      <ImportLibrary>C:/Users/tc/source/repos/TestEngine/build/studio/Release/TestEngine.lib</ImportLibrary>
+      <LinkErrorReporting></LinkErrorReporting>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ProgramDataBaseFile>C:/Users/tc/source/repos/TestEngine/build/studio/Release/TestEngine.pdb</ProgramDataBaseFile>
+      <RandomizedBaseAddress></RandomizedBaseAddress>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\tc\source\repos\TestEngine\studio;C:\Users\tc\source\repos\TestEngine\studio\include;C:\Users\tc\source\repos\TestEngine\engine\include;C:\Users\tc\source\repos\TestEngine\client\include;C:\Users\tc\source\repos\TestEngine\external;C:\Users\tc\source\repos\TestEngine\external\SDL\include;C:\Users\tc\source\repos\TestEngine\external\velopack_libc_1.2.0\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\src;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\src;C:\Users\tc\source\repos\TestEngine\build\_deps\wasmtime-src\include;C:\Users\tc\source\repos\TestEngine\engine\include\engine;C:\Users\tc\source\repos\TestEngine\external\SDL;C:\Users\tc\source\repos\TestEngine\build\external\SDL\include-revision;C:\Users\tc\source\repos\TestEngine\build\_deps\qwindowkit-build\out\include;C:\Users\tc\source\repos\TestEngine\build\_deps\yaml-cpp-src\include;C:\Users\tc\source\repos\TestEngine\external\tree-sitter\lib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Users/tc/source/repos/TestEngine/build/studio/TestEngine_autogen/include_MinSizeRel" /external:I "C:/Qt/6.12.0/msvc2022_64/include/QtWidgets" /external:I "C:/Qt/6.12.0/msvc2022_64/include" /external:I "C:/Qt/6.12.0/msvc2022_64/include/QtCore" /external:I "C:/Qt/6.12.0/msvc2022_64/mkspecs/win32-msvc" /external:I "C:/Qt/6.12.0/msvc2022_64/include/QtGui" /external:I "C:/Qt/6.12.0/msvc2022_64/include/QtNetwork" /external:I "C:/Qt/6.12.0/msvc2022_64/include/QtPrintSupport" -Zc:__cplusplus -utf-8</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck></BufferSecurityCheck>
+      <CallingConvention></CallingConvention>
+      <ConformanceMode>true</ConformanceMode>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <FloatingPointModel></FloatingPointModel>
+      <ForceConformanceInForLoopScope></ForceConformanceInForLoopScope>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RemoveUnreferencedCodeData></RemoveUnreferencedCodeData>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
+      <TreatWChar_tAsBuiltInType></TreatWChar_tAsBuiltInType>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;UNICODE;_UNICODE;QSCINTILLA_DLL;LANGUAGES_YML_PATH="C:/Users/tc/source/repos/TestEngine/build/assets/util/ProgrammingLanguages.yml";QT_WIDGETS_LIB;QT_CORE_LIB;QT_NO_DEBUG;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;_WIN64;QT_GUI_LIB;QT_NETWORK_LIB;QT_PRINTSUPPORT_LIB;YAML_CPP_STATIC_DEFINE;CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;UNICODE;_UNICODE;QSCINTILLA_DLL;LANGUAGES_YML_PATH=\"C:/Users/tc/source/repos/TestEngine/build/assets/util/ProgrammingLanguages.yml\";QT_WIDGETS_LIB;QT_CORE_LIB;QT_NO_DEBUG;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;_WIN64;QT_GUI_LIB;QT_NETWORK_LIB;QT_PRINTSUPPORT_LIB;YAML_CPP_STATIC_DEFINE;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\tc\source\repos\TestEngine\studio;C:\Users\tc\source\repos\TestEngine\studio\include;C:\Users\tc\source\repos\TestEngine\engine\include;C:\Users\tc\source\repos\TestEngine\client\include;C:\Users\tc\source\repos\TestEngine\external;C:\Users\tc\source\repos\TestEngine\external\SDL\include;C:\Users\tc\source\repos\TestEngine\external\velopack_libc_1.2.0\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\src;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\src;C:\Users\tc\source\repos\TestEngine\build\_deps\wasmtime-src\include;C:\Users\tc\source\repos\TestEngine\engine\include\engine;C:\Users\tc\source\repos\TestEngine\external\SDL;C:\Users\tc\source\repos\TestEngine\build\external\SDL\include-revision;C:\Users\tc\source\repos\TestEngine\build\_deps\qwindowkit-build\out\include;C:\Users\tc\source\repos\TestEngine\build\_deps\yaml-cpp-src\include;C:\Users\tc\source\repos\TestEngine\external\tree-sitter\lib\include;C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\include_MinSizeRel;C:\Qt\6.12.0\msvc2022_64\include\QtWidgets;C:\Qt\6.12.0\msvc2022_64\include;C:\Qt\6.12.0\msvc2022_64\include\QtCore;C:\Qt\6.12.0\msvc2022_64\mkspecs\win32-msvc;C:\Qt\6.12.0\msvc2022_64\include\QtGui;C:\Qt\6.12.0\msvc2022_64\include\QtNetwork;C:\Qt\6.12.0\msvc2022_64\include\QtPrintSupport;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\tc\source\repos\TestEngine\studio;C:\Users\tc\source\repos\TestEngine\studio\include;C:\Users\tc\source\repos\TestEngine\engine\include;C:\Users\tc\source\repos\TestEngine\client\include;C:\Users\tc\source\repos\TestEngine\external;C:\Users\tc\source\repos\TestEngine\external\SDL\include;C:\Users\tc\source\repos\TestEngine\external\velopack_libc_1.2.0\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\src;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\src;C:\Users\tc\source\repos\TestEngine\build\_deps\wasmtime-src\include;C:\Users\tc\source\repos\TestEngine\engine\include\engine;C:\Users\tc\source\repos\TestEngine\external\SDL;C:\Users\tc\source\repos\TestEngine\build\external\SDL\include-revision;C:\Users\tc\source\repos\TestEngine\build\_deps\qwindowkit-build\out\include;C:\Users\tc\source\repos\TestEngine\build\_deps\yaml-cpp-src\include;C:\Users\tc\source\repos\TestEngine\external\tree-sitter\lib\include;C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\include_MinSizeRel;C:\Qt\6.12.0\msvc2022_64\include\QtWidgets;C:\Qt\6.12.0\msvc2022_64\include;C:\Qt\6.12.0\msvc2022_64\include\QtCore;C:\Qt\6.12.0\msvc2022_64\mkspecs\win32-msvc;C:\Qt\6.12.0\msvc2022_64\include\QtGui;C:\Qt\6.12.0\msvc2022_64\include\QtNetwork;C:\Qt\6.12.0\msvc2022_64\include\QtPrintSupport;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PreBuildEvent>
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message>Automatic MOC and UIC for target TestEngine</Message>
+      <Command>setlocal
+cd C:\Users\tc\source\repos\TestEngine\build\studio
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E cmake_autogen C:/Users/tc/source/repos/TestEngine/build/studio/CMakeFiles/TestEngine_autogen.dir/AutogenInfo.json MinSizeRel
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Message>Copying DLLs and running windeployqt</Message>
+      <Command>setlocal
+cd C:\Users\tc\source\repos\TestEngine\build\studio\MinSizeRel
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E copy_if_different C:/Users/tc/source/repos/TestEngine/build/_deps/qwindowkit-build/out/bin/MinSizeRel/QWKCore.dll C:/Users/tc/source/repos/TestEngine/build/studio/MinSizeRel
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E copy_if_different C:/Users/tc/source/repos/TestEngine/build/_deps/qwindowkit-build/out/bin/MinSizeRel/QWKWidgets.dll C:/Users/tc/source/repos/TestEngine/build/studio/MinSizeRel
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E copy_if_different C:/Users/tc/source/repos/TestEngine/build/MinSizeRel/qscintilla2_qt6.dll C:/Users/tc/source/repos/TestEngine/build/studio/MinSizeRel
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E copy_if_different C:/Users/tc/source/repos/TestEngine/build/_deps/wasmtime-src/lib/wasmtime.dll C:/Users/tc/source/repos/TestEngine/build/studio/MinSizeRel
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E copy_directory C:/Users/tc/source/repos/TestEngine/studio/../assets/shaders C:/Users/tc/source/repos/TestEngine/build/studio/MinSizeRel/assets/shaders
+if %errorlevel% neq 0 goto :cmEnd
+C:\Qt\6.12.0\msvc2022_64\bin\windeployqt.exe --no-compiler-runtime C:/Users/tc/source/repos/TestEngine/build/studio/MinSizeRel/TestEngine.exe
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>..\engine\MinSizeRel\EngineCore.lib;..\external\SDL\MinSizeRel\SDL3-static.lib;C:\Users\tc\source\repos\TestEngine\external\velopack_libc_1.2.0\lib-static\velopack_libc_win_x64_msvc.lib;..\_deps\wasmtime-src\lib\wasmtime.dll.lib;ws2_32.lib;bcrypt.lib;ntdll.lib;C:\Qt\6.12.0\msvc2022_64\lib\Qt6Widgets.lib;C:\Qt\6.12.0\msvc2022_64\lib\Qt6Network.lib;C:\Qt\6.12.0\msvc2022_64\lib\Qt6PrintSupport.lib;..\_deps\qwindowkit-build\out\lib\MinSizeRel\QWKWidgets.lib;..\MinSizeRel\qscintilla2_qt6.lib;..\_deps\yaml-cpp-build\MinSizeRel\yaml-cpp.lib;..\MinSizeRel\tree-sitter.lib;kernel32.lib;user32.lib;gdi32.lib;winmm.lib;imm32.lib;ole32.lib;oleaut32.lib;version.lib;uuid.lib;advapi32.lib;setupapi.lib;shell32.lib;hid.lib;mincore.lib;dinput8.lib;..\external\pugixml\MinSizeRel\pugixml.lib;..\_deps\qwindowkit-build\out\lib\MinSizeRel\QWKCore.lib;C:\Qt\6.12.0\msvc2022_64\lib\Qt6Gui.lib;C:\Qt\6.12.0\msvc2022_64\lib\Qt6Core.lib;mpr.lib;userenv.lib;d3d11.lib;dxgi.lib;dxguid.lib;d3d12.lib;comdlg32.lib;winspool.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64 /WHOLEARCHIVE:EngineCore</AdditionalOptions>
+      <DataExecutionPrevention></DataExecutionPrevention>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers></ImageHasSafeExceptionHandlers>
+      <ImportLibrary>C:/Users/tc/source/repos/TestEngine/build/studio/MinSizeRel/TestEngine.lib</ImportLibrary>
+      <LinkErrorReporting></LinkErrorReporting>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ProgramDataBaseFile>C:/Users/tc/source/repos/TestEngine/build/studio/MinSizeRel/TestEngine.pdb</ProgramDataBaseFile>
+      <RandomizedBaseAddress></RandomizedBaseAddress>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\tc\source\repos\TestEngine\studio;C:\Users\tc\source\repos\TestEngine\studio\include;C:\Users\tc\source\repos\TestEngine\engine\include;C:\Users\tc\source\repos\TestEngine\client\include;C:\Users\tc\source\repos\TestEngine\external;C:\Users\tc\source\repos\TestEngine\external\SDL\include;C:\Users\tc\source\repos\TestEngine\external\velopack_libc_1.2.0\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\src;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\src;C:\Users\tc\source\repos\TestEngine\build\_deps\wasmtime-src\include;C:\Users\tc\source\repos\TestEngine\engine\include\engine;C:\Users\tc\source\repos\TestEngine\external\SDL;C:\Users\tc\source\repos\TestEngine\build\external\SDL\include-revision;C:\Users\tc\source\repos\TestEngine\build\_deps\qwindowkit-build\out\include;C:\Users\tc\source\repos\TestEngine\build\_deps\yaml-cpp-src\include;C:\Users\tc\source\repos\TestEngine\external\tree-sitter\lib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Users/tc/source/repos/TestEngine/build/studio/TestEngine_autogen/include_RelWithDebInfo" /external:I "C:/Qt/6.12.0/msvc2022_64/include/QtWidgets" /external:I "C:/Qt/6.12.0/msvc2022_64/include" /external:I "C:/Qt/6.12.0/msvc2022_64/include/QtCore" /external:I "C:/Qt/6.12.0/msvc2022_64/mkspecs/win32-msvc" /external:I "C:/Qt/6.12.0/msvc2022_64/include/QtGui" /external:I "C:/Qt/6.12.0/msvc2022_64/include/QtNetwork" /external:I "C:/Qt/6.12.0/msvc2022_64/include/QtPrintSupport" -Zc:__cplusplus -utf-8</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck></BufferSecurityCheck>
+      <CallingConvention></CallingConvention>
+      <ConformanceMode>true</ConformanceMode>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <FloatingPointModel></FloatingPointModel>
+      <ForceConformanceInForLoopScope></ForceConformanceInForLoopScope>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RemoveUnreferencedCodeData></RemoveUnreferencedCodeData>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
+      <TreatWChar_tAsBuiltInType></TreatWChar_tAsBuiltInType>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;UNICODE;_UNICODE;QSCINTILLA_DLL;LANGUAGES_YML_PATH="C:/Users/tc/source/repos/TestEngine/build/assets/util/ProgrammingLanguages.yml";QT_WIDGETS_LIB;QT_CORE_LIB;QT_NO_DEBUG;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;_WIN64;QT_GUI_LIB;QT_NETWORK_LIB;QT_PRINTSUPPORT_LIB;YAML_CPP_STATIC_DEFINE;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;UNICODE;_UNICODE;QSCINTILLA_DLL;LANGUAGES_YML_PATH=\"C:/Users/tc/source/repos/TestEngine/build/assets/util/ProgrammingLanguages.yml\";QT_WIDGETS_LIB;QT_CORE_LIB;QT_NO_DEBUG;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;_WIN64;QT_GUI_LIB;QT_NETWORK_LIB;QT_PRINTSUPPORT_LIB;YAML_CPP_STATIC_DEFINE;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\tc\source\repos\TestEngine\studio;C:\Users\tc\source\repos\TestEngine\studio\include;C:\Users\tc\source\repos\TestEngine\engine\include;C:\Users\tc\source\repos\TestEngine\client\include;C:\Users\tc\source\repos\TestEngine\external;C:\Users\tc\source\repos\TestEngine\external\SDL\include;C:\Users\tc\source\repos\TestEngine\external\velopack_libc_1.2.0\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\src;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\src;C:\Users\tc\source\repos\TestEngine\build\_deps\wasmtime-src\include;C:\Users\tc\source\repos\TestEngine\engine\include\engine;C:\Users\tc\source\repos\TestEngine\external\SDL;C:\Users\tc\source\repos\TestEngine\build\external\SDL\include-revision;C:\Users\tc\source\repos\TestEngine\build\_deps\qwindowkit-build\out\include;C:\Users\tc\source\repos\TestEngine\build\_deps\yaml-cpp-src\include;C:\Users\tc\source\repos\TestEngine\external\tree-sitter\lib\include;C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\include_RelWithDebInfo;C:\Qt\6.12.0\msvc2022_64\include\QtWidgets;C:\Qt\6.12.0\msvc2022_64\include;C:\Qt\6.12.0\msvc2022_64\include\QtCore;C:\Qt\6.12.0\msvc2022_64\mkspecs\win32-msvc;C:\Qt\6.12.0\msvc2022_64\include\QtGui;C:\Qt\6.12.0\msvc2022_64\include\QtNetwork;C:\Qt\6.12.0\msvc2022_64\include\QtPrintSupport;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\tc\source\repos\TestEngine\studio;C:\Users\tc\source\repos\TestEngine\studio\include;C:\Users\tc\source\repos\TestEngine\engine\include;C:\Users\tc\source\repos\TestEngine\client\include;C:\Users\tc\source\repos\TestEngine\external;C:\Users\tc\source\repos\TestEngine\external\SDL\include;C:\Users\tc\source\repos\TestEngine\external\velopack_libc_1.2.0\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\src;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\include;C:\Users\tc\source\repos\TestEngine\build\_deps\qscintilla-src\scintilla\src;C:\Users\tc\source\repos\TestEngine\build\_deps\wasmtime-src\include;C:\Users\tc\source\repos\TestEngine\engine\include\engine;C:\Users\tc\source\repos\TestEngine\external\SDL;C:\Users\tc\source\repos\TestEngine\build\external\SDL\include-revision;C:\Users\tc\source\repos\TestEngine\build\_deps\qwindowkit-build\out\include;C:\Users\tc\source\repos\TestEngine\build\_deps\yaml-cpp-src\include;C:\Users\tc\source\repos\TestEngine\external\tree-sitter\lib\include;C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\include_RelWithDebInfo;C:\Qt\6.12.0\msvc2022_64\include\QtWidgets;C:\Qt\6.12.0\msvc2022_64\include;C:\Qt\6.12.0\msvc2022_64\include\QtCore;C:\Qt\6.12.0\msvc2022_64\mkspecs\win32-msvc;C:\Qt\6.12.0\msvc2022_64\include\QtGui;C:\Qt\6.12.0\msvc2022_64\include\QtNetwork;C:\Qt\6.12.0\msvc2022_64\include\QtPrintSupport;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PreBuildEvent>
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message>Automatic MOC and UIC for target TestEngine</Message>
+      <Command>setlocal
+cd C:\Users\tc\source\repos\TestEngine\build\studio
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E cmake_autogen C:/Users/tc/source/repos/TestEngine/build/studio/CMakeFiles/TestEngine_autogen.dir/AutogenInfo.json RelWithDebInfo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Message>Copying DLLs and running windeployqt</Message>
+      <Command>setlocal
+cd C:\Users\tc\source\repos\TestEngine\build\studio\RelWithDebInfo
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E copy_if_different C:/Users/tc/source/repos/TestEngine/build/_deps/qwindowkit-build/out/bin/RelWithDebInfo/QWKCore.dll C:/Users/tc/source/repos/TestEngine/build/studio/RelWithDebInfo
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E copy_if_different C:/Users/tc/source/repos/TestEngine/build/_deps/qwindowkit-build/out/bin/RelWithDebInfo/QWKWidgets.dll C:/Users/tc/source/repos/TestEngine/build/studio/RelWithDebInfo
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E copy_if_different C:/Users/tc/source/repos/TestEngine/build/RelWithDebInfo/qscintilla2_qt6.dll C:/Users/tc/source/repos/TestEngine/build/studio/RelWithDebInfo
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E copy_if_different C:/Users/tc/source/repos/TestEngine/build/_deps/wasmtime-src/lib/wasmtime.dll C:/Users/tc/source/repos/TestEngine/build/studio/RelWithDebInfo
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E copy_directory C:/Users/tc/source/repos/TestEngine/studio/../assets/shaders C:/Users/tc/source/repos/TestEngine/build/studio/RelWithDebInfo/assets/shaders
+if %errorlevel% neq 0 goto :cmEnd
+C:\Qt\6.12.0\msvc2022_64\bin\windeployqt.exe --no-compiler-runtime C:/Users/tc/source/repos/TestEngine/build/studio/RelWithDebInfo/TestEngine.exe
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>..\engine\RelWithDebInfo\EngineCore.lib;..\external\SDL\RelWithDebInfo\SDL3-static.lib;C:\Users\tc\source\repos\TestEngine\external\velopack_libc_1.2.0\lib-static\velopack_libc_win_x64_msvc.lib;..\_deps\wasmtime-src\lib\wasmtime.dll.lib;ws2_32.lib;bcrypt.lib;ntdll.lib;C:\Qt\6.12.0\msvc2022_64\lib\Qt6Widgets.lib;C:\Qt\6.12.0\msvc2022_64\lib\Qt6Network.lib;C:\Qt\6.12.0\msvc2022_64\lib\Qt6PrintSupport.lib;..\_deps\qwindowkit-build\out\lib\RelWithDebInfo\QWKWidgets.lib;..\RelWithDebInfo\qscintilla2_qt6.lib;..\_deps\yaml-cpp-build\RelWithDebInfo\yaml-cpp.lib;..\RelWithDebInfo\tree-sitter.lib;kernel32.lib;user32.lib;gdi32.lib;winmm.lib;imm32.lib;ole32.lib;oleaut32.lib;version.lib;uuid.lib;advapi32.lib;setupapi.lib;shell32.lib;hid.lib;mincore.lib;dinput8.lib;..\external\pugixml\RelWithDebInfo\pugixml.lib;..\_deps\qwindowkit-build\out\lib\RelWithDebInfo\QWKCore.lib;C:\Qt\6.12.0\msvc2022_64\lib\Qt6Gui.lib;C:\Qt\6.12.0\msvc2022_64\lib\Qt6Core.lib;mpr.lib;userenv.lib;d3d11.lib;dxgi.lib;dxguid.lib;d3d12.lib;comdlg32.lib;winspool.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64 /WHOLEARCHIVE:EngineCore</AdditionalOptions>
+      <DataExecutionPrevention></DataExecutionPrevention>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers></ImageHasSafeExceptionHandlers>
+      <ImportLibrary>C:/Users/tc/source/repos/TestEngine/build/studio/RelWithDebInfo/TestEngine.lib</ImportLibrary>
+      <LinkErrorReporting></LinkErrorReporting>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ProgramDataBaseFile>C:/Users/tc/source/repos/TestEngine/build/studio/RelWithDebInfo/TestEngine.pdb</ProgramDataBaseFile>
+      <RandomizedBaseAddress></RandomizedBaseAddress>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\tc\source\repos\TestEngine\build\CMakeFiles\545f72951d0774eadb3a0ca6cca35f37\qrc_resources_(CONFIG).cpp.rule">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</BuildInParallel>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Automatic RCC for src/resources.qrc</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+cd C:\Users\tc\source\repos\TestEngine\build\studio
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E cmake_autorcc C:/Users/tc/source/repos/TestEngine/build/studio/CMakeFiles/TestEngine_autogen.dir/AutoRcc_resources_UVLADIE3JM_Info.json Debug
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\tc\source\repos\TestEngine\studio\src\resources.qrc;C:\Users\tc\source\repos\TestEngine\build\studio\CMakeFiles\TestEngine_autogen.dir\AutoRcc_resources_UVLADIE3JM_Info.json;C:\Users\tc\source\repos\TestEngine\studio\src\project\styles.qss;C:\Users\tc\source\repos\TestEngine\studio\src\style.qss;C:\Users\tc\source\repos\TestEngine\studio\src\core\settings\settings.qss;C:\Users\tc\source\repos\TestEngine\assets\icons\bell.png;C:\Users\tc\source\repos\TestEngine\assets\icons\chevron-down.png;C:\Users\tc\source\repos\TestEngine\assets\icons\profileTest.png;C:\Users\tc\source\repos\TestEngine\assets\icons\chevron-right.svg;C:\Users\tc\source\repos\TestEngine\assets\icons\MoveTool.png;C:\Qt\6.12.0\msvc2022_64\bin\rcc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\UVLADIE3JM\qrc_resources_Debug.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</BuildInParallel>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Automatic RCC for src/resources.qrc</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+cd C:\Users\tc\source\repos\TestEngine\build\studio
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E cmake_autorcc C:/Users/tc/source/repos/TestEngine/build/studio/CMakeFiles/TestEngine_autogen.dir/AutoRcc_resources_UVLADIE3JM_Info.json Release
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\tc\source\repos\TestEngine\studio\src\resources.qrc;C:\Users\tc\source\repos\TestEngine\build\studio\CMakeFiles\TestEngine_autogen.dir\AutoRcc_resources_UVLADIE3JM_Info.json;C:\Users\tc\source\repos\TestEngine\studio\src\project\styles.qss;C:\Users\tc\source\repos\TestEngine\studio\src\style.qss;C:\Users\tc\source\repos\TestEngine\studio\src\core\settings\settings.qss;C:\Users\tc\source\repos\TestEngine\assets\icons\bell.png;C:\Users\tc\source\repos\TestEngine\assets\icons\chevron-down.png;C:\Users\tc\source\repos\TestEngine\assets\icons\profileTest.png;C:\Users\tc\source\repos\TestEngine\assets\icons\chevron-right.svg;C:\Users\tc\source\repos\TestEngine\assets\icons\MoveTool.png;C:\Qt\6.12.0\msvc2022_64\bin\rcc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\UVLADIE3JM\qrc_resources_Release.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</BuildInParallel>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Automatic RCC for src/resources.qrc</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+cd C:\Users\tc\source\repos\TestEngine\build\studio
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E cmake_autorcc C:/Users/tc/source/repos/TestEngine/build/studio/CMakeFiles/TestEngine_autogen.dir/AutoRcc_resources_UVLADIE3JM_Info.json MinSizeRel
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\tc\source\repos\TestEngine\studio\src\resources.qrc;C:\Users\tc\source\repos\TestEngine\build\studio\CMakeFiles\TestEngine_autogen.dir\AutoRcc_resources_UVLADIE3JM_Info.json;C:\Users\tc\source\repos\TestEngine\studio\src\project\styles.qss;C:\Users\tc\source\repos\TestEngine\studio\src\style.qss;C:\Users\tc\source\repos\TestEngine\studio\src\core\settings\settings.qss;C:\Users\tc\source\repos\TestEngine\assets\icons\bell.png;C:\Users\tc\source\repos\TestEngine\assets\icons\chevron-down.png;C:\Users\tc\source\repos\TestEngine\assets\icons\profileTest.png;C:\Users\tc\source\repos\TestEngine\assets\icons\chevron-right.svg;C:\Users\tc\source\repos\TestEngine\assets\icons\MoveTool.png;C:\Qt\6.12.0\msvc2022_64\bin\rcc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\UVLADIE3JM\qrc_resources_MinSizeRel.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</BuildInParallel>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Automatic RCC for src/resources.qrc</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+cd C:\Users\tc\source\repos\TestEngine\build\studio
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E cmake_autorcc C:/Users/tc/source/repos/TestEngine/build/studio/CMakeFiles/TestEngine_autogen.dir/AutoRcc_resources_UVLADIE3JM_Info.json RelWithDebInfo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\tc\source\repos\TestEngine\studio\src\resources.qrc;C:\Users\tc\source\repos\TestEngine\build\studio\CMakeFiles\TestEngine_autogen.dir\AutoRcc_resources_UVLADIE3JM_Info.json;C:\Users\tc\source\repos\TestEngine\studio\src\project\styles.qss;C:\Users\tc\source\repos\TestEngine\studio\src\style.qss;C:\Users\tc\source\repos\TestEngine\studio\src\core\settings\settings.qss;C:\Users\tc\source\repos\TestEngine\assets\icons\bell.png;C:\Users\tc\source\repos\TestEngine\assets\icons\chevron-down.png;C:\Users\tc\source\repos\TestEngine\assets\icons\profileTest.png;C:\Users\tc\source\repos\TestEngine\assets\icons\chevron-right.svg;C:\Users\tc\source\repos\TestEngine\assets\icons\MoveTool.png;C:\Qt\6.12.0\msvc2022_64\bin\rcc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\UVLADIE3JM\qrc_resources_RelWithDebInfo.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\tc\source\repos\TestEngine\studio\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/tc/source/repos/TestEngine/studio/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/tc/source/repos/TestEngine -BC:/Users/tc/source/repos/TestEngine/build --check-stamp-file C:/Users/tc/source/repos/TestEngine/build/studio/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\tc\source\repos\TestEngine\build\CMakeFiles\cmake.verify_globs;C:\Users\tc\source\repos\TestEngine\studio\src\resources.qrc;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\tc\source\repos\TestEngine\build\studio\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/tc/source/repos/TestEngine/studio/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/tc/source/repos/TestEngine -BC:/Users/tc/source/repos/TestEngine/build --check-stamp-file C:/Users/tc/source/repos/TestEngine/build/studio/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\tc\source\repos\TestEngine\build\CMakeFiles\cmake.verify_globs;C:\Users\tc\source\repos\TestEngine\studio\src\resources.qrc;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\tc\source\repos\TestEngine\build\studio\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/Users/tc/source/repos/TestEngine/studio/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/tc/source/repos/TestEngine -BC:/Users/tc/source/repos/TestEngine/build --check-stamp-file C:/Users/tc/source/repos/TestEngine/build/studio/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\tc\source\repos\TestEngine\build\CMakeFiles\cmake.verify_globs;C:\Users\tc\source\repos\TestEngine\studio\src\resources.qrc;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\tc\source\repos\TestEngine\build\studio\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Users/tc/source/repos/TestEngine/studio/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/tc/source/repos/TestEngine -BC:/Users/tc/source/repos/TestEngine/build --check-stamp-file C:/Users/tc/source/repos/TestEngine/build/studio/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\tc\source\repos\TestEngine\build\CMakeFiles\cmake.verify_globs;C:\Users\tc\source\repos\TestEngine\studio\src\resources.qrc;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\tc\source\repos\TestEngine\build\studio\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\mocs_compilation_Debug.cpp">
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</ScanSourceForModuleDependencies>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\TestEngine.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\Window.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\asset\ExportFile.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\core\InstanceHandler.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\core\Logger.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\core\settings\game\GameSettings.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\core\settings\game\tabs\AnticheatTab.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\core\settings\game\tabs\GeneralTab.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\core\settings\game\tabs\TechnicalTab.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\core\settings\studio\StudioSettings.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\EditorWindow.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\EngineViewport.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\file\CodeEditor.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\file\FileEditor.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\file\FileManager.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\file\Intellisense.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\file\ast\ASTHandler.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\file\ast\TreeSitterASTHandler.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\file\lexers\AssemblyScript.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\file\lexers\Kotlin.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\tools\PlayTool.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\tools\Tool.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\tools\ToolManager.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\tools\transform\MoveTool.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\tools\transform\RotateTool.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\tools\transform\ScaleTool.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\tools\transform\SelectTool.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\plugin\Plugin.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\plugin\classes\PluginDockWidget.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\project\Project.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\project\publishing\PublishProject.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\project\saving\SaveProject.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\ProjectLoadingDialog.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\TabManager.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\Toolbar.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\docks\DockManager.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\docks\Explorer.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\docks\Output.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\docks\Properties.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\docks\Toolbox.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\menus\EditMenu.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\menus\FileMenu.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\menus\HelpMenu.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\menus\MenuManager.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\menus\PluginsMenu.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\menus\SoftwareStatus.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\menus\TestMenu.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\menus\ViewMenu.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\menus\WindowMenu.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\popups\InsertObject.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\ribbon\Ribbon.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\ribbon\RibbonStats.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\util\Asset.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\util\File.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\util\Languages.h" />
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\util\System.h" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\Window.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\asset\ExportFile.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\core\InstanceHandler.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\core\Logger.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\core\script\WebAssembly.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\core\script\external\OpenEditor.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\core\settings\game\GameSettings.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\core\settings\game\tabs\AnticheatTab.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\core\settings\game\tabs\GeneralTab.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\core\settings\game\tabs\TechnicalTab.cpp" />
+    <None Include="C:\Users\tc\source\repos\TestEngine\studio\src\core\settings\settings.qss">
+    </None>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\core\settings\studio\StudioSettings.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\editor\EditorWindow.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\editor\EngineViewport.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\editor\file\CodeEditor.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\editor\file\FileEditor.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\editor\file\FileManager.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\editor\file\Intellisense.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\editor\file\ScriptManager.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\editor\file\ast\TreeSitterASTHandler.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\editor\tools\Tool.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\editor\tools\ToolManager.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\main.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\plugin\Plugin.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\plugin\classes\PluginDockWidget.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\project\Project.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\project\publishing\PublishProject.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\project\saving\SaveProject.cpp" />
+    <None Include="C:\Users\tc\source\repos\TestEngine\studio\src\project\styles.qss">
+    </None>
+    <None Include="C:\Users\tc\source\repos\TestEngine\studio\src\resources.qrc">
+    </None>
+    <None Include="C:\Users\tc\source\repos\TestEngine\studio\src\style.qss">
+    </None>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\TabManager.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\Toolbar.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\docks\DockManager.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\docks\Explorer.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\docks\Output.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\docks\Properties.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\docks\Toolbox.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\menus\EditMenu.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\menus\FileMenu.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\menus\HelpMenu.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\menus\MenuManager.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\menus\PluginsMenu.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\menus\SoftwareStatus.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\menus\TestMenu.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\menus\ViewMenu.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\menus\WindowMenu.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\popups\InsertObject.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\ribbon\Ribbon.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\ribbon\RibbonStats.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\util\Asset.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\util\File.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\util\Languages.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\util\System.cpp" />
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\UVLADIE3JM\qrc_resources_Debug.cpp">
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</ScanSourceForModuleDependencies>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\mocs_compilation_Release.cpp">
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</ScanSourceForModuleDependencies>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\UVLADIE3JM\qrc_resources_Release.cpp">
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</ScanSourceForModuleDependencies>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\mocs_compilation_MinSizeRel.cpp">
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</ScanSourceForModuleDependencies>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\UVLADIE3JM\qrc_resources_MinSizeRel.cpp">
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</ScanSourceForModuleDependencies>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\mocs_compilation_RelWithDebInfo.cpp">
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</ScanSourceForModuleDependencies>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\UVLADIE3JM\qrc_resources_RelWithDebInfo.cpp">
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</ScanSourceForModuleDependencies>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="C:\Users\tc\source\repos\TestEngine\build\ZERO_CHECK.vcxproj">
+      <Project>{966EB78B-34F9-311E-89FD-516083098E5A}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\tc\source\repos\TestEngine\build\engine\EngineCore.vcxproj">
+      <Project>{ED9523AA-DEA3-3EB9-9EC2-E36D14098663}</Project>
+      <Name>EngineCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\tc\source\repos\TestEngine\build\_deps\qwindowkit-build\src\core\QWKCore.vcxproj">
+      <Project>{B4FDF872-AB73-3700-8F63-B93408C9A4C1}</Project>
+      <Name>QWKCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\tc\source\repos\TestEngine\build\_deps\qwindowkit-build\src\widgets\QWKWidgets.vcxproj">
+      <Project>{FE9D0709-2C5E-3336-B597-79E504785F8A}</Project>
+      <Name>QWKWidgets</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\tc\source\repos\TestEngine\build\external\SDL\SDL3-static.vcxproj">
+      <Project>{9D397B80-1DCB-34BD-B65B-B477B47B5759}</Project>
+      <Name>SDL3-static</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\tc\source\repos\TestEngine\build\external\pugixml\pugixml-static.vcxproj">
+      <Project>{1FABF4FC-B0B8-3A12-8FD1-B4EA2C71817F}</Project>
+      <Name>pugixml-static</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\tc\source\repos\TestEngine\build\qscintilla2_qt6.vcxproj">
+      <Project>{34D98DC8-9F57-3A01-B016-FA48BDF9157E}</Project>
+      <Name>qscintilla2_qt6</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\tc\source\repos\TestEngine\build\tree-sitter.vcxproj">
+      <Project>{A0D275EE-E0E8-3E28-9489-498D0FEDF833}</Project>
+      <Name>tree-sitter</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\tc\source\repos\TestEngine\build\_deps\yaml-cpp-build\yaml-cpp.vcxproj">
+      <Project>{58E39430-B5CE-395D-AB63-241827F03909}</Project>
+      <Name>yaml-cpp</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

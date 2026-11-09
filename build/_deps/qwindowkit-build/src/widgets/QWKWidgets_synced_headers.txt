@@ -1,0 +1,4 @@
+C:/Users/tc/source/repos/TestEngine/build/_deps/qwindowkit-build/out/include/QWKWidgets/qwkwidgetsglobal.h
+C:/Users/tc/source/repos/TestEngine/build/_deps/qwindowkit-build/out/include/QWKWidgets/private/widgetitemdelegate_p.h
+C:/Users/tc/source/repos/TestEngine/build/_deps/qwindowkit-build/out/include/QWKWidgets/widgetwindowagent.h
+C:/Users/tc/source/repos/TestEngine/build/_deps/qwindowkit-build/out/include/QWKWidgets/private/widgetwindowagent_p.h

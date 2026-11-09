@@ -1,0 +1,372 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\mocs_compilation_Debug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\Window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\asset\ExportFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\core\InstanceHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\core\Logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\core\script\WebAssembly.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\core\script\external\OpenEditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\core\settings\game\GameSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\core\settings\game\tabs\AnticheatTab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\core\settings\game\tabs\GeneralTab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\core\settings\game\tabs\TechnicalTab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\core\settings\studio\StudioSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\editor\EditorWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\editor\EngineViewport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\editor\file\CodeEditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\editor\file\FileEditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\editor\file\FileManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\editor\file\Intellisense.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\editor\file\ScriptManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\editor\file\ast\TreeSitterASTHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\editor\tools\Tool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\editor\tools\ToolManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\plugin\Plugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\plugin\classes\PluginDockWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\project\Project.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\project\publishing\PublishProject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\project\saving\SaveProject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\TabManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\Toolbar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\docks\DockManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\docks\Explorer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\docks\Output.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\docks\Properties.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\docks\Toolbox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\menus\EditMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\menus\FileMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\menus\HelpMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\menus\MenuManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\menus\PluginsMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\menus\SoftwareStatus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\menus\TestMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\menus\ViewMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\menus\WindowMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\popups\InsertObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\ribbon\Ribbon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\ui\ribbon\RibbonStats.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\util\Asset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\util\File.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\util\Languages.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\studio\src\util\System.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\UVLADIE3JM\qrc_resources_Debug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\mocs_compilation_Release.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\UVLADIE3JM\qrc_resources_Release.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\mocs_compilation_MinSizeRel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\UVLADIE3JM\qrc_resources_MinSizeRel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\mocs_compilation_RelWithDebInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tc\source\repos\TestEngine\build\studio\TestEngine_autogen\UVLADIE3JM\qrc_resources_RelWithDebInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\TestEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\asset\ExportFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\core\InstanceHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\core\Logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\core\settings\game\GameSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\core\settings\game\tabs\AnticheatTab.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\core\settings\game\tabs\GeneralTab.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\core\settings\game\tabs\TechnicalTab.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\core\settings\studio\StudioSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\EditorWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\EngineViewport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\file\CodeEditor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\file\FileEditor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\file\FileManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\file\Intellisense.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\file\ast\ASTHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\file\ast\TreeSitterASTHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\file\lexers\AssemblyScript.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\file\lexers\Kotlin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\tools\PlayTool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\tools\Tool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\tools\ToolManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\tools\transform\MoveTool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\tools\transform\RotateTool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\tools\transform\ScaleTool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\editor\tools\transform\SelectTool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\plugin\Plugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\plugin\classes\PluginDockWidget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\project\Project.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\project\publishing\PublishProject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\project\saving\SaveProject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\ProjectLoadingDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\TabManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\Toolbar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\docks\DockManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\docks\Explorer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\docks\Output.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\docks\Properties.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\docks\Toolbox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\menus\EditMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\menus\FileMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\menus\HelpMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\menus\MenuManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\menus\PluginsMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\menus\SoftwareStatus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\menus\TestMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\menus\ViewMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\menus\WindowMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\popups\InsertObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\ribbon\Ribbon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\ui\ribbon\RibbonStats.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\util\Asset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\util\File.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\util\Languages.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tc\source\repos\TestEngine\studio\include\util\System.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\tc\source\repos\TestEngine\build\CMakeFiles\545f72951d0774eadb3a0ca6cca35f37\qrc_resources_(CONFIG).cpp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\tc\source\repos\TestEngine\studio\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\tc\source\repos\TestEngine\studio\src\core\settings\settings.qss" />
+    <None Include="C:\Users\tc\source\repos\TestEngine\studio\src\project\styles.qss" />
+    <None Include="C:\Users\tc\source\repos\TestEngine\studio\src\resources.qrc" />
+    <None Include="C:\Users\tc\source\repos\TestEngine\studio\src\style.qss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{5A6013DD-2CEB-39D2-8A52-9A5F23AEF14F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{507B7579-C62C-3289-8C3C-4BC620384388}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{1477D1D8-86D8-36A9-8CC1-1DF0C358E43A}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

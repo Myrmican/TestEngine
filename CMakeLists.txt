@@ -29,6 +29,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 set(QWINDOWKIT_BUILD_WIDGETS ON CACHE BOOL "" FORCE)
+set(SDLSHADERCROSS_CLI ON CACHE BOOL "" FORCE)
 set(SDL_TESTS OFF CACHE BOOL "" FORCE)
 
 include(FetchContent)
@@ -128,6 +129,11 @@ add_subdirectory(
 )
 
 add_subdirectory(external/pugixml)
+
+set(SDLSHADERCROSS_VENDORED ON CACHE BOOL "" FORCE)
+set(SDLSHADERCROSS_CLI ON CACHE BOOL "" FORCE)
+add_subdirectory(external/SDL_shadercross)
+
 add_subdirectory(engine)
 add_subdirectory(studio)
 add_subdirectory(client)

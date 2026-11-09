@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\tc\source\repos\TestEngine\build\CMakeFiles\659e4ac64cab887e8b5a6f79774563ab\uninstall.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\tc\source\repos\TestEngine\build\_deps\yaml-cpp-src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\tc\source\repos\TestEngine\build\_deps\yaml-cpp-build\CMakeFiles\uninstall" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{5A6013DD-2CEB-39D2-8A52-9A5F23AEF14F}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

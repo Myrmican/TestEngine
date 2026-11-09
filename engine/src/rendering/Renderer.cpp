@@ -9,6 +9,8 @@ namespace Engine
     {
         m_window = window;
 
+        Shader::initializeAssetLoader();
+
         m_device = SDL_CreateGPUDevice(
             SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_DXIL | SDL_GPU_SHADERFORMAT_MSL,
             true, nullptr);
@@ -22,7 +24,7 @@ namespace Engine
             return false;
         }
 
-        /*SDL_GPUShader* vertexShader = Shader::loadShader(m_device, "RawTriangle.vert");
+        SDL_GPUShader* vertexShader = Shader::loadShader(m_device, "RawTriangle.vert");
         SDL_GPUShader* fragmentShader = Shader::loadShader(m_device, "SolidColor.frag");
 
         SDL_GPUColorTargetDescription colorTargetDesc = {};
@@ -55,7 +57,7 @@ namespace Engine
         }
 
         SDL_ReleaseGPUShader(m_device, vertexShader);
-        SDL_ReleaseGPUShader(m_device, fragmentShader);*/
+        SDL_ReleaseGPUShader(m_device, fragmentShader);
 
         return true;
     }
@@ -63,8 +65,8 @@ namespace Engine
     void Renderer::shutdown()
     {
         if (m_device) {
-            //SDL_ReleaseGPUGraphicsPipeline(m_device, fillPipeline);
-            //SDL_ReleaseGPUGraphicsPipeline(m_device, linePipeline);
+            SDL_ReleaseGPUGraphicsPipeline(m_device, fillPipeline);
+            SDL_ReleaseGPUGraphicsPipeline(m_device, linePipeline);
 
             SDL_ReleaseWindowFromGPUDevice(m_device, m_window);
             SDL_DestroyGPUDevice(m_device);

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Solution>
+	<Configurations>
+		<BuildType Name="Debug"/>
+		<BuildType Name="Release"/>
+		<BuildType Name="MinSizeRel"/>
+		<BuildType Name="RelWithDebInfo"/>
+		<Platform Name="x64"/>
+	</Configurations>
+	<Project Path="client/targets/windows/ClientWindows.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="e9a03f68-5073-355a-821e-f034af98f4bb">
+		<BuildDependency Project="engine/EngineCore.vcxproj"/>
+		<BuildDependency Project="external/SDL/SDL3-static.vcxproj"/>
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="external/pugixml/pugixml-static.vcxproj"/>
+	</Project>
+	<Project Path="engine/EngineCore.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="ed9523aa-dea3-3eb9-9ec2-e36d14098663">
+		<BuildDependency Project="external/SDL/SDL3-static.vcxproj"/>
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="external/pugixml/pugixml-static.vcxproj"/>
+	</Project>
+	<Project Path="_deps/qwindowkit-build/src/core/QWKCore.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="b4fdf872-ab73-3700-8f63-b93408c9a4c1">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="_deps/qwindowkit-build/src/widgets/QWKWidgets.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="fe9d0709-2c5e-3336-b597-79e504785f8a">
+		<BuildDependency Project="_deps/qwindowkit-build/src/core/QWKCore.vcxproj"/>
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="external/SDL/SDL3-static.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="9d397b80-1dcb-34bd-b65b-b477b47b5759">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="studio/TestEngine.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="1c14203a-d935-35d2-99ad-4980c68953c6">
+		<BuildDependency Project="engine/EngineCore.vcxproj"/>
+		<BuildDependency Project="_deps/qwindowkit-build/src/core/QWKCore.vcxproj"/>
+		<BuildDependency Project="_deps/qwindowkit-build/src/widgets/QWKWidgets.vcxproj"/>
+		<BuildDependency Project="external/SDL/SDL3-static.vcxproj"/>
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="external/pugixml/pugixml-static.vcxproj"/>
+		<BuildDependency Project="qscintilla2_qt6.vcxproj"/>
+		<BuildDependency Project="tree-sitter.vcxproj"/>
+		<BuildDependency Project="_deps/yaml-cpp-build/yaml-cpp.vcxproj"/>
+	</Project>
+	<Project Path="external/pugixml/pugixml-static.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="1fabf4fc-b0b8-3a12-8fd1-b4ea2c71817f">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="qscintilla2_qt6.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="34d98dc8-9f57-3a01-b016-fa48bdf9157e">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="tree-sitter.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="a0d275ee-e0e8-3e28-9489-498d0fedf833">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="_deps/yaml-cpp-build/uninstall.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="cde89bab-2344-3a15-8a34-9da14a581402">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<Build Solution="Debug|*" Project="false"/>
+		<Build Solution="Release|*" Project="false"/>
+		<Build Solution="MinSizeRel|*" Project="false"/>
+		<Build Solution="RelWithDebInfo|*" Project="false"/>
+	</Project>
+	<Project Path="_deps/yaml-cpp-build/yaml-cpp.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="58e39430-b5ce-395d-ab63-241827f03909">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="_deps/yaml-cpp-build/util/yaml-cpp-parse.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="301699cd-7492-33d4-8157-06453b1f9dd9">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="_deps/yaml-cpp-build/yaml-cpp.vcxproj"/>
+	</Project>
+	<Project Path="_deps/yaml-cpp-build/util/yaml-cpp-read.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="3a778841-ab4d-36ab-8ff1-ce08414714ce">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="_deps/yaml-cpp-build/yaml-cpp.vcxproj"/>
+	</Project>
+	<Project Path="_deps/yaml-cpp-build/util/yaml-cpp-sandbox.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="5c45c95a-cf29-38d7-a55e-05b5734f5494">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="_deps/yaml-cpp-build/yaml-cpp.vcxproj"/>
+	</Project>
+	<Folder Name="/CMakePredefinedTargets/">
+		<Project Path="ALL_BUILD.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="f5b52997-f383-337f-b69d-ac1d8091588c" DefaultStartup="true">
+			<BuildDependency Project="client/targets/windows/ClientWindows.vcxproj"/>
+			<BuildDependency Project="engine/EngineCore.vcxproj"/>
+			<BuildDependency Project="_deps/qwindowkit-build/src/core/QWKCore.vcxproj"/>
+			<BuildDependency Project="_deps/qwindowkit-build/src/widgets/QWKWidgets.vcxproj"/>
+			<BuildDependency Project="studio/TestEngine.vcxproj"/>
+			<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+			<BuildDependency Project="external/pugixml/pugixml-static.vcxproj"/>
+			<BuildDependency Project="qscintilla2_qt6.vcxproj"/>
+			<BuildDependency Project="tree-sitter.vcxproj"/>
+			<BuildDependency Project="_deps/yaml-cpp-build/yaml-cpp.vcxproj"/>
+			<BuildDependency Project="_deps/yaml-cpp-build/util/yaml-cpp-parse.vcxproj"/>
+			<BuildDependency Project="_deps/yaml-cpp-build/util/yaml-cpp-read.vcxproj"/>
+			<BuildDependency Project="_deps/yaml-cpp-build/util/yaml-cpp-sandbox.vcxproj"/>
+		</Project>
+		<Project Path="INSTALL.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="f4af8cb9-8004-3b49-9e3e-b3156452ba64">
+			<BuildDependency Project="ALL_BUILD.vcxproj"/>
+			<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+			<Build Solution="Debug|*" Project="false"/>
+			<Build Solution="Release|*" Project="false"/>
+			<Build Solution="MinSizeRel|*" Project="false"/>
+			<Build Solution="RelWithDebInfo|*" Project="false"/>
+		</Project>
+		<Project Path="ZERO_CHECK.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="966eb78b-34f9-311e-89fd-516083098e5a"/>
+	</Folder>
+	<Folder Name="/CTestDashboardTargets/">
+		<Project Path="_deps/yaml-cpp-build/Continuous.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="429ff829-fa72-3f69-87a3-503c7845ff6a">
+			<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+			<Build Solution="Debug|*" Project="false"/>
+			<Build Solution="Release|*" Project="false"/>
+			<Build Solution="MinSizeRel|*" Project="false"/>
+			<Build Solution="RelWithDebInfo|*" Project="false"/>
+		</Project>
+		<Project Path="_deps/yaml-cpp-build/Experimental.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="2a782211-9ff7-3225-b7c4-d8c7cf720892">
+			<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+			<Build Solution="Debug|*" Project="false"/>
+			<Build Solution="Release|*" Project="false"/>
+			<Build Solution="MinSizeRel|*" Project="false"/>
+			<Build Solution="RelWithDebInfo|*" Project="false"/>
+		</Project>
+		<Project Path="_deps/yaml-cpp-build/Nightly.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="75140023-5803-3a87-bc47-8017dbebe52d">
+			<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+			<Build Solution="Debug|*" Project="false"/>
+			<Build Solution="Release|*" Project="false"/>
+			<Build Solution="MinSizeRel|*" Project="false"/>
+			<Build Solution="RelWithDebInfo|*" Project="false"/>
+		</Project>
+		<Project Path="_deps/yaml-cpp-build/NightlyMemoryCheck.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="7bba3115-b3c6-3040-8670-4a6de3a87fd1">
+			<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+			<Build Solution="Debug|*" Project="false"/>
+			<Build Solution="Release|*" Project="false"/>
+			<Build Solution="MinSizeRel|*" Project="false"/>
+			<Build Solution="RelWithDebInfo|*" Project="false"/>
+		</Project>
+	</Folder>
+</Solution>

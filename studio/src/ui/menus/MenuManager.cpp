@@ -11,7 +11,7 @@ namespace Menu {
         QMenu* menu = new QMenu(parent);
 
         QPalette palette = menu->palette();
-        palette.setColor(QPalette::Window, QColor(43, 43, 43));
+        palette.setColor(QPalette::Window, QColor(28, 28, 28));
         palette.setColor(QPalette::Base, QColor(30, 30, 30));
         palette.setColor(QPalette::WindowText, QColor(242, 242, 242));
         palette.setColor(QPalette::Text, QColor(242, 242, 242));
