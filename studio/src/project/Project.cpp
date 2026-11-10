@@ -16,6 +16,7 @@
 #include <QButtonGroup>
 #include <project/Project.h>
 #include <engine/serialization/PlaceSerializer.h>
+#include <boost/algorithm/string.hpp>
 #include <memory>
 
 Project::Project(const QFileInfo fileInfo, const QString projectName) {
@@ -55,6 +56,19 @@ namespace ProjectManager {
         QLineEdit* nameEdit = new QLineEdit("Untitled Game");
         formLayout->addRow("Project Name", nameEdit);
 
+        QWidget* pathContainer = new QWidget(&dialog);
+        QHBoxLayout* pathLayout = new QHBoxLayout(pathContainer);
+        pathLayout->setContentsMargins(0, 0, 0, 0);
+        pathLayout->setSpacing(0);
+
+        QLineEdit* pathEdit = new QLineEdit(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+        QPushButton* browseButton = new QPushButton("Browse...");
+
+        pathLayout->addWidget(pathEdit);
+        pathLayout->addWidget(browseButton);
+
+        formLayout->addRow("Project Path", pathContainer);
+
         QComboBox* dimensionBox = new QComboBox();
         dimensionBox->addItem("3D");
         dimensionBox->addItem("2D");
@@ -70,6 +84,13 @@ namespace ProjectManager {
         QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Save | QDialogButtonBox::Cancel);
 
         QString selectedRobloxFile;
+
+        QObject::connect(browseButton, &QPushButton::clicked, &dialog, [pathEdit, &dialog]() {
+            QString dir = QFileDialog::getExistingDirectory(&dialog, "Select Project Directory", pathEdit->text());
+            if (!dir.isEmpty()) {
+                pathEdit->setText(dir);
+            }
+            });
 
         QObject::connect(importRobloxButton, &QPushButton::pressed, [&dialog, parent, &selectedRobloxFile]() {
             QString path = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
@@ -99,8 +120,11 @@ namespace ProjectManager {
         }
 
         QFileInfo fileInfo("studio/content/Place1.rbxlx");
-        Project* newProject = new Project(fileInfo, nameEdit->text());
+        Project* newProject = new Project(fileInfo, boost::trim_copy(nameEdit->text()));
         newProject->is2D = dimensionBox->currentText() == "2D";
+
+        std::string projectPath = pathEdit->text().toUtf8().constData();
+        newProject->projectPath = boost::trim_copy(projectPath);
 
         return newProject;
     }

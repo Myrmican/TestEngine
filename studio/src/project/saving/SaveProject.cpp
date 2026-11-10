@@ -30,7 +30,7 @@ bool SaveDialog(Project* project, QWidget* parent) {
 	formLayout->setLabelAlignment(Qt::AlignLeft);
 	formLayout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
 
-	QHBoxLayout* checkboxLayout = new QHBoxLayout();
+	/*QHBoxLayout* checkboxLayout = new QHBoxLayout();
 	checkboxLayout->setSpacing(15);
 
 	QCheckBox* saveButtonCloud = new QCheckBox("Cloud");
@@ -46,41 +46,21 @@ bool SaveDialog(Project* project, QWidget* parent) {
 
 	checkboxLayout->addWidget(saveButtonCloud);
 	checkboxLayout->addWidget(saveButtonLocal);
-	checkboxLayout->addStretch();
+	checkboxLayout->addStretch();*/
 
-	formLayout->addRow("Save location", checkboxLayout);
+	//formLayout->addRow("Save location", checkboxLayout);
 
-	QWidget* pathContainer = new QWidget(dialog);
-	QHBoxLayout* pathLayout = new QHBoxLayout(pathContainer);
-	pathLayout->setContentsMargins(0, 0, 0, 0);
-	pathLayout->setSpacing(0);
-
-	QLineEdit* pathEdit = new QLineEdit(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
-	QPushButton* browseButton = new QPushButton("Browse...");
-
-	pathLayout->addWidget(pathEdit);
-	pathLayout->addWidget(browseButton);
-
-	formLayout->addRow("Project Path", pathContainer);
-
-	QObject::connect(browseButton, &QPushButton::clicked, dialog, [pathEdit, &dialog]() {
-		QString dir = QFileDialog::getExistingDirectory(dialog, "Select Project Directory", pathEdit->text());
-		if (!dir.isEmpty()) {
-			pathEdit->setText(dir);
-		}
-		});
-
-	QObject::connect(saveButtonLocal, &QCheckBox::toggled, dialog, [formLayout, pathContainer](bool checked) {
-		formLayout->setRowVisible(pathContainer, checked);
-		});
+	//QObject::connect(saveButtonLocal, &QCheckBox::toggled, dialog, [formLayout](bool checked) {
+	//	formLayout->setRowVisible(pathContainer, checked);
+	//	});
 
 	mainLayout->addLayout(formLayout);
 	mainLayout->addStretch();
 
-	QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Save | QDialogButtonBox::Cancel);
+	QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Cancel | QDialogButtonBox::Save);
 
-	QObject::connect(buttonBox, &QDialogButtonBox::accepted, dialog, &QDialog::accept);
 	QObject::connect(buttonBox, &QDialogButtonBox::rejected, dialog, &QDialog::reject);
+	QObject::connect(buttonBox, &QDialogButtonBox::accepted, dialog, &QDialog::accept);
 
 	if (QPushButton* saveButton = buttonBox->button(QDialogButtonBox::Save)) {
 		saveButton->setObjectName("saveButton");
@@ -96,8 +76,6 @@ bool SaveDialog(Project* project, QWidget* parent) {
 	mainLayout->addWidget(buttonBox);
 
 	if (dialog->exec() == QDialog::Accepted) {
-		std::string projectPath = pathEdit->text().toUtf8().constData();
-		project->projectPath = projectPath;
 		return true;
 	}
 

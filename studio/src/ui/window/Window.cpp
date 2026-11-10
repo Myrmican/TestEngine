@@ -14,6 +14,7 @@
 #include <QVBoxLayout>
 #include <QShortcut>
 #include <QWKWidgets/widgetwindowagent.h>
+#include <ui/window/MainMenu.h>
 #include <ui/menus/FileMenu.h>
 #include <ui/menus/PluginsMenu.h>
 #include <ui/menus/HelpMenu.h>
@@ -183,6 +184,8 @@ namespace Window {
         agent->setHitTestVisible(minBtn, true);
         agent->setHitTestVisible(maxBtn, true);
         agent->setHitTestVisible(closeBtn, true);
+
+		MainMenu::initialize(window, workspaceStack, editorPage);
 
         if (QFile file(":/style.qss"); file.open(QFile::ReadOnly | QFile::Text)) {
             app.setStyleSheet(QTextStream(&file).readAll());

@@ -1,5 +1,4 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#pragma once
 
 class QMainWindow;
 class QApplication;
@@ -7,5 +6,3 @@ class QApplication;
 namespace Window {
 	void initialize(QMainWindow* window, QApplication& app);
 }
-
-#endif
