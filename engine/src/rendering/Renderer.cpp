@@ -46,14 +46,14 @@ namespace Engine
         if (fillPipeline == NULL)
         {
             SDL_Log("Failed to create fill pipeline!");
-            return -1;
+            return false;
         }
 
         linePipeline = SDL_CreateGPUGraphicsPipeline(m_device, &pipelineInfo);
         if (linePipeline == NULL)
         {
             SDL_Log("Failed to create line pipeline!");
-            return -1;
+            return false;
         }
 
         SDL_ReleaseGPUShader(m_device, vertexShader);

@@ -110,6 +110,8 @@ namespace ProjectManager {
 
         mainLayout->addWidget(buttonBox);
 
+        nameEdit->setFocus();
+
         if (dialog.exec() != QDialog::Accepted) {
             return nullptr;
         }
@@ -120,7 +122,7 @@ namespace ProjectManager {
         }
 
         QFileInfo fileInfo("studio/content/Place1.rbxlx");
-        Project* newProject = new Project(fileInfo, boost::trim_copy(nameEdit->text()));
+        Project* newProject = new Project(fileInfo, nameEdit->text().trimmed());
         newProject->is2D = dimensionBox->currentText() == "2D";
 
         std::string projectPath = pathEdit->text().toUtf8().constData();
