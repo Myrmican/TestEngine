@@ -75,6 +75,16 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets OpenGLWidgets PrintSupport Network)
 
 FetchContent_MakeAvailable(qscintilla qwindowkit yaml-cpp wasmtime)
 
+add_subdirectory(
+    "${CMAKE_SOURCE_DIR}/external/SDL"
+    "${CMAKE_CURRENT_BINARY_DIR}/external/SDL"
+    EXCLUDE_FROM_ALL
+)
+
+if(EXISTS "${CMAKE_SOURCE_DIR}/external/spirv-cross")
+    add_subdirectory(external/spirv-cross)
+endif()
+
 file(GLOB QSCI_SRC CONFIGURE_DEPENDS
     "${qscintilla_SOURCE_DIR}/src/*.cpp"
     "${qscintilla_SOURCE_DIR}/scintilla/src/*.cpp"
@@ -121,12 +131,6 @@ target_include_directories(tree-sitter PUBLIC
 set_target_properties(tree-sitter PROPERTIES
     C_STANDARD 11
     C_STANDARD_REQUIRED ON)
-
-add_subdirectory(
-    "${CMAKE_SOURCE_DIR}/external/SDL"
-    "${CMAKE_CURRENT_BINARY_DIR}/external/SDL"
-    EXCLUDE_FROM_ALL
-)
 
 add_subdirectory(external/pugixml)
 

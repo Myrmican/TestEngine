@@ -88,27 +88,28 @@ if(WIN32)
         COMMENT "Copying DLLs and running windeployqt"
     )
 
-    find_program(SHADERCROSS shadercross REQUIRED
-        HINTS "${CMAKE_SOURCE_DIR}/external/SDL_shadercross/build/Release")
+    add_dependencies(TestEngine shadercross)
 
     file(GLOB SHADER_SOURCES CONFIGURE_DEPENDS
         "${CMAKE_CURRENT_SOURCE_DIR}/../assets/shaders/*.hlsl")
+
     set(SHADER_OUT_DIR "$<TARGET_FILE_DIR:TestEngine>/assets/shaders/compiled/DXIL")
 
-    foreach(src IN LISTS SHADER_SOURCES)
-        get_filename_component(name "${src}" NAME_WLE)
-        if(name MATCHES "\\.vert$")
-            set(stage vertex)
-        elseif(name MATCHES "\\.frag$")
-            set(stage fragment)
-        else()
-            message(FATAL_ERROR "Can't tell shader stage for ${src}")
-        endif()
+    foreach(src IN LISTS SHADER_SOURCES)        
+        get_filename_component(name "${src}" NAME_WLE)        
+        if(name MATCHES "\\.vert$")            
+            set(stage vertex)        
+        elseif(name MATCHES "\\.frag$")            
+            set(stage fragment)        
+        else()            
+            message(FATAL_ERROR "Can't tell shader stage for ${src}")        
+        endif()        
 
         add_custom_command(TARGET TestEngine POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E make_directory "${SHADER_OUT_DIR}"
-            COMMAND ${SHADERCROSS} "${src}" -t ${stage} -o "${SHADER_OUT_DIR}/${name}.dxil"
+            # Use $<TARGET_FILE:shadercross> so CMake finds it automatically after building
+            COMMAND "$<TARGET_FILE:shadercross>" "${src}" -t ${stage} -o "${SHADER_OUT_DIR}/${name}.dxil"
             COMMENT "Compiling ${name}.hlsl -> DXIL"
-            VERBATIM)
+            VERBATIM)    
     endforeach()
 endif()

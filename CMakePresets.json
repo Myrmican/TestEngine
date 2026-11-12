@@ -8,7 +8,7 @@
       "binaryDir": "${sourceDir}/out/build/${presetName}",
       "installDir": "${sourceDir}/out/install/${presetName}",
       "environment": {
-        "PATH": "C:/Qt/6.11.0/msvc2022_64/bin;$penv{PATH}"
+        "PATH": "C:/Qt/6.12.0/msvc2022_64/bin;$penv{PATH}"
       },
       "cacheVariables": {
         "CMAKE_C_COMPILER": "cl.exe",

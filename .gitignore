@@ -5,6 +5,7 @@
 
 CMakeUserPresets.json
 vcpkg_installed/
+build/
 
 # User-specific files
 *.rsuser
