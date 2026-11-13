@@ -71,6 +71,19 @@ FetchContent_Declare(
     DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
 
+set(SHADERCROSS_VERSION "f5c01f451e835f6b38e151e064a32999a0985563")
+FetchContent_Declare(shadercross_bin
+    URL "https://github.com/wamsoft/SDL_shadercross/releases/download/upstream-${SHADERCROSS_VERSION}/shadercross-windows-x64.zip"
+    URL_HASH SHA256=57c2e4062618493deabbf1e07c05c84176751b04415b98ccb7c12d28426e2e8b
+    DOWNLOAD_EXTRACT_TIMESTAMP TRUE)
+FetchContent_MakeAvailable(shadercross_bin)
+
+find_program(SHADERCROSS_EXE shadercross
+    PATHS "${shadercross_bin_SOURCE_DIR}"
+    PATH_SUFFIXES bin
+    NO_DEFAULT_PATH
+    REQUIRED)
+
 find_package(Qt6 REQUIRED COMPONENTS Widgets OpenGLWidgets PrintSupport Network)
 
 FetchContent_MakeAvailable(qscintilla qwindowkit yaml-cpp wasmtime)
@@ -133,10 +146,6 @@ set_target_properties(tree-sitter PROPERTIES
     C_STANDARD_REQUIRED ON)
 
 add_subdirectory(external/pugixml)
-
-set(SDLSHADERCROSS_VENDORED ON CACHE BOOL "" FORCE)
-set(SDLSHADERCROSS_CLI ON CACHE BOOL "" FORCE)
-add_subdirectory(external/SDL_shadercross)
 
 add_subdirectory(engine)
 add_subdirectory(studio)

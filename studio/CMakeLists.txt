@@ -88,8 +88,6 @@ if(WIN32)
         COMMENT "Copying DLLs and running windeployqt"
     )
 
-    add_dependencies(TestEngine shadercross)
-
     file(GLOB SHADER_SOURCES CONFIGURE_DEPENDS
         "${CMAKE_CURRENT_SOURCE_DIR}/../assets/shaders/*.hlsl")
 
@@ -97,7 +95,7 @@ if(WIN32)
 
     foreach(src IN LISTS SHADER_SOURCES)        
         get_filename_component(name "${src}" NAME_WLE)        
-        if(name MATCHES "\\.vert$")            
+        if(name MATCHES "\\.vert$")
             set(stage vertex)        
         elseif(name MATCHES "\\.frag$")            
             set(stage fragment)        
@@ -107,8 +105,7 @@ if(WIN32)
 
         add_custom_command(TARGET TestEngine POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E make_directory "${SHADER_OUT_DIR}"
-            # Use $<TARGET_FILE:shadercross> so CMake finds it automatically after building
-            COMMAND "$<TARGET_FILE:shadercross>" "${src}" -t ${stage} -o "${SHADER_OUT_DIR}/${name}.dxil"
+            COMMAND "${SHADERCROSS_EXE}" "${src}" -t ${stage} -o "${SHADER_OUT_DIR}/${name}.dxil"
             COMMENT "Compiling ${name}.hlsl -> DXIL"
             VERBATIM)    
     endforeach()
