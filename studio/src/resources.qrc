@@ -8,5 +8,8 @@
 		<file>../../assets/icons/MoveTool.png</file>
 		<file>../../assets/icons/chevron-down.png</file>
 		<file>../../assets/icons/chevron-right.svg</file>
+		<file>../../assets/icons/list.svg</file>
+		<file>../../assets/icons/layout-grid.svg</file>
+		<file alias="icons/gameThumb.png">../../assets/icons/gameThumb.png</file>
 	</qresource>
 </RCC>

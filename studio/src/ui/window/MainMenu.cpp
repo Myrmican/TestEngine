@@ -9,12 +9,17 @@
 #include <QScrollArea>
 #include <QFrame>
 #include <QGridLayout>
+#include <QString>
 #include <QTimer>
+#include <QRadioButton>
+#include <QButtonGroup>
 #include <QApplication>
 #include <project/Project.h>
 #include <editor/EditorWindow.h>
 #include <ui/ProjectLoadingDialog.h>
 #include <ui/window/MainMenu.h>
+#include <ui/window/ProjectList.h>
+#include <ui/window/ProjectGrid.h>
 
 namespace MainMenu {
     void initialize(QMainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage) {
@@ -65,6 +70,7 @@ namespace MainMenu {
             if (i == 0) navBtn->setChecked(true);
             sidebarLayout->addWidget(navBtn);
         }
+
         sidebarLayout->addStretch();
         rootLayout->addWidget(sidebar);
 
@@ -75,17 +81,35 @@ namespace MainMenu {
 
         QWidget* contentContainer = new QWidget();
         contentContainer->setObjectName("ContentContainer");
+        
         QVBoxLayout* contentLayout = new QVBoxLayout(contentContainer);
         contentLayout->setContentsMargins(32, 24, 32, 40);
         contentLayout->setSpacing(0);
 
+		QStackedWidget* projectsStack = new QStackedWidget(contentContainer);
+
+        QVBoxLayout* projectsListLayout = new QVBoxLayout();
+        projectsListLayout->setContentsMargins(0, 0, 0, 0);
+        projectsListLayout->setSpacing(0);
+
+        QWidget* listPage = new QWidget();
+        listPage->setLayout(projectsListLayout);
+
+        QGridLayout* projectsGridLayout = new QGridLayout();
+        projectsGridLayout->setContentsMargins(0, 0, 0, 0);
+        projectsGridLayout->setSpacing(16);
+        projectsGridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+
+        QWidget* gridPage = new QWidget();
+        gridPage->setLayout(projectsGridLayout);
+
         QHBoxLayout* topHeaderLayout = new QHBoxLayout();
+		topHeaderLayout->setObjectName("TopHeaderLayout");
         topHeaderLayout->setSpacing(12);
 
         QLabel* titleLabel = new QLabel("Projects");
         titleLabel->setObjectName("SectionTitle");
         topHeaderLayout->addWidget(titleLabel);
-
         topHeaderLayout->addStretch();
 
         QLineEdit* searchBar = new QLineEdit();
@@ -94,108 +118,86 @@ namespace MainMenu {
         searchBar->setFixedWidth(240);
         topHeaderLayout->addWidget(searchBar);
 
+        QRadioButton* viewProjectList = new QRadioButton("");
+        viewProjectList->setIcon(QIcon(":/assets/icons/list.svg"));
+        viewProjectList->setIconSize(QSize(24, 24));
+        viewProjectList->setToolTip("List view");
+
+        QRadioButton* viewProjectGrid = new QRadioButton("");
+        viewProjectGrid->setIcon(QIcon(":/assets/icons/layout-grid.svg"));
+        viewProjectGrid->setIconSize(QSize(24, 24));
+        viewProjectGrid->setToolTip("Grid view");
+
+        QButtonGroup* optionsGroup = new QButtonGroup(contentContainer);
+        optionsGroup->setExclusive(true);
+        optionsGroup->addButton(viewProjectList);
+        optionsGroup->addButton(viewProjectGrid);
+
+        viewProjectList->setChecked(true);
+
+        QString segmentedStyle = R"(
+            QRadioButton {
+                background: transparent;
+                border: 1px solid transparent;
+                border-radius: 6px;
+                padding: 8px;
+            }
+            QRadioButton::indicator {
+                width: 0px;
+                height: 0px;
+            }
+            QRadioButton:checked {
+                background-color: #2a2d32; 
+                border: 1px solid #3a3f4b;
+            }
+            QRadioButton:hover {
+                background-color: #22252a;
+            }
+        )";
+
+        viewProjectList->setStyleSheet(segmentedStyle);
+        viewProjectGrid->setStyleSheet(segmentedStyle);
+
+        topHeaderLayout->addWidget(viewProjectList);
+        topHeaderLayout->addWidget(viewProjectGrid);
+
         contentLayout->addLayout(topHeaderLayout);
         contentLayout->addSpacing(10);
 
-        QFrame* tableHeaderRow = new QFrame();
-        tableHeaderRow->setObjectName("TableHeaderRow");
-        QHBoxLayout* thLayout = new QHBoxLayout(tableHeaderRow);
-        thLayout->setContentsMargins(16, 8, 16, 8);
-        thLayout->setSpacing(16);
+		contentLayout->addWidget(projectsStack);
 
-        QLabel* thFav = new QLabel("☆");
-        thFav->setFixedWidth(20);
-        thFav->setObjectName("TableHeaderText");
-        thLayout->addWidget(thFav);
+        projectsStack->addWidget(listPage);
+        projectsStack->addWidget(gridPage);
 
-        QLabel* thName = new QLabel("Name");
-        thName->setMinimumWidth(250);
-        thName->setObjectName("TableHeaderText");
-        thLayout->addWidget(thName);
+        MainMenu::displayProjectsList(projectsListLayout);
 
-        thLayout->addStretch();
-
-        QLabel* thPlatform = new QLabel("Creator");
-        thPlatform->setFixedWidth(120);
-        thPlatform->setObjectName("TableHeaderText");
-        thLayout->addWidget(thPlatform);
-
-        QLabel* thVersion = new QLabel("Visibility");
-        thVersion->setFixedWidth(110);
-        thVersion->setObjectName("TableHeaderText");
-        thLayout->addWidget(thVersion);
-
-        QLabel* thModified = new QLabel("Modified ↓");
-        thModified->setFixedWidth(110);
-        thModified->setObjectName("TableHeaderText");
-        thLayout->addWidget(thModified);
-
-        QLabel* thActions = new QLabel("");
-        thActions->setFixedWidth(30);
-        thLayout->addWidget(thActions);
-
-        contentLayout->addWidget(tableHeaderRow);
-
-        auto createProjectRow = [=](const QString& name, const QString& path, const QString& platform, const QString& version, const QString& modified) -> QFrame* {
-            QFrame* row = new QFrame();
-            row->setObjectName("ProjectRow");
-            QHBoxLayout* rowLayout = new QHBoxLayout(row);
-            rowLayout->setContentsMargins(16, 12, 16, 12);
-            rowLayout->setSpacing(16);
-
-            QPushButton* favBtn = new QPushButton("☆");
-            favBtn->setObjectName("RowIconButton");
-            favBtn->setFixedWidth(20);
-            rowLayout->addWidget(favBtn);
-
-            QVBoxLayout* nameLayout = new QVBoxLayout();
-            nameLayout->setContentsMargins(0, 0, 0, 0);
-            nameLayout->setSpacing(2);
-
-            QLabel* nameLbl = new QLabel(name);
-            nameLbl->setObjectName("RowTitle");
-
-            QLabel* pathLbl = new QLabel(path);
-            pathLbl->setObjectName("RowSubtitle");
-            nameLayout->addWidget(nameLbl);
-            nameLayout->addWidget(pathLbl);
-
-            QWidget* nameWidget = new QWidget();
-            nameWidget->setLayout(nameLayout);
-            nameWidget->setMinimumWidth(250);
-            rowLayout->addWidget(nameWidget);
-
-            rowLayout->addStretch();
-
-            QLabel* platCombo = new QLabel(platform);
-            platCombo->setObjectName("RowMeta");
-            platCombo->setFixedWidth(120);
-            rowLayout->addWidget(platCombo);
-
-            QLabel* verLbl = new QLabel(version);
-            verLbl->setObjectName("RowMeta");
-            verLbl->setFixedWidth(110);
-            rowLayout->addWidget(verLbl);
-
-            QLabel* modLbl = new QLabel(modified);
-            modLbl->setObjectName("RowMeta");
-            modLbl->setFixedWidth(110);
-            rowLayout->addWidget(modLbl);
-
-            QPushButton* moreBtn = new QPushButton("⋯");
-            moreBtn->setObjectName("RowIconButton");
-            moreBtn->setFixedWidth(30);
-            rowLayout->addWidget(moreBtn);
-
-            return row;
-            };
-
-        contentLayout->addWidget(createProjectRow("Untitled Game", "~/Documents/Untitled Game.tep", "@Pismyren", "Public", "1 hour ago"));
-        contentLayout->addWidget(createProjectRow("Crazy Shooter Game", "~/Downloads/Crazy Shooter game.tep", "@Pismyren", "Private", "3 hours ago"));
-
-        contentLayout->addStretch();
         scrollArea->setWidget(contentContainer);
         rootLayout->addWidget(scrollArea);
+
+        QObject::connect(searchBar, &QLineEdit::textChanged, [=](const QString& text) {
+            for (int i = 0; i < contentLayout->count(); ++i) {
+                QWidget* widget = contentLayout->itemAt(i)->widget();
+                if (widget && widget->objectName() == "ProjectRow") {
+                    bool matches = widget->findChild<QLabel*>("RowTitle")->text().contains(text, Qt::CaseInsensitive);
+                    widget->setVisible(matches);
+                }
+            }
+            });
+
+		QObject::connect(viewProjectList, &QRadioButton::toggled, [=](bool checked) {
+			if (checked) {
+                projectsStack->setCurrentIndex(0);
+			}
+			});
+
+        QObject::connect(viewProjectGrid, &QRadioButton::toggled, [=](bool checked) {
+            if (checked) {
+                if(projectsGridLayout->count() == 0) {
+                    MainMenu::displayProjectsGrid(projectsGridLayout);
+                }
+                projectsStack->setCurrentIndex(1);
+            }
+            });
 
         homePage->setStyleSheet(R"(
             #HomePage, #ContentContainer, #MainScroll {
