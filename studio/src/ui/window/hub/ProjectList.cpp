@@ -7,7 +7,9 @@
 #include <QRadioButton>
 #include <QLineEdit>
 #include <QButtonGroup>
-#include <ui/window/ProjectList.h>
+#include <QDateTime>
+#include <ui/window/hub/ProjectList.h>
+#include <ui/window/hub/pages/Projects.h>
 
 namespace MainMenu {
 
@@ -40,10 +42,10 @@ namespace MainMenu {
         thPlatform->setObjectName("TableHeaderText");
         thLayout->addWidget(thPlatform);
 
-        QLabel* thVersion = new QLabel("Publication");
-        thVersion->setFixedWidth(110);
-        thVersion->setObjectName("TableHeaderText");
-        thLayout->addWidget(thVersion);
+        QLabel* thPlayability = new QLabel("Playability");
+        thPlayability->setFixedWidth(110);
+        thPlayability->setObjectName("TableHeaderText");
+        thLayout->addWidget(thPlayability);
 
         QLabel* thModified = new QLabel("Modified ↓");
         thModified->setFixedWidth(110);
@@ -56,14 +58,16 @@ namespace MainMenu {
 
         contentLayout->addWidget(tableHeaderRow);
 
-        contentLayout->addWidget(MainMenu::createProjectRow("Untitled Game", "~/Documents/Untitled Game.tep", "Pismyren", "Public", "1 hour ago"));
-        contentLayout->addWidget(MainMenu::createProjectRow("Crazy Shooter Game", "~/Downloads/Crazy Shooter game.tep", "Pismyren", "Private", "3 hours ago"));
-        contentLayout->addWidget(MainMenu::createProjectRow("Maple County", "~/Downloads/Maple County.tep", "Big Games", "Not published", "3 hours ago"));
+		QFrame* row1 = MainMenu::createProjectRow("Untitled Game", "~/Documents/Untitled Game.tep", "Pismyren", "Public", 1794690182);
+
+        contentLayout->addWidget(row1);
+        contentLayout->addWidget(MainMenu::createProjectRow("Crazy Shooter Game", "~/Downloads/Crazy Shooter game.tep", "Pismyren", "Private", 1794690182));
+        contentLayout->addWidget(MainMenu::createProjectRow("Maple County", "~/Downloads/Maple County.tep", "Big Games", "Unpublished", 1794690182));
 
         contentLayout->addStretch();
 	}
 
-    QFrame* createProjectRow(const QString& name, const QString& path, const QString& creator, const QString& publication, const QString& modified) {
+    QFrame* createProjectRow(const QString& name, const QString& path, const QString& creator, const QString& publication, const std::time_t modified) {
         QFrame* row = new QFrame();
         row->setObjectName("ProjectRow");
 
@@ -126,15 +130,20 @@ namespace MainMenu {
         pubLabel->setFixedWidth(110);
         rowLayout->addWidget(pubLabel);
 
-        QLabel* lastEditLabel = new QLabel(modified);
+        QLabel* lastEditLabel = new QLabel(QString::number(modified));
         lastEditLabel->setObjectName("RowMeta");
         lastEditLabel->setFixedWidth(110);
+        lastEditLabel->setToolTip(QDateTime::fromSecsSinceEpoch(modified).toString());
         rowLayout->addWidget(lastEditLabel);
 
         QPushButton* moreBtn = new QPushButton("⋯");
         moreBtn->setObjectName("RowIconButton");
         moreBtn->setFixedWidth(30);
         rowLayout->addWidget(moreBtn);
+
+        QObject::connect(moreBtn, &QPushButton::clicked, [name]() {
+            qDebug() << "More options for project:" << name;
+            });
 
         return row;
     };

@@ -14,7 +14,7 @@
 #include <QVBoxLayout>
 #include <QShortcut>
 #include <QWKWidgets/widgetwindowagent.h>
-#include <ui/window/MainMenu.h>
+#include <ui/window/hub/MainMenu.h>
 #include <ui/menus/FileMenu.h>
 #include <ui/menus/PluginsMenu.h>
 #include <ui/menus/HelpMenu.h>

@@ -12,9 +12,14 @@
 #include <QTextEdit>
 #include <QLineEdit>
 #include <QCheckBox>
+#include <QStackedWidget>
 #include <QPushButton>
 #include <QButtonGroup>
+#include <QTimer>
+#include <QApplication>
+#include <editor/EditorWindow.h>
 #include <project/Project.h>
+#include <ui/ProjectLoadingDialog.h>
 #include <engine/serialization/PlaceSerializer.h>
 #include <boost/algorithm/string.hpp>
 #include <memory>
@@ -146,8 +151,28 @@ namespace ProjectManager {
         return newProject;
 	}
 
-    Project* openProject() {
-        return nullptr;
+    Project* openProject(QString filePath, QStackedWidget* workspaceStack) {
+		QFileInfo fileInfo(filePath);
+
+		QMainWindow* window = qobject_cast<QMainWindow*>(workspaceStack->parentWidget());
+
+		Project* newProject = new Project(fileInfo);
+
+        auto loadingDialog = new ProjectLoadingDialog(newProject->name, window);
+        loadingDialog->setAttribute(Qt::WA_DeleteOnClose);
+        loadingDialog->show();
+
+        QTimer::singleShot(0, window, [window, workspaceStack, newProject, loadingDialog]() {
+            loadingDialog->setStatus("Building editor...");
+            QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+
+            new Engine::EditorWindow(newProject, workspaceStack->widget(1), window);
+
+            workspaceStack->setCurrentIndex(1);
+            loadingDialog->close();
+            });
+
+        return newProject;
     }
 
     Project* getProject(QWidget* contextWidget) {

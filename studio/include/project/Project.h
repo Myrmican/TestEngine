@@ -11,6 +11,7 @@
 
 class QMainWindow;
 class Explorer;
+class QStackedWidget;
 
 class Project : public QObject {
     Q_OBJECT
@@ -42,6 +43,6 @@ private:
 namespace ProjectManager {
     Project* createNew(QMainWindow* parent);
     Project* openFile(QMainWindow* parent);
-    Project* openProject();
+    Project* openProject(QString filePath, QStackedWidget* workspaceStack);
 	Project* getProject(QWidget* contextWidget);
 }

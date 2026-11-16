@@ -17,9 +17,8 @@
 #include <project/Project.h>
 #include <editor/EditorWindow.h>
 #include <ui/ProjectLoadingDialog.h>
-#include <ui/window/MainMenu.h>
-#include <ui/window/ProjectList.h>
-#include <ui/window/ProjectGrid.h>
+#include <ui/window/hub/MainMenu.h>
+#include <ui/window/hub/pages/Projects.h>
 
 namespace MainMenu {
     void initialize(QMainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage) {
@@ -61,6 +60,15 @@ namespace MainMenu {
         sidebarLayout->addWidget(newProjectButton);
         sidebarLayout->addSpacing(12);
 
+        rootLayout->addWidget(sidebar);
+
+        QScrollArea* scrollArea = new QScrollArea();
+        scrollArea->setWidgetResizable(true);
+        scrollArea->setFrameShape(QFrame::NoFrame);
+        scrollArea->setObjectName("MainScroll");
+
+        QStackedWidget* contentStack = new QStackedWidget(homePage);
+
         QStringList navItems = { "Projects", "Learn" };
         for (int i = 0; i < navItems.size(); ++i) {
             QPushButton* navBtn = new QPushButton(navItems[i]);
@@ -69,135 +77,20 @@ namespace MainMenu {
             navBtn->setAutoExclusive(true);
             if (i == 0) navBtn->setChecked(true);
             sidebarLayout->addWidget(navBtn);
+
+            QObject::connect(navBtn, &QRadioButton::toggled, [=](bool checked) {
+                if (checked) {
+                    contentStack->setCurrentIndex(i);
+                }
+                });
         }
 
         sidebarLayout->addStretch();
-        rootLayout->addWidget(sidebar);
 
-        QScrollArea* scrollArea = new QScrollArea();
-        scrollArea->setWidgetResizable(true);
-        scrollArea->setFrameShape(QFrame::NoFrame);
-        scrollArea->setObjectName("MainScroll");
+		QWidget* projectsContentContainer = MainMenu::initializeProjectsPage(contentStack, workspaceStack);
 
-        QWidget* contentContainer = new QWidget();
-        contentContainer->setObjectName("ContentContainer");
-        
-        QVBoxLayout* contentLayout = new QVBoxLayout(contentContainer);
-        contentLayout->setContentsMargins(32, 24, 32, 40);
-        contentLayout->setSpacing(0);
-
-		QStackedWidget* projectsStack = new QStackedWidget(contentContainer);
-
-        QVBoxLayout* projectsListLayout = new QVBoxLayout();
-        projectsListLayout->setContentsMargins(0, 0, 0, 0);
-        projectsListLayout->setSpacing(0);
-
-        QWidget* listPage = new QWidget();
-        listPage->setLayout(projectsListLayout);
-
-        QGridLayout* projectsGridLayout = new QGridLayout();
-        projectsGridLayout->setContentsMargins(0, 0, 0, 0);
-        projectsGridLayout->setSpacing(16);
-        projectsGridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-
-        QWidget* gridPage = new QWidget();
-        gridPage->setLayout(projectsGridLayout);
-
-        QHBoxLayout* topHeaderLayout = new QHBoxLayout();
-		topHeaderLayout->setObjectName("TopHeaderLayout");
-        topHeaderLayout->setSpacing(12);
-
-        QLabel* titleLabel = new QLabel("Projects");
-        titleLabel->setObjectName("SectionTitle");
-        topHeaderLayout->addWidget(titleLabel);
-        topHeaderLayout->addStretch();
-
-        QLineEdit* searchBar = new QLineEdit();
-        searchBar->setObjectName("SearchInput");
-        searchBar->setPlaceholderText("Search");
-        searchBar->setFixedWidth(240);
-        topHeaderLayout->addWidget(searchBar);
-
-        QRadioButton* viewProjectList = new QRadioButton("");
-        viewProjectList->setIcon(QIcon(":/assets/icons/list.svg"));
-        viewProjectList->setIconSize(QSize(24, 24));
-        viewProjectList->setToolTip("List view");
-
-        QRadioButton* viewProjectGrid = new QRadioButton("");
-        viewProjectGrid->setIcon(QIcon(":/assets/icons/layout-grid.svg"));
-        viewProjectGrid->setIconSize(QSize(24, 24));
-        viewProjectGrid->setToolTip("Grid view");
-
-        QButtonGroup* optionsGroup = new QButtonGroup(contentContainer);
-        optionsGroup->setExclusive(true);
-        optionsGroup->addButton(viewProjectList);
-        optionsGroup->addButton(viewProjectGrid);
-
-        viewProjectList->setChecked(true);
-
-        QString segmentedStyle = R"(
-            QRadioButton {
-                background: transparent;
-                border: 1px solid transparent;
-                border-radius: 6px;
-                padding: 8px;
-            }
-            QRadioButton::indicator {
-                width: 0px;
-                height: 0px;
-            }
-            QRadioButton:checked {
-                background-color: #2a2d32; 
-                border: 1px solid #3a3f4b;
-            }
-            QRadioButton:hover {
-                background-color: #22252a;
-            }
-        )";
-
-        viewProjectList->setStyleSheet(segmentedStyle);
-        viewProjectGrid->setStyleSheet(segmentedStyle);
-
-        topHeaderLayout->addWidget(viewProjectList);
-        topHeaderLayout->addWidget(viewProjectGrid);
-
-        contentLayout->addLayout(topHeaderLayout);
-        contentLayout->addSpacing(10);
-
-		contentLayout->addWidget(projectsStack);
-
-        projectsStack->addWidget(listPage);
-        projectsStack->addWidget(gridPage);
-
-        MainMenu::displayProjectsList(projectsListLayout);
-
-        scrollArea->setWidget(contentContainer);
+        scrollArea->setWidget(projectsContentContainer);
         rootLayout->addWidget(scrollArea);
-
-        QObject::connect(searchBar, &QLineEdit::textChanged, [=](const QString& text) {
-            for (int i = 0; i < contentLayout->count(); ++i) {
-                QWidget* widget = contentLayout->itemAt(i)->widget();
-                if (widget && widget->objectName() == "ProjectRow") {
-                    bool matches = widget->findChild<QLabel*>("RowTitle")->text().contains(text, Qt::CaseInsensitive);
-                    widget->setVisible(matches);
-                }
-            }
-            });
-
-		QObject::connect(viewProjectList, &QRadioButton::toggled, [=](bool checked) {
-			if (checked) {
-                projectsStack->setCurrentIndex(0);
-			}
-			});
-
-        QObject::connect(viewProjectGrid, &QRadioButton::toggled, [=](bool checked) {
-            if (checked) {
-                if(projectsGridLayout->count() == 0) {
-                    MainMenu::displayProjectsGrid(projectsGridLayout);
-                }
-                projectsStack->setCurrentIndex(1);
-            }
-            });
 
         homePage->setStyleSheet(R"(
             #HomePage, #ContentContainer, #MainScroll {

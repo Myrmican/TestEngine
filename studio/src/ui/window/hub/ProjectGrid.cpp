@@ -10,7 +10,23 @@
 #include <QGridLayout>
 #include <QPainter>
 #include <QPainterPath>
-#include <ui/window/ProjectGrid.h>
+#include <QEvent>
+#include <QDateTime>
+#include <ui/window/hub/ProjectGrid.h>
+
+class CardHoverFilter : public QObject {
+    Q_OBJECT
+protected:
+    bool eventFilter(QObject* watched, QEvent* event) override {
+        if (event->type() == QEvent::Enter) {
+            return true;
+        }
+        if (event->type() == QEvent::Leave) {
+            return true;
+        }
+        return QObject::eventFilter(watched, event);
+    }
+};
 
 namespace MainMenu {
 
@@ -20,16 +36,16 @@ namespace MainMenu {
             QString path;
             QString creator;
             QString publication;
-            QString modified;
+            std::time_t modified;
         };
 
         QList<ProjectInfo> projects = {
-            { "Untitled Game", "~/Documents/Untitled Game.tep", "Pismyren", "Public", "1 hour ago" },
-            { "Crazy Shooter Game", "~/Downloads/Crazy Shooter game.tep", "Pismyren", "Private", "3 hours ago" },
-            { "Maple County", "~/Downloads/Maple County.tep", "Central Roleplay Community", "Not published", "3 hours ago" },
-            { "Untitled Game", "~/Documents/Untitled Game.tep", "Pismyren", "Public", "1 hour ago" },
-            { "Crazy Shooter Game", "~/Downloads/Crazy Shooter game.tep", "Pismyren", "Private", "3 hours ago" },
-            { "Maple County", "~/Downloads/Maple County.tep", "Central Roleplay Community", "Not published", "3 hours ago" }
+            { "Untitled Game", "~/Documents/Untitled Game.tep", "Pismyren", "Public", 1794690182 },
+            { "Crazy Shooter Game", "~/Downloads/Crazy Shooter game.tep", "Pismyren", "Private", 1794690182 },
+            { "Maple County", "~/Downloads/Maple County.tep", "Central Roleplay Community", "Unpublished", 1794690182 },
+            { "Untitled Game", "~/Documents/Untitled Game.tep", "Pismyren", "Public", 1794690182 },
+            { "Crazy Shooter Game", "~/Downloads/Crazy Shooter game.tep", "Pismyren", "Private", 1794690182 },
+            { "Maple County", "~/Downloads/Maple County.tep", "Central Roleplay Community", "Unpublished", 1794690182 }
         };
 
         int maxColumns = 6;
@@ -48,7 +64,7 @@ namespace MainMenu {
         }
     }
 
-    QFrame* createProjectCard(const QString& name, const QString& path, const QString& creator, const QString& publication, const QString& modified) {
+    QFrame* createProjectCard(const QString& name, const QString& path, const QString& creator, const QString& publication, const std::time_t modified) {
         QFrame* projectCard = new QFrame();
         projectCard->setObjectName("ProjectCard");
         projectCard->setFixedWidth(190);
@@ -69,28 +85,33 @@ namespace MainMenu {
         cardLayout->setContentsMargins(5, 8, 5, 6);
         cardLayout->setSpacing(5);
 
-        QLabel* thumbLabel = new QLabel();
-        thumbLabel->setObjectName("ProjectThumbnail");
-        thumbLabel->setFixedHeight(110);
-        thumbLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-        thumbLabel->setScaledContents(true);
-        thumbLabel->setStyleSheet(
-            "border-top-left-radius: 8px;"
-            "border-top-right-radius: 8px;"
+        QLabel* thumbnailLabel = new QLabel();
+        thumbnailLabel->setObjectName("ProjectThumbnail");
+        thumbnailLabel->setFixedHeight(110);
+        thumbnailLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        thumbnailLabel->setScaledContents(true);
+        thumbnailLabel->setStyleSheet(
+            "border-radius: 5px;"
             "background-color: #1e1f22;"
         );
 
         QPixmap pixmap(":/icons/gameThumb.png");
-        if (pixmap.isNull()) {
-            pixmap = QPixmap(180, 110);
-            pixmap.fill(QColor("#232527"));
-        }
-        else {
-            pixmap = pixmap.scaled(180, 110, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
-        }
+        QPixmap scaledPixmap = pixmap.scaled(180, 110, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
 
-        thumbLabel->setPixmap(pixmap);
-        cardLayout->addWidget(thumbLabel);
+        QPixmap target(180, 110);
+        target.fill(Qt::transparent);
+
+        QPainter painter(&target);
+        painter.setRenderHint(QPainter::Antialiasing, true);
+        painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+
+        QPainterPath painterPath;
+        painterPath.addRoundedRect(target.rect(), 5, 5);
+        painter.setClipPath(painterPath);
+        painter.drawPixmap(0, 0, scaledPixmap);
+
+        thumbnailLabel->setPixmap(target);
+        cardLayout->addWidget(thumbnailLabel);
 
         QVBoxLayout* textLayout = new QVBoxLayout();
         textLayout->setContentsMargins(5, 4, 12, 0);
@@ -107,7 +128,7 @@ namespace MainMenu {
         nameLabel->setWordWrap(true);
         textLayout->addWidget(nameLabel);
 
-        QLabel* modLabel = new QLabel("Modified " + modified);
+        QLabel* modLabel = new QLabel("Modified " + QDateTime::fromSecsSinceEpoch(modified).toString("MM/dd/yyyy"));
         modLabel->setObjectName("ProjectModified");
         modLabel->setStyleSheet("color: #777777; font-size: 11px;");
         textLayout->addWidget(modLabel);
@@ -118,6 +139,8 @@ namespace MainMenu {
         textLayout->addWidget(creatorLabel);
 
         cardLayout->addLayout(textLayout);
+
+		projectCard->installEventFilter(new CardHoverFilter());
 
         return projectCard;
     }
