@@ -145,6 +145,8 @@ namespace MainMenu {
             }
             });
 
+
+
         QObject::connect(viewProjectList, &QRadioButton::toggled, [=](bool checked) {
             if (checked) {
                 projectsStack->setCurrentIndex(0);
