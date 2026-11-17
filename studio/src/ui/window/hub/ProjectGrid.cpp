@@ -10,23 +10,8 @@
 #include <QGridLayout>
 #include <QPainter>
 #include <QPainterPath>
-#include <QEvent>
 #include <QDateTime>
 #include <ui/window/hub/ProjectGrid.h>
-
-class CardHoverFilter : public QObject {
-    Q_OBJECT
-protected:
-    bool eventFilter(QObject* watched, QEvent* event) override {
-        if (event->type() == QEvent::Enter) {
-            return true;
-        }
-        if (event->type() == QEvent::Leave) {
-            return true;
-        }
-        return QObject::eventFilter(watched, event);
-    }
-};
 
 namespace MainMenu {
 
@@ -128,7 +113,7 @@ namespace MainMenu {
         nameLabel->setWordWrap(true);
         textLayout->addWidget(nameLabel);
 
-        QLabel* modLabel = new QLabel("Modified " + QDateTime::fromSecsSinceEpoch(modified).toString("MM/dd/yyyy"));
+        QLabel* modLabel = new QLabel("Modified " + QDateTime::fromSecsSinceEpoch(modified).toString("MM/dd/yyyy hh:mm"));
         modLabel->setObjectName("ProjectModified");
         modLabel->setStyleSheet("color: #777777; font-size: 11px;");
         textLayout->addWidget(modLabel);
@@ -140,7 +125,7 @@ namespace MainMenu {
 
         cardLayout->addLayout(textLayout);
 
-		projectCard->installEventFilter(new CardHoverFilter());
+		projectCard->installEventFilter(new MainMenu::CardHoverFilter());
 
         return projectCard;
     }

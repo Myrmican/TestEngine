@@ -8,12 +8,13 @@
 #include <QLineEdit>
 #include <QButtonGroup>
 #include <QDateTime>
+#include <util/Time.h>
 #include <ui/window/hub/ProjectList.h>
 #include <ui/window/hub/pages/Projects.h>
 
 namespace MainMenu {
 
-	void displayProjectsList(QVBoxLayout* contentLayout) {
+	void displayProjectsList(QVBoxLayout* contentLayout, QStackedWidget* workspaceStack) {
 
         QFrame* tableHeaderRow = new QFrame();
         tableHeaderRow->setObjectName("TableHeaderRow");
@@ -59,10 +60,9 @@ namespace MainMenu {
         contentLayout->addWidget(tableHeaderRow);
 
 		QFrame* row1 = MainMenu::createProjectRow("Untitled Game", "~/Documents/Untitled Game.tep", "Pismyren", "Public", 1794690182);
+		row1->installEventFilter(new MainMenu::ProjectClickEventFilter("~/Documents/Untitled Game.tep", workspaceStack));
 
         contentLayout->addWidget(row1);
-        contentLayout->addWidget(MainMenu::createProjectRow("Crazy Shooter Game", "~/Downloads/Crazy Shooter game.tep", "Pismyren", "Private", 1794690182));
-        contentLayout->addWidget(MainMenu::createProjectRow("Maple County", "~/Downloads/Maple County.tep", "Big Games", "Unpublished", 1794690182));
 
         contentLayout->addStretch();
 	}
@@ -130,7 +130,7 @@ namespace MainMenu {
         pubLabel->setFixedWidth(110);
         rowLayout->addWidget(pubLabel);
 
-        QLabel* lastEditLabel = new QLabel(QString::number(modified));
+        QLabel* lastEditLabel = new QLabel(TimeUtils::formatTime(modified));
         lastEditLabel->setObjectName("RowMeta");
         lastEditLabel->setFixedWidth(110);
         lastEditLabel->setToolTip(QDateTime::fromSecsSinceEpoch(modified).toString());

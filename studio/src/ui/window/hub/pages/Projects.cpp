@@ -102,7 +102,7 @@ namespace MainMenu {
         projectsStack->addWidget(listPage);
         projectsStack->addWidget(gridPage);
 
-        MainMenu::displayProjectsList(projectsListLayout);
+        MainMenu::displayProjectsList(projectsListLayout, workspaceStack);
 
         QObject::connect(searchBar, &QLineEdit::textChanged, [=](const QString& text) {
             QWidget* activePage = projectsStack->currentWidget();
@@ -144,8 +144,6 @@ namespace MainMenu {
                 }
             }
             });
-
-
 
         QObject::connect(viewProjectList, &QRadioButton::toggled, [=](bool checked) {
             if (checked) {
