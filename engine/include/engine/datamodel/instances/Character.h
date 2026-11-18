@@ -4,9 +4,9 @@
 #include <datamodel/Instance.h>
 
 namespace Engine {
-	class Entity : public Creatable {
+	class Character : public Creatable {
 	public:
-		Entity();
+		Character();
 
 		double getHealth() const;
 

@@ -12,10 +12,11 @@
 #include <QPainterPath>
 #include <QDateTime>
 #include <ui/window/hub/ProjectGrid.h>
+#include <ui/window/hub/pages/Projects.h>
 
 namespace MainMenu {
 
-    void displayProjectsGrid(QGridLayout* contentLayout) {
+    void displayProjectsGrid(QGridLayout* contentLayout, QStackedWidget* workspaceStack) {
         struct ProjectInfo {
             QString name;
             QString path;
@@ -45,6 +46,9 @@ namespace MainMenu {
                 projects[i].publication,
                 projects[i].modified
             );
+
+            card->installEventFilter(new MainMenu::ProjectClickEventFilter(projects[i].path, workspaceStack));
+
             contentLayout->addWidget(card, row, col);
         }
     }

@@ -4,6 +4,9 @@
 #include <QLineEdit>
 #include <QLabel>
 #include <QButtonGroup>
+#include <QDir>
+#include <QDirIterator>
+#include <QStandardPaths>
 #include <ui/window/hub/ProjectList.h>
 #include <ui/window/hub/ProjectGrid.h>
 #include <ui/window/hub/pages/Projects.h>
@@ -104,6 +107,31 @@ namespace MainMenu {
 
         MainMenu::displayProjectsList(projectsListLayout, workspaceStack);
 
+        QDirIterator iterator(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation), QDir::Files | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
+        while (iterator.hasNext()) {
+            QString filePath = iterator.next();
+            if (filePath.endsWith(".tep")) {
+                QFileInfo fileInfo(filePath);
+                QString name = fileInfo.baseName();
+                QString path = fileInfo.absoluteFilePath();
+                QString creator = "Pismyren";
+                QString publication = "Unpublished";
+                std::time_t modified = fileInfo.lastModified().toSecsSinceEpoch();
+
+                //Add project row to the "List" page
+                QFrame* row = MainMenu::createProjectRow(name, path, creator, publication, modified);
+                row->installEventFilter(new MainMenu::ProjectClickEventFilter(path, workspaceStack));
+                projectsListLayout->addWidget(row);
+
+                //Add project card to the "Grid" page
+                QFrame* card = MainMenu::createProjectCard(name, path, creator, publication, modified);
+                card->installEventFilter(new MainMenu::ProjectClickEventFilter(path, workspaceStack));
+                projectsGridLayout->addWidget(card);
+            }
+        }
+
+        projectsListLayout->addStretch();
+
         QObject::connect(searchBar, &QLineEdit::textChanged, [=](const QString& text) {
             QWidget* activePage = projectsStack->currentWidget();
 
@@ -154,7 +182,7 @@ namespace MainMenu {
         QObject::connect(viewProjectGrid, &QRadioButton::toggled, [=](bool checked) {
             if (checked) {
                 if (projectsGridLayout->count() == 0) {
-                    MainMenu::displayProjectsGrid(projectsGridLayout);
+                    MainMenu::displayProjectsGrid(projectsGridLayout, workspaceStack);
                 }
                 projectsStack->setCurrentIndex(1);
             }

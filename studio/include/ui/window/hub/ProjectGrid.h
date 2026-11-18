@@ -5,6 +5,7 @@
 class QGridLayout;
 class QFrame;
 class QString;
+class QStackedWidget;
 
 namespace MainMenu {
     class CardHoverFilter : public QObject {
@@ -21,6 +22,6 @@ namespace MainMenu {
         }
     };
 
-	void displayProjectsGrid(QGridLayout* contentContainer);
+	void displayProjectsGrid(QGridLayout* contentContainer, QStackedWidget* workspaceStack);
 	QFrame* createProjectCard(const QString& name, const QString& path, const QString& creator, const QString& publication, const std::time_t modified);
 }

@@ -48,7 +48,7 @@ namespace MainMenu {
         thPlayability->setObjectName("TableHeaderText");
         thLayout->addWidget(thPlayability);
 
-        QLabel* thModified = new QLabel("Modified ↓");
+        QLabel* thModified = new QLabel("Modified");
         thModified->setFixedWidth(110);
         thModified->setObjectName("TableHeaderText");
         thLayout->addWidget(thModified);
@@ -58,16 +58,20 @@ namespace MainMenu {
         thLayout->addWidget(thActions);
 
         contentLayout->addWidget(tableHeaderRow);
-
-		QFrame* row1 = MainMenu::createProjectRow("Untitled Game", "~/Documents/Untitled Game.tep", "Pismyren", "Public", 1794690182);
-		row1->installEventFilter(new MainMenu::ProjectClickEventFilter("~/Documents/Untitled Game.tep", workspaceStack));
-
-        contentLayout->addWidget(row1);
-
-        contentLayout->addStretch();
 	}
 
     QFrame* createProjectRow(const QString& name, const QString& path, const QString& creator, const QString& publication, const std::time_t modified) {
+        QString publicationTooltip = "";
+		if (publication == "Public") {
+			publicationTooltip = "Can be played by anyone.";
+		}
+		else if (publication == "Private") {
+			publicationTooltip = "Can be played by users you give access to.";
+		}
+		else if (publication == "Unpublished") {
+			publicationTooltip = "Cannot be accessed by anyone.";
+		}
+
         QFrame* row = new QFrame();
         row->setObjectName("ProjectRow");
 
@@ -127,6 +131,7 @@ namespace MainMenu {
 
         QLabel* pubLabel = new QLabel(publication);
         pubLabel->setObjectName("RowMeta");
+		pubLabel->setToolTip(publicationTooltip);
         pubLabel->setFixedWidth(110);
         rowLayout->addWidget(pubLabel);
 
