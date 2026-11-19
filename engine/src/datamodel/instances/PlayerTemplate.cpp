@@ -8,7 +8,7 @@ namespace Engine {
 		internalLocked = true;
 
 		auto defaultBackpack = std::make_unique<Backpack>();
-		addChild(std::move(defaultBackpack));
+		//addChild(std::move(defaultBackpack));
 	}
 
 	

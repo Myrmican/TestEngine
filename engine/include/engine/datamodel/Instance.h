@@ -16,9 +16,9 @@ namespace Engine {
 	class ClassDescriptor;
 	class Instance;
 
-	using InstancePtr = std::unique_ptr<Instance>;
+	using InstancePtr = std::shared_ptr<Instance>;
 
-	class Instance {
+	class Instance : public std::enable_shared_from_this<Instance> {
 	private:
 		boost::flyweight<std::string> name;
 
@@ -40,19 +40,14 @@ namespace Engine {
 		Event<std::string> changed;
 
 		virtual void destroy();
-		void remove();
 		void removeAllChildren();
 
 		std::string getPath() const;
 
 		Instance* getParent() const { return parent; }
 
-		// Reparent an instance that ALREADY belongs to some parent's children vector.
-		void setParent(Instance* instance) { setParent(instance, false); }
-		void setParent(Instance* instance, bool ignoreLock);
-
-		// Take ownership of a freshly created (parentless) instance.
-		void addChild(InstancePtr child);
+		void setParent(Instance* instance) { setParentInternal(instance, false); }
+		void setLockedParent(Instance* instance) { setParentInternal(instance, true); }
 
 		std::string_view getName() const { return name.get(); }
 		virtual void setName(std::string_view value);
@@ -67,7 +62,7 @@ namespace Engine {
 		bool isAncestorOf(const Instance* descendant) const;
 		bool isDescendantOf(const Instance* ancestor);
 
-		std::unique_ptr<Instance> clone();
+		InstancePtr clone();
 
 		std::map<std::string, bool> getAttributes() { return attributes; }
 

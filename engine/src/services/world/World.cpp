@@ -8,7 +8,7 @@ namespace Engine {
 		internalLocked = true;
 
 		auto worldCamera = std::make_unique<Camera>();
-		this->addChild(std::move(worldCamera));
+		worldCamera->setParent(this);
 	}
 
 	void World::properties(ClassDescriptor* desc) {

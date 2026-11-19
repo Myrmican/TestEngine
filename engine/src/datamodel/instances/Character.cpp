@@ -35,7 +35,7 @@ namespace Engine {
 			return;
 		}
 
-
+		tool->setParent(this);
 
 		tool->equipped.call();
 	}

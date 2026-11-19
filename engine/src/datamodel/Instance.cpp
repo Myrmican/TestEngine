@@ -25,12 +25,18 @@ namespace Engine {
 	void Instance::setName(std::string_view value) {
 		if (name == value) return;
 
+		changing.call("Name", value);
+
+		if (changing.isCancelled()) {
+			return;
+		}
+
 		if (value.size() > 100)
 			name = std::string(value.substr(0, 100));
 		else
 			name = std::string(value);
 
-		this->changed.call("Name");
+		changed.call("Name");
 	}
 
 	void Instance::destroy() {
@@ -39,7 +45,10 @@ namespace Engine {
 	}
 
 	void Instance::removeAllChildren() {
-		children.clear(); // unique_ptr cascade: this recursively destroys all descendants too
+		for (auto& child : children) {
+			child->setParent(nullptr);
+		}
+		children.clear();
 	}
 
 	std::string Instance::getPath() const {
@@ -53,18 +62,10 @@ namespace Engine {
 		return std::string(getName());
 	}
 
-	void Instance::addChild(InstancePtr child) {
-		if (!child) return;
-
-		Instance* rawChild = child.get();
-		rawChild->parent = this;
-		children.push_back(std::move(child));
-		onChildAdded(rawChild);
-	}
-
 	bool Instance::setParentInternal(Instance* newParent, bool ignoreLock) {
-		std::string message;
+		if (parent == newParent) return true;
 
+		std::string message;
 		if (internalLocked && !ignoreLock) {
 			message = std::format("Attempted to set the parent of {}, but it was locked.", getName());
 		}
@@ -74,35 +75,30 @@ namespace Engine {
 		else if (newParent && this->isAncestorOf(newParent)) {
 			message = std::format("Attempted to set a descendant of {} as its parent.", getName());
 		}
-
 		if (!message.empty()) throw std::runtime_error(message);
 
-		Instance* oldParent = getParent();
-		this->parent = newParent;
+		// Keeps us alive while we're detached from the old parent.
+		// Throws std::bad_weak_ptr if this wasn't created with make_shared.
+		InstancePtr self = shared_from_this();
 
-		// Move ownership out of the old parent's children vector.
-		InstancePtr self;
-		if (oldParent) {
-			auto& siblings = oldParent->children;
-			auto it = std::find_if(siblings.begin(), siblings.end(),
-				[this](const InstancePtr& p) { return p.get() == this; });
-			if (it != siblings.end()) {
-				self = std::move(*it);
-				siblings.erase(it);
-			}
+		// Detach from the old parent (nothing to do for a fresh instance)
+		if (parent) {
+			auto& siblings = parent->children;
+			siblings.erase(std::remove(siblings.begin(), siblings.end(), self), siblings.end());
 		}
 
+		// Attach to the new parent (nullptr just leaves us detached)
+		parent = newParent;
 		if (newParent) {
-			if (self) {
-				newParent->children.push_back(std::move(self));
-			}
+			newParent->children.push_back(self);
 			newParent->onChildAdded(this);
 		}
 
+		changed.call("Parent");
 		return true;
 	}
 
-	std::unique_ptr<Instance> Instance::clone() {
+	InstancePtr Instance::clone() {
 		return nullptr;
 	}
 
@@ -171,10 +167,7 @@ namespace Engine {
 	}
 
 	void Instance::BindAPI(WasmRuntime& wasm) {
-	}
 
-	void Instance::setParent(Instance* instance, bool ignoreLock) {
-		setParentInternal(instance, ignoreLock);
 	}
 
 	void Instance::properties(ClassDescriptor* desc) {

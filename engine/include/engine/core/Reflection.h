@@ -11,7 +11,7 @@
 
 namespace Engine {
 
-    using FactoryFunc = std::function<std::unique_ptr<Instance>()>;
+    using FactoryFunc = std::function<InstancePtr()>;
 
     inline auto& GetReflectionRegistry() {
         static struct {
@@ -31,15 +31,12 @@ namespace Engine {
         return GetReflectionRegistry().classes;
     }
 
-    inline std::unique_ptr<Creatable> CreateInstance(const std::string& className) {
-        auto& factories = GetReflectionRegistry().factories;
-        auto it = factories.find(className);
-        if (it != factories.end()) {
-            std::unique_ptr<Instance> inst = it->second();
+    inline InstancePtr CreateInstance(const std::string& className) {
+		auto& factories = GetReflectionRegistry().factories;
+        auto iterator = factories.find(className);
+        if (iterator != factories.end()) return nullptr;
 
-            return std::unique_ptr<Creatable>(static_cast<Creatable*>(inst.release()));
-        }
-        return nullptr;
+		return iterator->second();
     }
 
     inline ClassDescriptor* GetClassDescriptor(const std::string& className) {
@@ -91,8 +88,8 @@ namespace Engine {
     inline const ::Engine::ReflectionHelper reflection_##className( \
         #className, \
         #parentClassName, \
-        []() -> std::unique_ptr<::Engine::Creatable> { \
-            return std::make_unique<className>(); \
+        []() -> ::Engine::InstancePtr { \
+            return std::make_shared<className>(); \
         }, \
         [](::Engine::ClassDescriptor* desc) { className::properties(desc); }, \
         true \

@@ -2,6 +2,7 @@
 
 #include <datamodel/instances/Tool.h>
 #include <datamodel/Instance.h>
+#include <datamodel/instances/Backpack.h>
 
 namespace Engine {
 	class Character : public Creatable {
@@ -19,5 +20,6 @@ namespace Engine {
 
 	private:
 		double m_health = 100;
+		Backpack* m_backpack = nullptr;
 	};
 }

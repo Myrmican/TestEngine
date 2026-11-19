@@ -158,14 +158,14 @@ Properties::Properties(QMainWindow* window, Project* project)
 
     Engine::Selection* selectionService = project->getEngine()->getProvider()->getService<Engine::Selection>();
 
-    selectionService->selectionChanged.connect([this](Engine::Instance* instance) {
+    /*selectionService->selectionChanged.connect([this](Engine::Instance* instance) {
         if (instance == nullptr) {
             treeWidget->clear();
             return;
         }
 
         this->InspectInstance(instance);
-        });
+        });*/
 }
 
 QTreeWidgetItem* Properties::GetOrCreateCategory(const std::string& categoryName) {

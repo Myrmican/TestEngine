@@ -20,7 +20,7 @@
 #include <editor/EditorWindow.h>
 #include <project/Project.h>
 #include <ui/ProjectLoadingDialog.h>
-#include <engine/serialization/PlaceSerializer.h>
+#include <engine/serialization/PlaceDeserializer.h>
 #include <boost/algorithm/string.hpp>
 #include <memory>
 
@@ -33,9 +33,14 @@ Project::Project(const QFileInfo fileInfo, const QString projectName) {
 
         scriptEngine = std::make_unique<Engine::ScriptEngine>(engine->getDataModel());
 
-		QString filePath = fileInfo.absoluteFilePath();
+        QFile file(fileInfo.absoluteFilePath());
+        if (!file.open(QIODevice::ReadOnly)) {
+			std::cout << "Failed to open file: " << fileInfo.absoluteFilePath().toStdString() << std::endl;
+        }
 
-        Engine::PlaceSerializer::loadFromFile(filePath.toUtf8().constData(), engine->getDataModel());
+        const QByteArray rawData = file.readAll();
+
+		Engine::PlaceDeserializer::loadFromFile(std::string_view(rawData.constData(), static_cast<size_t>(rawData.size())), engine->getDataModel());
     } catch (const std::exception& e) {
         qCritical() << "Failed to initialize EngineInstance:" << e.what();
     }

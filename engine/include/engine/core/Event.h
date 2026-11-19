@@ -46,9 +46,6 @@ namespace Engine {
 		}
 
 	private:
-		void disconnect() {
-			m_callbacks.erase();
-		}
 
 		size_t m_nextId = 0;
 		std::unordered_map<size_t, Callback> m_callbacks;

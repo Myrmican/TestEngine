@@ -14,7 +14,7 @@ namespace Engine {
         Explorer* explorer = mainWindow->findChild<Explorer*>();
         if (!explorer) return {};
 
-        std::unique_ptr<Engine::Creatable> newInstance = Engine::CreateInstance(className);
+        InstancePtr newInstance = Engine::CreateInstance(className);
         Instance* parentInstance = Engine::GetEngineInstance(parentItem);
 
         if (!parentInstance && explorer->m_project->getEngine()->getDataModel())
@@ -25,7 +25,7 @@ namespace Engine {
         }
 
         Instance* rawInstance = newInstance.get();
-        parentInstance->addChild(std::move(newInstance));
+        newInstance->setParent(parentInstance);
 
         QTreeWidgetItem* treeItem = explorer->AddItem(parentItem, rawInstance);
         return InsertInstanceSet{ treeItem, rawInstance };

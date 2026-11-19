@@ -1,3 +1,5 @@
+#pragma once
+
 #include <datamodel/Instance.h>
 
 namespace Engine {
