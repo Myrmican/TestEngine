@@ -20,7 +20,7 @@ namespace Engine {
 		DataModel* getDataModel() { return m_dataModel.get(); }
 		Engine::ServiceProvider* getProvider() { return m_sProvider; }
 	private:
-		std::unique_ptr<DataModel> m_dataModel;
+		std::shared_ptr<DataModel> m_dataModel;
 		ServiceProvider* m_sProvider;
 
 		bool m_isInitialized = false;

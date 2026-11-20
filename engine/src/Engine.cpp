@@ -6,7 +6,7 @@
 namespace Engine {
 	EngineInstance::EngineInstance() {
 		m_sProvider = new ServiceProvider(this);
-        m_dataModel = std::make_unique<DataModel>(this);
+        m_dataModel = std::make_shared<DataModel>(this);
 	}
 
     EngineInstance::~EngineInstance() {

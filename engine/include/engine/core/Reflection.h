@@ -5,13 +5,25 @@
 #include <unordered_map>
 #include <functional>
 #include <memory>
+#include <type_traits>
 #include <datamodel/Instance.h>
-#include <iostream>
 #include <datamodel/ClassDescriptor.h>
 
 namespace Engine {
 
     using FactoryFunc = std::function<InstancePtr()>;
+
+    template <typename T>
+    FactoryFunc MakeDefaultFactoryIfPossible() {
+        if constexpr (std::is_default_constructible_v<T>) {
+            return []() -> InstancePtr {
+                return std::make_shared<T>();
+                };
+        }
+        else {
+            return nullptr;
+        }
+    }
 
     inline auto& GetReflectionRegistry() {
         static struct {
@@ -34,7 +46,7 @@ namespace Engine {
     inline InstancePtr CreateInstance(const std::string& className) {
 		auto& factories = GetReflectionRegistry().factories;
         auto iterator = factories.find(className);
-        if (iterator != factories.end()) return nullptr;
+        if (iterator == factories.end()) return nullptr;
 
 		return iterator->second();
     }
@@ -54,14 +66,18 @@ namespace Engine {
             const std::string& parentClassName,
             FactoryFunc factory,
             std::function<void(ClassDescriptor*)> reflectFunc,
-            bool isEditorVisible = true
+            bool isEditorVisible = true,
+            bool isCreatable = false
         ) {
             auto& reg = GetReflectionRegistry();
             reg.classes.push_back(className);
 
             if (factory) {
-                reg.creatables.push_back(className);
                 reg.factories[className] = factory;
+
+                if (isCreatable) {
+                    reg.creatables.push_back(className);
+                }
             }
 
             // Create ClassDescriptor and execute property reflections
@@ -78,10 +94,11 @@ namespace Engine {
 #define REGISTER_INSTANCE(className, parentClassName) \
     inline const ::Engine::ReflectionHelper reflection_##className( \
         #className, \
-        #parentClassName , \
-        nullptr, \
+        #parentClassName, \
+        ::Engine::MakeDefaultFactoryIfPossible<className>(), \
         [](::Engine::ClassDescriptor* desc) { className::properties(desc); }, \
-        true \
+        true, \
+        false \
     )
 
 #define REGISTER_CREATABLE(className, parentClassName) \
@@ -92,6 +109,7 @@ namespace Engine {
             return std::make_shared<className>(); \
         }, \
         [](::Engine::ClassDescriptor* desc) { className::properties(desc); }, \
+        true, \
         true \
     )
 

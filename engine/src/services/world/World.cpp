@@ -7,8 +7,8 @@ namespace Engine {
 	World::World() : Model("World") {
 		internalLocked = true;
 
-		auto worldCamera = std::make_unique<Camera>();
-		worldCamera->setParent(this);
+		/*auto worldCamera = std::make_unique<Camera>();
+		worldCamera->setParent(this);*/
 	}
 
 	void World::properties(ClassDescriptor* desc) {
