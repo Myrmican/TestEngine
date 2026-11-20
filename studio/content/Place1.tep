@@ -1,0 +1,114 @@
+<test>
+    <Item class="World">
+        <Properties>
+            <string name="Name">World</string>
+
+        </Properties>
+
+        <Item class="Camera">
+            <Properties>
+                <string name="Name">Camera</string>
+                
+            </Properties>
+        </Item>
+        <Item class="Part">
+            <Properties>
+                <string name="Name">Baseplate</string>
+                
+            </Properties>
+        </Item>
+        <Item class="SpawnPoint">
+            <Properties>
+                <string name="Name">SpawnPoint</string>
+                
+            </Properties>
+        </Item>
+    </Item>
+    <Item class="Players">
+        <Properties>
+            <string name="Name">Players</string>
+
+        </Properties>
+        <Item class="PlayerTemplate">
+            <Properties>
+                <string name="Name">Players</string>
+
+            </Properties>
+            <Item class="Interface">
+                <Properties>
+                    <string name="Name">Interface</string>
+
+                </Properties>
+            </Item>
+            <Item class="Backpack">
+                <Properties>
+                    <string name="Name">Backpack</string>
+
+                </Properties>
+            </Item>
+        </Item>
+    </Item>
+    <Item class="Client">
+        <Properties>
+            <string name="Name">Client</string>
+
+        </Properties>
+
+        <Item class="AssetsFolder">
+            <Properties>
+                <string name="Name">Assets</string>
+                
+            </Properties>
+        </Item>
+        <Item class="SourceFolder">
+            <Properties>
+                <string name="Name">Source</string>
+                
+            </Properties>
+        </Item>
+    </Item>
+    <Item class="Shared">
+        <Properties>
+            <string name="Name">Shared</string>
+
+        </Properties>
+
+        <Item class="AssetsFolder">
+            <Properties>
+                <string name="Name">Assets</string>
+                
+            </Properties>
+        </Item>
+        <Item class="SourceFolder">
+            <Properties>
+                <string name="Name">Source</string>
+                
+            </Properties>
+        </Item>
+    </Item>
+    <Item class="Server">
+        <Properties>
+            <string name="Name">Server</string>
+
+        </Properties>
+
+        <Item class="AssetsFolder">
+            <Properties>
+                <string name="Name">Assets</string>
+                
+            </Properties>
+        </Item>
+        <Item class="SourceFolder">
+            <Properties>
+                <string name="Name">Source</string>
+                
+            </Properties>
+        </Item>
+    </Item>
+    <Item class="Audio">
+        <Properties>
+            <string name="Name">Audio</string>
+
+        </Properties>
+    </Item>
+</test>

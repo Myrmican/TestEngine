@@ -16,6 +16,7 @@
 #include <QPushButton>
 #include <QButtonGroup>
 #include <QTimer>
+#include <QMessageBox>
 #include <QApplication>
 #include <editor/EditorWindow.h>
 #include <project/Project.h>
@@ -23,6 +24,8 @@
 #include <engine/serialization/PlaceDeserializer.h>
 #include <boost/algorithm/string.hpp>
 #include <memory>
+
+const QString defaultTemplatePath = QDir(QCoreApplication::applicationDirPath()).filePath("content/Place1.tep");
 
 Project::Project(const QFileInfo fileInfo, const QString projectName) {
     name = projectName.isEmpty() ? fileInfo.baseName() : projectName;
@@ -36,9 +39,26 @@ Project::Project(const QFileInfo fileInfo, const QString projectName) {
         QFile file(fileInfo.absoluteFilePath());
         if (!file.open(QIODevice::ReadOnly)) {
 			std::cout << "Failed to open file: " << fileInfo.absoluteFilePath().toStdString() << std::endl;
+            return;
+        }
+
+        QFile templateFile(defaultTemplatePath);
+        if (!templateFile.open(QIODevice::ReadOnly)) {
+            std::cout << "Failed to open default template" << std::endl;
+            return;
         }
 
         const QByteArray rawData = file.readAll();
+        const QByteArray templateRawData = templateFile.readAll();
+
+        if (fileInfo.suffix() == "rbxlx") {
+            Engine::PlaceDeserializer::loadFromRoblox(
+                std::string_view(rawData.constData(), static_cast<size_t>(rawData.size())),
+                std::string_view(templateRawData.constData(), static_cast<size_t>(templateRawData.size())),
+                engine->getDataModel()
+            );
+            return;
+        }
 
 		Engine::PlaceDeserializer::loadFromFile(std::string_view(rawData.constData(), static_cast<size_t>(rawData.size())), engine->getDataModel());
     } catch (const std::exception& e) {
@@ -77,7 +97,18 @@ namespace ProjectManager {
         pathLayout->addWidget(pathEdit);
         pathLayout->addWidget(browseButton);
 
-        formLayout->addRow("Project Path", pathContainer);
+        QLabel* projectDirectoryError = new QLabel("");
+        projectDirectoryError->setStyleSheet("color: red;");
+        //projectDirectoryError->hide();
+        
+        QWidget* pathField = new QWidget(&dialog);
+        QVBoxLayout* fieldLayout = new QVBoxLayout(pathField);
+        fieldLayout->setContentsMargins(0, 0, 0, 0);
+        fieldLayout->setSpacing(2);
+        fieldLayout->addWidget(pathContainer);
+        fieldLayout->addWidget(projectDirectoryError);
+
+        formLayout->addRow("Project Path", pathField);
 
         QComboBox* dimensionBox = new QComboBox();
         dimensionBox->addItem("3D");
@@ -126,17 +157,49 @@ namespace ProjectManager {
             return nullptr;
         }
 
+        QDir targetDir(QString::fromStdString(boost::trim_copy(pathEdit->text().toStdString())));
+        if (!targetDir.exists() && !targetDir.mkpath(".")) {
+            QMessageBox::critical(&dialog, "Error", "Failed to create project directory.");
+            return nullptr;
+        }
+
+        QString cleanName = nameEdit->text().trimmed();
+        if (cleanName.isEmpty()) {
+            cleanName = "Untitled Game";
+        }
+
+        QString destFilePath = targetDir.filePath(cleanName + ".tep");
+        if (QFile::exists(destFilePath)) {
+            QMessageBox::warning(&dialog, "File Exists", "A project file with that name already exists in this folder.");
+            return nullptr;
+        }
+
+        QFile srcFile(defaultTemplatePath);
+        if (!srcFile.exists()) {
+            QMessageBox::critical(&dialog, "Error", "Template not found at: " + defaultTemplatePath);
+            return nullptr;
+        }
+        if (!QFile::copy(defaultTemplatePath, destFilePath)) {
+            QFile checkFile(defaultTemplatePath);
+            QMessageBox::critical(
+                &dialog,
+                "Error",
+                "Failed to copy template file from:\n" + defaultTemplatePath + "\nto:\n" + destFilePath + "\nReason: " + checkFile.errorString()
+            );
+            return nullptr;
+        }
+
         if (!selectedRobloxFile.isEmpty()) {
             QFileInfo fileInfo(selectedRobloxFile);
             return new Project(fileInfo);
         }
 
-        QFileInfo fileInfo("studio/content/Place1.rbxlx");
+        QFile::setPermissions(destFilePath, QFile::permissions(destFilePath) | QFileDevice::WriteUser);
+
+        QFileInfo fileInfo(destFilePath);
         Project* newProject = new Project(fileInfo, nameEdit->text().trimmed());
         newProject->is2D = dimensionBox->currentText() == "2D";
-
-        std::string projectPath = pathEdit->text().toUtf8().constData();
-        newProject->projectPath = boost::trim_copy(projectPath);
+        newProject->projectPath = targetDir.absolutePath().toStdString();
 
         return newProject;
     }

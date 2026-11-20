@@ -157,15 +157,16 @@ Properties::Properties(QMainWindow* window, Project* project)
     connectSearch(searchBar, propertiesTree);
 
     Engine::Selection* selectionService = project->getEngine()->getProvider()->getService<Engine::Selection>();
+    if (selectionService) {
+        selectionService->selectionChanged.connect([this](Engine::Instance* instance) {
+            if (instance == nullptr) {
+                treeWidget->clear();
+                return;
+            }
 
-    selectionService->selectionChanged.connect([this](Engine::Instance* instance) {
-        if (instance == nullptr) {
-            treeWidget->clear();
-            return;
-        }
-
-        this->InspectInstance(instance);
-        });
+            this->InspectInstance(instance);
+            });
+    }
 }
 
 QTreeWidgetItem* Properties::GetOrCreateCategory(const std::string& categoryName) {

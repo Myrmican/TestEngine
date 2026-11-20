@@ -25,6 +25,7 @@ target_include_directories(TestEngine PRIVATE
     "${CMAKE_SOURCE_DIR}/client/include"
     "${CMAKE_SOURCE_DIR}/external"
     "${CMAKE_SOURCE_DIR}/external/SDL/include"
+    "${CMAKE_SOURCE_DIR}/external/json/include"
     "${CMAKE_SOURCE_DIR}/external/velopack_libc_1.2.0/include"
     "${qscintilla_SOURCE_DIR}/src"
     "${qscintilla_SOURCE_DIR}/scintilla/include"
@@ -86,6 +87,16 @@ if(WIN32)
         
         WORKING_DIRECTORY "$<TARGET_FILE_DIR:TestEngine>"
         COMMENT "Copying DLLs and running windeployqt"
+
+        COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:TestEngine>/content"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "${CMAKE_CURRENT_SOURCE_DIR}/content/Place1.tep"
+                "$<TARGET_FILE_DIR:TestEngine>/content/Place1.tep"
+
+        COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:TestEngine>/studio/assets/configs"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "${CMAKE_CURRENT_SOURCE_DIR}/assets/configs/rbx_import_map.json"
+                "$<TARGET_FILE_DIR:TestEngine>/studio/assets/configs/rbx_import_map.json"
     )
 
     file(GLOB SHADER_SOURCES CONFIGURE_DEPENDS

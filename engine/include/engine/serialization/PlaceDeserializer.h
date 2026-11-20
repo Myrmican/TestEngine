@@ -13,6 +13,6 @@ namespace Engine {
 
 		static bool loadFromFile(std::string_view placeData, DataModel* dataModel);
 
-		static bool loadRBXLX(std::string_view filePath, DataModel* dataModel);
+		static bool loadFromRoblox(std::string_view filePath, std::string_view templateData, DataModel* dataModel);
 	};
 }

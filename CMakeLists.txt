@@ -146,11 +146,12 @@ set_target_properties(tree-sitter PROPERTIES
     C_STANDARD_REQUIRED ON)
 
 add_subdirectory(external/pugixml)
+add_subdirectory(external/json)
 
 add_subdirectory(engine)
 add_subdirectory(studio)
 add_subdirectory(client)
 
-target_link_libraries(EngineCore PRIVATE pugixml)
+target_link_libraries(EngineCore PRIVATE pugixml nlohmann_json::nlohmann_json)
 
 include_directories(SYSTEM ${CMAKE_CURRENT_SOURCE_DIR}/external)

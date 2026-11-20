@@ -61,6 +61,7 @@ namespace Shader {
 		shaderInfo.code_size = codeSize;
 		shaderInfo.entrypoint = entrypoint;
 		shaderInfo.stage = stage;
+		shaderInfo.format = format;
 
 		SDL_GPUShader* shader = SDL_CreateGPUShader(device, &shaderInfo);
 		if (shader == NULL) {
