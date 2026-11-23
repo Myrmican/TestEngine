@@ -60,7 +60,7 @@ Project::Project(const QFileInfo fileInfo, const QString projectName) {
             return;
         }
 
-		Engine::PlaceDeserializer::loadFromFile(std::string_view(rawData.constData(), static_cast<size_t>(rawData.size())), engine->getDataModel());
+		Engine::PlaceDeserializer::loadFromFile(std::string_view(rawData.constData(), static_cast<size_t>(rawData.size())), engine.get());
     } catch (const std::exception& e) {
         qCritical() << "Failed to initialize EngineInstance:" << e.what();
     }

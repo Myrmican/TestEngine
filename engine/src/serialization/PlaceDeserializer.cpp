@@ -1,6 +1,8 @@
 #include <serialization/PlaceDeserializer.h>
+#include <datamodel/Service.h>
 #include <datamodel/Instance.h>
 #include <datamodel/DataModel.h>
+#include <Engine.h>
 #include <pugixml.hpp>
 #include <fstream>
 #include <iostream>
@@ -93,7 +95,7 @@ static bool processRbxlx(pugi::xml_node rootNode, Engine::InstancePtr parent, pu
 
 namespace Engine {
 
-	bool PlaceDeserializer::loadFromFile(std::string_view placeData, Engine::DataModel* dataModel) {
+	bool PlaceDeserializer::loadFromFile(std::string_view placeData, Engine::EngineInstance* engine) {
 		pugi::xml_document document;
 		pugi::xml_parse_result result = document.load_string(placeData.data());
 
@@ -103,7 +105,15 @@ namespace Engine {
 
 		pugi::xml_node root = document.child("test");
 
-		return processChildren(root, dataModel->shared_from_this());
+		for (std::string serviceName : Engine::defaultServices) {
+			Engine::InstancePtr serviceInstance = Engine::CreateInstance(serviceName);
+			if (serviceInstance) {
+				serviceInstance->setLockedParent(engine->getDataModel());
+				engine->getProvider()->create(serviceInstance.get());
+			}
+		}
+
+		return processChildren(root, engine->getDataModel()->shared_from_this());
 	}
 
 	bool PlaceDeserializer::loadFromRoblox(std::string_view placeData, std::string_view templateData, Engine::DataModel* dataModel) {

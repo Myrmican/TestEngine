@@ -54,7 +54,7 @@ namespace Engine {
 
         EngineViewport* placeView = new EngineViewport(editorPage, project);
 
-        auto windowDocks = DockManager::setup(window, project);
+        EngineEditor::DockManager windowDocks(window, project);
         const int projectTabIndex = documentTabs->addTab(placeView, project->name);
 
         window->show();
@@ -95,7 +95,7 @@ namespace Engine {
             }
         }
 
-        Logger* outputLogger = new Logger(windowDocks.output, project);
+        Logger* outputLogger = new Logger(windowDocks.outputDock, project);
         project->logger = outputLogger;
     }
 }

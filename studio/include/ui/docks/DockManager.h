@@ -4,14 +4,19 @@ class Explorer;
 class Properties;
 class Output;
 class Toolbox;
+class Assets;
 
-namespace DockManager {
-    struct DockSet {
-        Explorer* explorer;
-        Properties* properties;
-        Output* output;
-        Toolbox* toolbox;
+namespace EngineEditor {
+
+    class DockManager {
+    public:
+        Explorer* explorerDock;
+        Properties* propertiesDock;
+        Output* outputDock;
+        Toolbox* toolboxDock;
+        Assets* assetsDock;
+
+        DockManager(QMainWindow* window, Project* project);
+        ~DockManager() = default;
     };
-
-    DockSet setup(QMainWindow* window, Project* project);
 }

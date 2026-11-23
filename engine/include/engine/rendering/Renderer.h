@@ -5,8 +5,9 @@
 
 namespace Engine
 {
-    class Renderer
-    {
+    class Camera;
+
+    class Renderer {
     public:
         Renderer() = default;
         ~Renderer();
@@ -16,11 +17,14 @@ namespace Engine
 
         bool init(SDL_Window* window);
         void shutdown();
-        void renderFrame();
+        void renderFrame(const Camera& camera);
+
+        void setWireframeMode(bool useWireframe);
 
     private:
         SDL_Window* m_window = nullptr;
         SDL_GPUDevice* m_device = nullptr;
+        bool wireframeMode = false;
 
         SDL_GPUGraphicsPipeline* fillPipeline;
         SDL_GPUGraphicsPipeline* linePipeline;

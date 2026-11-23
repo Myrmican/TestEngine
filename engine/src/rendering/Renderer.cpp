@@ -1,9 +1,14 @@
 #include <rendering/Renderer.h>
 #include <rendering/util/Shader.h>
+#include <datamodel/instances/Camera.h>
 
 namespace Engine
 {
     Renderer::~Renderer() { shutdown(); }
+
+    void Renderer::setWireframeMode(bool useWireframe) {
+        wireframeMode = useWireframe;
+    }
 
     bool Renderer::init(SDL_Window* window)
     {
@@ -37,22 +42,23 @@ namespace Engine
         pipelineInfo.target_info.num_color_targets = 1;
         pipelineInfo.target_info.color_target_descriptions = &colorTargetDesc;
 
-        SDL_GPUGraphicsPipeline* pipeline = SDL_CreateGPUGraphicsPipeline(m_device, &pipelineInfo);
-        if (!pipeline) {
-            SDL_Log("Pipeline creation failed: %s", SDL_GetError());
-        }
-
+        pipelineInfo.rasterizer_state.fill_mode = SDL_GPU_FILLMODE_FILL;
         fillPipeline = SDL_CreateGPUGraphicsPipeline(m_device, &pipelineInfo);
         if (fillPipeline == NULL)
         {
             SDL_Log("Failed to create fill pipeline!");
+            SDL_ReleaseGPUShader(m_device, vertexShader);
+            SDL_ReleaseGPUShader(m_device, fragmentShader);
             return false;
         }
 
+        pipelineInfo.rasterizer_state.fill_mode = SDL_GPU_FILLMODE_LINE;
         linePipeline = SDL_CreateGPUGraphicsPipeline(m_device, &pipelineInfo);
         if (linePipeline == NULL)
         {
             SDL_Log("Failed to create line pipeline!");
+            SDL_ReleaseGPUShader(m_device, vertexShader);
+            SDL_ReleaseGPUShader(m_device, fragmentShader);
             return false;
         }
 
@@ -72,30 +78,36 @@ namespace Engine
             SDL_DestroyGPUDevice(m_device);
             m_device = nullptr;
         }
-        m_window = nullptr;
-    }
 
-    void Renderer::renderFrame()
+        m_window = nullptr;
+
+        fillPipeline = nullptr;
+        linePipeline = nullptr;
+    }
+    
+    void Renderer::renderFrame(const Engine::Camera& camera)
     {
         if (!m_device || !m_window) return;
 
-        SDL_GPUCommandBuffer* cmd = SDL_AcquireGPUCommandBuffer(m_device);
-        if (!cmd) return;
+        SDL_GPUCommandBuffer* commandBuffer = SDL_AcquireGPUCommandBuffer(m_device);
+        if (!commandBuffer) return;
 
-        SDL_GPUTexture* swapchain = nullptr;
-        SDL_WaitAndAcquireGPUSwapchainTexture(cmd, m_window, &swapchain, nullptr, nullptr);
+        SDL_GPUTexture* swapchainTexture = nullptr;
+        SDL_WaitAndAcquireGPUSwapchainTexture(commandBuffer, m_window, &swapchainTexture, nullptr, nullptr);
 
-        if (swapchain) {
+        if (swapchainTexture) {
             SDL_GPUColorTargetInfo target = {};
-            target.texture = swapchain;
+            target.texture = swapchainTexture;
             target.clear_color = SDL_FColor{ 0.10f, 0.25f, 0.60f, 1.0f };
             target.load_op = SDL_GPU_LOADOP_CLEAR;
             target.store_op = SDL_GPU_STOREOP_STORE;
 
-            SDL_GPURenderPass* pass = SDL_BeginGPURenderPass(cmd, &target, 1, nullptr);
-            SDL_EndGPURenderPass(pass);
+            SDL_GPURenderPass* renderPass = SDL_BeginGPURenderPass(commandBuffer, &target, 1, nullptr);
+            SDL_BindGPUGraphicsPipeline(renderPass, wireframeMode ? linePipeline : fillPipeline);
+            SDL_DrawGPUPrimitives(renderPass, 3, 1, 0, 0);
+            SDL_EndGPURenderPass(renderPass);
         }
 
-        SDL_SubmitGPUCommandBuffer(cmd);
+        SDL_SubmitGPUCommandBuffer(commandBuffer);
     }
 }

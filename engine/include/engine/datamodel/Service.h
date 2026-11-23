@@ -6,6 +6,8 @@
 #include <vector>
 
 namespace Engine {
+	inline const std::vector<std::string> defaultServices = {"Selection", "Logging"};
+
 	class Instance;
 	class EngineInstance;
 	
@@ -31,4 +33,6 @@ namespace Engine {
 	private:
 		EngineInstance* m_engine;
 	};
+
+	
 }

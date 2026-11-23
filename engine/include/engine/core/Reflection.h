@@ -117,7 +117,10 @@ namespace Engine {
     inline const ::Engine::ReflectionHelper reflection_##className( \
         #className, \
         "Instance", \
-        nullptr, \
+        []() -> ::Engine::InstancePtr { \
+            return std::make_shared<className>(); \
+        }, \
         [](::Engine::ClassDescriptor* desc) { className::properties(desc); }, \
+        false, \
         false \
     )

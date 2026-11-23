@@ -95,8 +95,6 @@ void EngineViewport::renderFrame()
 {
     if (!m_renderer) return;
 
-    // Later: fetch the camera here each frame and pass it to the renderer
     Engine::Camera* camera = m_world ? m_world->getCurrentCamera() : nullptr;
-    //   m_renderer->renderFrame(camera);
-    m_renderer->renderFrame();
+    m_renderer->renderFrame(*camera);
 }

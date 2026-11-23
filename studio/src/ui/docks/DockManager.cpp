@@ -5,16 +5,19 @@
 #include <ui/docks/Output.h>
 #include <ui/docks/Toolbox.h>
 #include <ui/docks/DockManager.h>
+#include <ui/docks/Assets.h>
 
-namespace DockManager {
+namespace EngineEditor {
 
-	DockSet setup(QMainWindow* window, Project* project) {
-        Explorer* explorerDock = new Explorer(window, project);
-        Properties* propertiesDock = new Properties(window, project);
-        Output* outputDock = new Output(window, project);
-        Toolbox* toolboxDock = new Toolbox(window, project);
+    DockManager::DockManager(QMainWindow* window, Project* project) {
+        explorerDock = new Explorer(window, project);
+        propertiesDock = new Properties(window, project);
+        outputDock = new Output(window, project);
+        toolboxDock = new Toolbox(window, project);
+        assetsDock = new Assets(window, project);
 
         toolboxDock->setVisible(false);
+        assetsDock->setVisible(false);
 
         window->setDockNestingEnabled(true);
 
@@ -22,7 +25,6 @@ namespace DockManager {
         window->addDockWidget(Qt::LeftDockWidgetArea, propertiesDock);
         window->addDockWidget(Qt::BottomDockWidgetArea, outputDock);
         window->addDockWidget(Qt::LeftDockWidgetArea, toolboxDock);
-
-        return { explorerDock, propertiesDock, outputDock, toolboxDock };
-	}
+        window->addDockWidget(Qt::RightDockWidgetArea, assetsDock);
+    }
 }
