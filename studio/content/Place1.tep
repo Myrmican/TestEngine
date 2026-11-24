@@ -1,29 +1,33 @@
 <test>
-    <Item class="World">
-        <Properties>
-            <string name="Name">World</string>
+	<Scenes>
+	    <Scene id="0">
+		    <Item class="World">
+			    <Properties>
+				    <string name="Name">World</string>
 
-        </Properties>
+			    </Properties>
 
-        <Item class="Camera">
-            <Properties>
-                <string name="Name">Camera</string>
-                
-            </Properties>
-        </Item>
-        <Item class="Part">
-            <Properties>
-                <string name="Name">Baseplate</string>
-                
-            </Properties>
-        </Item>
-        <Item class="SpawnPoint">
-            <Properties>
-                <string name="Name">SpawnPoint</string>
-                
-            </Properties>
-        </Item>
-    </Item>
+			    <Item class="Camera">
+				    <Properties>
+					    <string name="Name">Camera</string>
+
+				    </Properties>
+			    </Item>
+			    <Item class="Part">
+				    <Properties>
+					    <string name="Name">Baseplate</string>
+
+				    </Properties>
+			    </Item>
+			    <Item class="SpawnPoint">
+				    <Properties>
+					    <string name="Name">SpawnPoint</string>
+
+				    </Properties>
+			    </Item>
+		    </Item>
+	    </Scene>
+	</Scenes>
     <Item class="Players">
         <Properties>
             <string name="Name">Players</string>

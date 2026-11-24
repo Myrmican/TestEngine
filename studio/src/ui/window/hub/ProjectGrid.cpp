@@ -17,40 +17,7 @@
 namespace MainMenu {
 
     void displayProjectsGrid(QGridLayout* contentLayout, QStackedWidget* workspaceStack) {
-        struct ProjectInfo {
-            QString name;
-            QString path;
-            QString creator;
-            QString publication;
-            std::time_t modified;
-        };
-
-        QList<ProjectInfo> projects = {
-            { "Untitled Game", "~/Documents/Untitled Game.tep", "Pismyren", "Public", 1794690182 },
-            { "Crazy Shooter Game", "~/Downloads/Crazy Shooter game.tep", "Pismyren", "Private", 1794690182 },
-            { "Maple County", "~/Downloads/Maple County.tep", "Central Roleplay Community", "Unpublished", 1794690182 },
-            { "Untitled Game", "~/Documents/Untitled Game.tep", "Pismyren", "Public", 1794690182 },
-            { "Crazy Shooter Game", "~/Downloads/Crazy Shooter game.tep", "Pismyren", "Private", 1794690182 },
-            { "Maple County", "~/Downloads/Maple County.tep", "Central Roleplay Community", "Unpublished", 1794690182 }
-        };
-
-        int maxColumns = 6;
-        for (int i = 0; i < projects.size(); ++i) {
-            int row = i / maxColumns;
-            int col = i % maxColumns;
-
-            QFrame* card = MainMenu::createProjectCard(
-                projects[i].name,
-                projects[i].path,
-                projects[i].creator,
-                projects[i].publication,
-                projects[i].modified
-            );
-
-            card->installEventFilter(new MainMenu::ProjectClickEventFilter(projects[i].path, workspaceStack));
-
-            contentLayout->addWidget(card, row, col);
-        }
+        
     }
 
     QFrame* createProjectCard(const QString& name, const QString& path, const QString& creator, const QString& publication, const std::time_t modified) {

@@ -24,9 +24,30 @@ json load_import_map(const std::filesystem::path& path) {
 
 json rbx_import_map = load_import_map("studio/assets/configs/rbx_import_map.json");
 
+static bool processChildren(pugi::xml_node rootNode, Engine::InstancePtr parent);
+
+static void constructScene(pugi::xml_node scenes, Engine::InstancePtr parent) {
+	for (pugi::xml_node node : scenes.children()) {
+		if (node.type() != pugi::node_element) {
+			continue;
+		}
+
+		std::string sceneId = node.attribute("id").value();
+		
+		if (sceneId == "0") {
+			processChildren(node, parent);
+		}
+	}
+}
+
 static bool processChildren(pugi::xml_node rootNode, Engine::InstancePtr parent) {
 	for (pugi::xml_node node : rootNode.children()) {
 		if (node.type() != pugi::node_element) {
+			continue;
+		}
+
+		if (std::string_view(node.name()) == "Scenes") {
+			constructScene(node, parent);
 			continue;
 		}
 
