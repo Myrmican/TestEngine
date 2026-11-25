@@ -5,9 +5,20 @@
 namespace Engine::Tools {
 	class Scene : public StudioDropdownTool {
 	public:
-		SceneQWidget* parent) : StudioDropdownTool(parent, "Scene") {
+		Scene(QWidget* parent) : StudioDropdownTool(parent, "Scene") {
 
-			
+			this->setFixedWidth(100);
+
+			this->addItem("Main");
+
+			this->insertSeparator(this->count());
+
+			//TODO: Make this text look disabled if the user has no connection-A tooltip telling them they need a connection
+			this->addItem("Create scene");
+
+			connect(this, QComboBox::currentIndexChanged, this, [=](int index) {
+				 
+				});
 		};
 	};
 }

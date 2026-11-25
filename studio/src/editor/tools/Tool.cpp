@@ -18,6 +18,17 @@ namespace Engine {
         this->setCheckable(true);
     }
 
+    StudioDropdownTool::StudioDropdownTool(QWidget* parent, std::string_view name) : QComboBox(parent) {
+        this->setFixedSize(84, 28);
+
+        //this->setIcon(icon);
+        this->setIconSize(QSize(18, 18));
+
+        this->setFont(QFont("Inter", 10, 500));
+
+        
+    }
+
     StudioToolGroup::StudioToolGroup(QToolBar* parent, std::string_view name) : QActionGroup(parent) {
 
     }

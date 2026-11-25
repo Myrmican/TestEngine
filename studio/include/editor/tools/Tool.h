@@ -4,6 +4,7 @@
 #include <QToolButton>
 #include <string>
 #include <QActionGroup>
+#include <QComboBox>
 
 class QToolBar;
 
@@ -15,7 +16,7 @@ namespace Engine {
 		explicit StudioButtonTool(QWidget* parent = nullptr, std::string_view name = "");
 	};
 
-	class StudioDropdownTool {
+	class StudioDropdownTool : public QComboBox {
 	public:
 		explicit StudioDropdownTool(QWidget* parent = nullptr, std::string_view name = "");
 	};
