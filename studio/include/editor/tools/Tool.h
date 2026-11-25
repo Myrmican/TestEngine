@@ -8,11 +8,16 @@
 class QToolBar;
 
 namespace Engine {
-	class StudioTool : public QToolButton {
+	class StudioButtonTool : public QToolButton {
 		Q_OBJECT
 
 	public:
-		explicit StudioTool(QWidget* parent = nullptr, std::string_view name = "");
+		explicit StudioButtonTool(QWidget* parent = nullptr, std::string_view name = "");
+	};
+
+	class StudioDropdownTool {
+	public:
+		explicit StudioDropdownTool(QWidget* parent = nullptr, std::string_view name = "");
 	};
 
 	class StudioToolGroup : public QActionGroup {

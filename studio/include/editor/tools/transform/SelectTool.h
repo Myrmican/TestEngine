@@ -3,9 +3,9 @@
 #include <editor/tools/Tool.h>
 
 namespace Engine::Tools {
-	class Select : public StudioTool {
+	class Select : public StudioButtonTool {
 	public:
-		Select(QWidget* parent) : StudioTool(parent, "Select") {
+		Select(QWidget* parent) : StudioButtonTool(parent, "Select") {
 
 			connect(this, &QToolButton::toggled, this, [this]() {
 				

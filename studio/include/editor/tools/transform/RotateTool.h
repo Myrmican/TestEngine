@@ -1,9 +1,9 @@
 #include <editor/tools/Tool.h>
 
 namespace Engine::Tools {
-	class Rotate : public StudioTool {
+	class Rotate : public StudioButtonTool {
 	public:
-		Rotate(QWidget* parent) : StudioTool(parent, "Rotate") {
+		Rotate(QWidget* parent) : StudioButtonTool(parent, "Rotate") {
 
 			connect(this, &QToolButton::toggled, this, [this]() {
 				

@@ -3,43 +3,38 @@
 #include <ui/menus/MenuManager.h>
 #include <project/Project.h>
 #include <QDockWidget>
-#include <iostream>
+#include <QAction>
+#include <QString>
+#include <string>
+#include <vector>
 
-void ToggleVisibility(std::string dockName, QMainWindow* window) {
+std::vector<std::string> dockNames = { "Toolbox", "Explorer", "Properties", "Output", "Assets" };
+
+static bool ToggleVisibility(QString dockName, QMainWindow* window) {
     QDockWidget* dockWindow = window->findChild<QDockWidget*>(dockName);
+    if (dockWindow == nullptr) return false;
 
     bool isVisible = dockWindow->isVisible();
+    dockWindow->setVisible(!isVisible);
 
-    if (!isVisible) {
-        dockWindow->setVisible(true);
-        return;
-    }
-
-    dockWindow->setVisible(false);
+    return isVisible;
 }
 
 ViewMenu::ViewMenu(QMenuBar* menuBar, QMainWindow* window) {
-    QMenu* viewMenu = Menu::create(menuBar, "View");
-    menuBar->addMenu(viewMenu);
+    QMenu* menu = Menu::create(menuBar, "View");
+    menuBar->addMenu(menu);
 
-    QAction* toolboxAction = viewMenu->addAction("Toolbox", [window] {
-        ToggleVisibility("ToolboxDock", window);
-        });
-    QAction* explorerAction = viewMenu->addAction("Explorer", [window] {
-        ToggleVisibility("ExplorerDock", window);
-        });
-    QAction* propertiesAction = viewMenu->addAction("Properties", [window] {
-        ToggleVisibility("PropertiesDock", window);
-        });
-    QAction* outputAction = viewMenu->addAction("Output", [window] {
-        ToggleVisibility("OutputDock", window);
-        });
+    for (std::string dock : dockNames) {
+        QAction* action = menu->addAction(QString::fromStdString(dock), [window, dock] {
+            ToggleVisibility(QString::fromStdString(dock) + "Dock", window);
+            });
 
-    toolboxAction->setCheckable(true);
-    explorerAction->setCheckable(true);
-    explorerAction->setChecked(true);
-    propertiesAction->setCheckable(true);
-    propertiesAction->setChecked(true);
-    outputAction->setCheckable(true);
-    outputAction->setChecked(true);
+        action->setObjectName(action->objectName());
+
+        bool isVisible = ToggleVisibility(action->objectName(), window);
+
+        action->setCheckable(true);
+
+        if (isVisible) action->toggle();
+    }
 }

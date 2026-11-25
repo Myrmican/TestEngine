@@ -3,7 +3,7 @@
 #include <QToolBar>
 
 namespace Engine {
-	StudioTool::StudioTool(QWidget* parent, std::string_view name) : QToolButton(parent) {
+    StudioButtonTool::StudioButtonTool(QWidget* parent, std::string_view name) : QToolButton(parent) {
         this->setFixedSize(64, 64);
 
         //this->setIcon(icon);

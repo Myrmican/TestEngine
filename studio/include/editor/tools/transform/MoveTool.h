@@ -1,9 +1,9 @@
 #include <editor/tools/Tool.h>
 
 namespace Engine::Tools {
-	class Move : public StudioTool {
+	class Move : public StudioButtonTool {
 	public:
-		Move(QWidget* parent) : StudioTool(parent, "Move") {
+		Move(QWidget* parent) : StudioButtonTool(parent, "Move") {
 
 			connect(this, &QToolButton::toggled, this, [this]() {
 				

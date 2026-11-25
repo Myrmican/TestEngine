@@ -24,6 +24,7 @@ namespace ToolManager {
             //layout->addSpacing(10);
 
             layout->addWidget(new Engine::Tools::Play(pageWidget));
+            layout->addWidget(new Engine::Tools::Select(pageWidget));
 
             layout->addStretch();
         }

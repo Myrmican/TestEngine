@@ -3,7 +3,6 @@
 #include <ui/docks/Explorer.h>
 #include <ui/docks/Properties.h>
 #include <ui/docks/Output.h>
-#include <ui/docks/Toolbox.h>
 #include <ui/docks/DockManager.h>
 #include <ui/docks/Assets.h>
 
@@ -13,10 +12,8 @@ namespace EngineEditor {
         explorerDock = new Explorer(window, project);
         propertiesDock = new Properties(window, project);
         outputDock = new Output(window, project);
-        toolboxDock = new Toolbox(window, project);
         assetsDock = new Assets(window, project);
 
-        toolboxDock->setVisible(false);
         assetsDock->setVisible(false);
 
         window->setDockNestingEnabled(true);
@@ -24,7 +21,8 @@ namespace EngineEditor {
         window->addDockWidget(Qt::RightDockWidgetArea, explorerDock);
         window->addDockWidget(Qt::LeftDockWidgetArea, propertiesDock);
         window->addDockWidget(Qt::BottomDockWidgetArea, outputDock);
-        window->addDockWidget(Qt::LeftDockWidgetArea, toolboxDock);
         window->addDockWidget(Qt::RightDockWidgetArea, assetsDock);
+
+        window->splitDockWidget(outputDock, assetsDock, Qt::Orientation::Horizontal);
     }
 }
