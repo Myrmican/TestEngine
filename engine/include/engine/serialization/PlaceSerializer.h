@@ -11,10 +11,6 @@ namespace Engine {
 	public:
 		virtual ~PlaceSerializer() = default;
 
-		virtual bool saveToFile(const std::shared_ptr<Instance>& game, const std::string& filePath) = 0;
-
-		static bool loadFromFile(const std::string& filePath, DataModel* dataModel);
-
-		static bool loadRBXLX(std::string_view filePath, DataModel* dataModel);
+		static bool saveToFile(const DataModel* dataModel, const std::string_view filePath);
 	};
 }

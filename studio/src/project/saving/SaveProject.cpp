@@ -3,6 +3,7 @@
 #include <core/Logger.h>
 #include <ui/window/MainWindow.h>
 #include <util/File.h>
+#include <engine/serialization/PlaceSerializer.h>
 #include <QWidget>
 #include <QDialog>
 #include <QHBoxLayout>
@@ -108,6 +109,8 @@ namespace SaveProject {
 		}
 
 		logger->Info("Saving the current project...");
+
+		Engine::PlaceSerializer::saveToFile(project->getEngine()->getDataModel(), project->projectPath);
 
 		MainWindow* window = qobject_cast<MainWindow*>(parent->window());
 		window->unsavedChanges = false;

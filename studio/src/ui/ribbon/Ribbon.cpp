@@ -4,6 +4,8 @@
 #include <ui/ribbon/Ribbon.h>
 #include <ui/ribbon/RibbonStats.h>
 #include <ui/window/MainWindow.h>
+#include <engine/datamodel/Instance.h>
+#include <engine/serialization/PlaceDeserializer.h>
 #include <QMenu>
 #include <QFrame>
 #include <QStackedWidget>
@@ -160,6 +162,12 @@ static QComboBox* createSceneSwitcher(QFrame* parent) {
     switcher->setFixedSize(130, 28);
     switcher->setIconSize(QSize(20, 20));
     switcher->setFont(QFont("Inter", 10, QFont::Medium));
+    switcher->setToolTip(
+        "<b>Current scene</b>"
+        "<p style='margin-top: 4px; color: #ffffff;'>"
+        "Change the current scene in the editor."
+        "</p>"
+    );
 
     auto* listView = new QListView(switcher);
     listView->setMouseTracking(true);
@@ -233,6 +241,15 @@ static QComboBox* createSceneSwitcher(QFrame* parent) {
 
             switcher->insertItem(newIndex, nameEdit->text());
             switcher->setCurrentIndex(newIndex);
+        }
+        else {
+            //Unload instances and load instances from the new scene
+
+            /*for (Engine::Instance* instance : ) {
+
+            }*/
+
+            //Engine::PlaceDeserializer::loadScene();
         }
         });
 
