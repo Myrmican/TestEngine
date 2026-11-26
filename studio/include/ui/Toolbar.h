@@ -1,6 +1,6 @@
 #pragma once
 
-class QMainWindow;
+class MainWindow;
 class QToolBar;
 
 namespace Engine {
@@ -8,5 +8,5 @@ namespace Engine {
 }
 
 namespace Toolbar {
-	QToolBar* create(QMainWindow* window);
+	QToolBar* create(MainWindow* window);
 }

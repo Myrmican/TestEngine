@@ -5,7 +5,6 @@
 #include <QSplitter>
 #include <QTableWidget>
 #include <QDockWidget>
-#include <QMainWindow>
 #include <QToolBar>
 #include <QLabel>
 #include <QTimer>
@@ -21,9 +20,10 @@
 #include <ui/ribbon/Ribbon.h>
 #include <ui/Toolbar.h>
 #include <editor/tools/ToolManager.h>
+#include <ui/window/MainWindow.h>
 
 namespace Engine {
-    EditorWindow::EditorWindow(Project* project, QWidget* editorPage, QMainWindow* window) {
+    EditorWindow::EditorWindow(Project* project, QWidget* editorPage, MainWindow* window) {
         if (editorPage) {
             editorPage->setObjectName("ProjectEditorTopWidget");
             editorPage->setProperty("projectInstance", QVariant::fromValue(static_cast<void*>(project)));

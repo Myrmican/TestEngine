@@ -1,15 +1,15 @@
 #include <ui/Toolbar.h>
 #include <editor/tools/ToolManager.h>
 #include <ui/ribbon/Ribbon.h>
+#include <ui/window/MainWindow.h>
 #include <QToolBar>
 #include <QActionGroup>
-#include <QMainWindow>
 #include <QVBoxLayout>
 #include <QToolButton>
 #include <QLabel>
 
 namespace Toolbar {
-    QToolBar* create(QMainWindow* window) {
+    QToolBar* create(MainWindow* window) {
         QToolBar* mainToolBar = new QToolBar("Main Toolbar", window);
         mainToolBar->setMinimumHeight(80);
         mainToolBar->setContentsMargins(8, 8, 8, 8);

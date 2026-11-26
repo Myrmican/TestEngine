@@ -9,7 +9,7 @@
 #include <engine/Engine.h>
 #include <engine/scripting/ScriptEngine.h>
 
-class QMainWindow;
+class MainWindow;
 class Explorer;
 class QStackedWidget;
 
@@ -41,8 +41,8 @@ private:
 };
 
 namespace ProjectManager {
-    Project* createNew(QMainWindow* parent);
-    Project* openFile(QMainWindow* parent);
+    Project* createNew(MainWindow* parent);
+    Project* openFile(MainWindow* parent);
     Project* openProject(QString filePath, QStackedWidget* workspaceStack);
 	Project* getProject(QWidget* contextWidget);
 }

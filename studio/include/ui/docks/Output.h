@@ -1,10 +1,10 @@
 #pragma once
 
 #include <QDockWidget>
-#include <QMainWindow>
 #include <QObject>
 #include <QEvent>
 #include <QTextEdit>
+#include <ui/window/MainWindow.h>
 #include <project/Project.h>
 
 class Output : public QDockWidget {
@@ -13,7 +13,7 @@ class Output : public QDockWidget {
 public:
     QTextEdit* textEdit;
 
-    Output(QMainWindow* window, Project* project);
+    Output(MainWindow* window, Project* project);
 
 protected:
     bool eventFilter(QObject* watched, QEvent* event) override;

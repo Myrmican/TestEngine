@@ -2,7 +2,7 @@
 
 #include <QFrame>
 
-class QMainWindow;
+class MainWindow;
 class QToolBar;
 
 namespace Engine {
@@ -11,6 +11,6 @@ namespace Engine {
 		QToolBar* toolbar;
 		QToolBar* ribbonToolbar;
 
-		Ribbon(QMainWindow* parent);
+		Ribbon(MainWindow* parent);
 	};
 }

@@ -1,9 +1,10 @@
 #pragma once
 
 #include <QDockWidget>
-#include <QMainWindow>
 #include <QObject>
 #include <project/Project.h>
+
+class MainWindow;
 
 class Assets : public QDockWidget {
     Q_OBJECT
@@ -11,5 +12,5 @@ class Assets : public QDockWidget {
 public:
     Project* m_project;
 
-    Assets(QMainWindow* window, Project* project);
+    Assets(MainWindow* window, Project* project);
 };

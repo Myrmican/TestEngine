@@ -14,6 +14,7 @@
 #include <QVBoxLayout>
 #include <QShortcut>
 #include <QWKWidgets/widgetwindowagent.h>
+#include <ui/window/MainWindow.h>
 #include <ui/window/hub/MainMenu.h>
 #include <ui/menus/FileMenu.h>
 #include <ui/menus/PluginsMenu.h>
@@ -49,13 +50,13 @@ QIcon makeRoundIcon(const QIcon& originalIcon, int size) {
     return QIcon(targetPixmap);
 }
 
-static void createLeftDropdownsMain(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage) {
+static void createLeftDropdownsMain(QMenuBar* menuBar, MainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage) {
     new FileMenu(menuBar, window, workspaceStack, editorPage);
     new PluginsMenu(menuBar);
     new HelpMenu(menuBar);
 }
 
-static void createLeftDropdownsEditor(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage) {
+static void createLeftDropdownsEditor(QMenuBar* menuBar, MainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage) {
     new FileMenu(menuBar, window, workspaceStack, editorPage);
     new EditMenu(menuBar);
     new ViewMenu(menuBar, window);
@@ -66,7 +67,7 @@ static void createLeftDropdownsEditor(QMenuBar* menuBar, QMainWindow* window, QS
 }
 
 namespace Window {
-    void initialize(QMainWindow* window, QApplication& app) {
+    void initialize(MainWindow* window, QApplication& app) {
         auto* agent = new QWK::WidgetWindowAgent(window);
         agent->setup(window);
 

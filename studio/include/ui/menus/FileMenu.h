@@ -1,7 +1,7 @@
 #pragma once
 
+#include <ui/window/MainWindow.h>
 #include <QMenuBar>
-#include <QMainWindow>
 #include <QStackedWidget>
 #include <QWidget>
 #include <QMenu>
@@ -10,7 +10,7 @@
 class FileMenu : public QObject {
     Q_OBJECT
 public:
-    FileMenu(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage);
+    FileMenu(QMenuBar* menuBar, MainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage);
 
 private:
     void updateMenuState();

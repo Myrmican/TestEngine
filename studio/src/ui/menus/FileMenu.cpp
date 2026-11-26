@@ -7,11 +7,12 @@
 #include <project/saving/SaveProject.h>
 #include <project/publishing/PublishProject.h>
 #include <ui/menus/MenuManager.h>
+#include <ui/window/MainWindow.h>
 #include <QKeySequence>
 #include <QTimer>
 #include <QApplication>
 
-FileMenu::FileMenu(QMenuBar* menuBar, QMainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage)
+FileMenu::FileMenu(QMenuBar* menuBar, MainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage)
     : m_workspaceStack(workspaceStack), m_editorPage(editorPage)
 {
     fileMenu = Menu::create(menuBar, "File");

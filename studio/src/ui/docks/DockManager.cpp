@@ -1,14 +1,14 @@
-#include <QMainWindow>
 #include <project/Project.h>
 #include <ui/docks/Explorer.h>
 #include <ui/docks/Properties.h>
 #include <ui/docks/Output.h>
 #include <ui/docks/DockManager.h>
 #include <ui/docks/Assets.h>
+#include <ui/window/MainWindow.h>
 
 namespace EngineEditor {
 
-    DockManager::DockManager(QMainWindow* window, Project* project) {
+    DockManager::DockManager(MainWindow* window, Project* project) {
         explorerDock = new Explorer(window, project);
         propertiesDock = new Properties(window, project);
         outputDock = new Output(window, project);

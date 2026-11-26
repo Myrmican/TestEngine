@@ -1,7 +1,6 @@
 #include <QTreeWidget>
 #include <QDockWidget>
 #include <QLineEdit>
-#include <QMainWindow>
 #include <QVBoxLayout>
 #include <QTimer>
 #include <QMenu>
@@ -11,6 +10,7 @@
 #include <QHeaderView>
 #include <project/Project.h>
 #include <ui/docks/Assets.h>
+#include <ui/window/MainWindow.h>
 
 namespace {
 
@@ -32,7 +32,7 @@ namespace {
     }
 }
 
-Assets::Assets(QMainWindow* window, Project* project)
+Assets::Assets(MainWindow* window, Project* project)
     : QDockWidget("Assets", window) {
 
     setWindowFlags(Qt::SubWindow);

@@ -1,10 +1,11 @@
 #pragma once
 
 #include <QDockWidget>
-#include <QMainWindow>
 #include <QObject>
 #include <QEvent>
 #include <project/Project.h>
+
+class MainWindow;
 
 class QTreeWidgetItem;
 namespace Engine {
@@ -19,7 +20,7 @@ public:
     Project* m_project;
     QTreeWidget* treeWidget;
 
-    Properties(QMainWindow* window, Project* project);
+    Properties(MainWindow* window, Project* project);
     void AddProperty(Engine::Instance* instance, const Engine::Property* property);
     QTreeWidgetItem* GetOrCreateCategory(const std::string& categoryName);
     void InspectInstance(Engine::Instance* selectedInstance);

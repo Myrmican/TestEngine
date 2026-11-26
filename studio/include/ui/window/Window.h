@@ -1,8 +1,8 @@
 #pragma once
 
-class QMainWindow;
+class MainWindow;
 class QApplication;
 
 namespace Window {
-	void initialize(QMainWindow* window, QApplication& app);
+	void initialize(MainWindow* window, QApplication& app);
 }

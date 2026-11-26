@@ -1,4 +1,5 @@
 ﻿#include <ui/window/Window.h>
+#include <ui/window/MainWindow.h>
 #include <util/System.h>
 #include <windows.h>
 #include "Velopack.h"
@@ -31,7 +32,7 @@ int main(int argc, char *argv[]) {
 
 		app.setStyle(QStyleFactory::create("Fusion"));
 
-		QMainWindow window;
+		MainWindow window;
 		window.resize(1024, 768);
 		window.setWindowTitle("Test Engine");
 		window.winId();

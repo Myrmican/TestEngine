@@ -3,9 +3,9 @@
 #include <datamodel/instances/OverlayBase.h>
 
 namespace Engine {
-	class Overlay : public OverlayBase {
+	class Canvas : public OverlayBase {
 	public:
-		Overlay(std::string_view name = "Overlay");
+		Canvas(std::string_view name = "Canvas");
 
 		bool isEnabled() const { return m_enabled; }
 

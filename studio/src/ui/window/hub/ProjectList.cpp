@@ -7,10 +7,13 @@
 #include <QRadioButton>
 #include <QLineEdit>
 #include <QButtonGroup>
+#include <QAction>
 #include <QDateTime>
+#include <QMessageBox>
 #include <util/Time.h>
 #include <ui/window/hub/ProjectList.h>
 #include <ui/window/hub/pages/Projects.h>
+#include <ui/menus/MenuManager.h>
 
 namespace MainMenu {
 
@@ -141,13 +144,41 @@ namespace MainMenu {
         lastEditLabel->setToolTip(QDateTime::fromSecsSinceEpoch(modified).toString());
         rowLayout->addWidget(lastEditLabel);
 
-        QPushButton* moreBtn = new QPushButton("⋯");
-        moreBtn->setObjectName("RowIconButton");
-        moreBtn->setFixedWidth(30);
-        rowLayout->addWidget(moreBtn);
+        QPushButton* optionsButton = new QPushButton("⋯");
+        optionsButton->setObjectName("RowIconButton");
+        optionsButton->setFixedWidth(30);
+        rowLayout->addWidget(optionsButton);
 
-        QObject::connect(moreBtn, &QPushButton::clicked, [name]() {
-            qDebug() << "More options for project:" << name;
+        QObject::connect(optionsButton, &QPushButton::clicked, [name, optionsButton, row, path]() {
+            QMenu* moreMenu = Menu::create(optionsButton);
+
+            QAction* favoriteAction = moreMenu->addAction("Favorite");
+            QAction* deleteAction = moreMenu->addAction("Delete");
+
+            moreMenu->adjustSize();
+
+            QPoint bottomRight = optionsButton->mapToGlobal(QPoint(optionsButton->width(), optionsButton->height()));
+            QPoint topRightAligned(bottomRight.x() - moreMenu->width(), bottomRight.y());
+
+            QAction* selectedAction = moreMenu->exec(topRightAligned);
+            if (selectedAction == favoriteAction) {
+
+            }
+            else if (selectedAction == deleteAction) {
+                QMessageBox::StandardButton reply;
+                reply = QMessageBox::question(row, "Delete Project", "Are you sure you want to delete " + name + "?");
+
+                if (reply == QMessageBox::Yes) {
+                    if (!QFile::remove(path)) {
+                        return;
+                    }
+
+                    delete row;
+                }
+                else {
+                    delete moreMenu;
+                }
+            }
             });
 
         return row;

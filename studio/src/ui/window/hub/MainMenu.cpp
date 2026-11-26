@@ -1,4 +1,3 @@
-#include <QMainWindow>
 #include <QStackedWidget>
 #include <QWidget>
 #include <QHBoxLayout>
@@ -19,9 +18,10 @@
 #include <ui/ProjectLoadingDialog.h>
 #include <ui/window/hub/MainMenu.h>
 #include <ui/window/hub/pages/Projects.h>
+#include <ui/window/MainWindow.h>
 
 namespace MainMenu {
-    void initialize(QMainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage) {
+    void initialize(MainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage) {
         QWidget* homePage = new QWidget();
         homePage->setObjectName("HomePage");
 

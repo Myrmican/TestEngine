@@ -1,5 +1,4 @@
 #include <QLineEdit>
-#include <QMainWindow>
 #include <QVBoxLayout>
 #include <QTimer>
 #include <QMenu>
@@ -13,8 +12,9 @@
 #include <project/Project.h>
 #include <util/Languages.h>
 #include <ui/docks/Output.h>
+#include <ui/window/MainWindow.h>
 
-Output::Output(QMainWindow* window, Project* project)
+Output::Output(MainWindow* window, Project* project)
     : QDockWidget("Output", window) {
 
     setWindowFlags(Qt::SubWindow);

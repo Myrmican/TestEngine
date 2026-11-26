@@ -1,12 +1,13 @@
 #pragma once
 
 #include <QDockWidget>
-#include <QMainWindow>
 #include <QTreeWidgetItem>
 #include <QObject>
 #include <QEvent>
 #include <project/Project.h>
 #include <datamodel/DataModel.h>
+
+class MainWindow;
 
 namespace Engine {
     QTreeWidgetItem* GetEngineInstance(QTreeWidget* treeWidget, Instance* instance);
@@ -20,7 +21,7 @@ public:
     Project* m_project;
 	QTreeWidget* treeWidget;
 
-    Explorer(QMainWindow* window, Project* project);
+    Explorer(MainWindow* window, Project* project);
 
     QTreeWidgetItem* AddItem(QTreeWidgetItem* parentItem, Engine::Instance* instance);
 

@@ -2,8 +2,12 @@
 #include <core/Reflection.h>
 
 namespace Engine {
-	REGISTER_CREATABLE(Frame, GuiBase);
-	Frame::Frame() : GuiBase("Frame") {
+	REGISTER_CREATABLE(Frame, GuiObject);
+	Frame::Frame() : GuiObject("Frame") {
 
+	}
+
+	void Frame::properties(ClassDescriptor* desc) {
+		
 	}
 }

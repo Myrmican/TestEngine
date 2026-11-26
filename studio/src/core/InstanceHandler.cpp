@@ -2,13 +2,13 @@
 #include <engine/core/Reflection.h>
 #include <ui/docks/Explorer.h>
 #include <datamodel/Instance.h>
-#include <QMainWindow>
+#include <ui/window/MainWindow.h>
 #include <QTreeWidgetItem>
 #include <string>
 #include <iostream>
 
 namespace Engine {
-    InsertInstanceSet insertInstance(std::string className, QTreeWidgetItem* parentItem, QMainWindow* mainWindow) {
+    InsertInstanceSet insertInstance(std::string className, QTreeWidgetItem* parentItem, MainWindow* mainWindow) {
         if (!mainWindow) return {};
 
         Explorer* explorer = mainWindow->findChild<Explorer*>();

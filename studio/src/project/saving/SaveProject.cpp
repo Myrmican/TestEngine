@@ -1,6 +1,7 @@
 #include <util/System.h>
 #include <project/Project.h>
 #include <core/Logger.h>
+#include <ui/window/MainWindow.h>
 #include <util/File.h>
 #include <QWidget>
 #include <QDialog>
@@ -107,6 +108,9 @@ namespace SaveProject {
 		}
 
 		logger->Info("Saving the current project...");
+
+		MainWindow* window = qobject_cast<MainWindow*>(parent->window());
+		window->unsavedChanges = false;
 
 		logger->Info("Saved current changes.");
 

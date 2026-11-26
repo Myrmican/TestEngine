@@ -1,4 +1,4 @@
-class QMainWindow;
+class MainWindow;
 class Project;
 class Explorer;
 class Properties;
@@ -14,7 +14,7 @@ namespace EngineEditor {
         Output* outputDock;
         Assets* assetsDock;
 
-        DockManager(QMainWindow* window, Project* project);
+        DockManager(MainWindow* window, Project* project);
         ~DockManager() = default;
     };
 }

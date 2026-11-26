@@ -2,11 +2,12 @@
 
 #include <QMenu>
 #include <QMenuBar>
-#include <QMainWindow>
+
+class MainWindow;
 
 class ViewMenu : public QMenu {
 	Q_OBJECT
 
 public:
-	explicit ViewMenu(QMenuBar* menuBar, QMainWindow* window);
+	explicit ViewMenu(QMenuBar* menuBar, MainWindow* window);
 };

@@ -1,9 +1,9 @@
 #pragma once
 
-class QMainWindow;
+class MainWindow;
 class QStackedWidget;
 class QWidget;
 
 namespace MainMenu {
-	void initialize(QMainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage);
+	void initialize(MainWindow* window, QStackedWidget* workspaceStack, QWidget* editorPage);
 }

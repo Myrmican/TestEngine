@@ -1,7 +1,8 @@
+#include <QMenu>
+
 class QString;
 class QWidget;
 class QPoint;
-class QMenu;
 class QIcon;
 
 namespace Menu {

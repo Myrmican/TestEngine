@@ -9,26 +9,34 @@ namespace Engine {
 
 	void GuiObject::setVisible(const bool visible) {
 		if (m_visible != visible) {
-			this->changing.call("Visible", visible);
+			changing.call("Visible", visible);
 			m_visible = visible;
-			this->changed.call("Visible");
+			changed.call("Visible");
 		}
 	}
 
-	void GuiObject::setClipToBounds(const bool clipToBounds) {
-		if (m_clipToBounds != clipToBounds) {
-			this->changing.call("ClipToBounds", clipToBounds);
-			m_clipToBounds = clipToBounds;
-			this->changed.call("ClipToBounds");
+	void GuiObject::setClipsToBounds(const bool clipsToBounds) {
+		if (m_clipsToBounds != clipsToBounds) {
+			changing.call("ClipToBounds", clipsToBounds);
+			m_clipsToBounds = clipsToBounds;
+			changed.call("ClipToBounds");
+		}
+	}
+
+	void GuiObject::setRotation(const float rotation) {
+		if (m_rotation != rotation) {
+			changing.call("Rotation", rotation);
+			m_rotation = rotation;
+			changed.call("Rotation");
 		}
 	}
 
 	void GuiObject::properties(ClassDescriptor* desc) {
 		desc->addProperty(new TypedProperty<GuiObject, bool>(
-			"ClipToBounds",
+			"ClipsToBounds",
 			"Data",
 			&GuiObject::clipsToBounds,
-			&GuiObject::setClipToBounds
+			&GuiObject::setClipsToBounds
 		));
 
 		desc->addProperty(new TypedProperty<GuiObject, bool>(
@@ -36,6 +44,13 @@ namespace Engine {
 			"Data",
 			&GuiObject::isVisible,
 			&GuiObject::setVisible
+		));
+
+		desc->addProperty(new TypedProperty<GuiObject, float>(
+			"Rotation",
+			"Data",
+			&GuiObject::getRotation,
+			&GuiObject::setRotation
 		));
 	}
 }

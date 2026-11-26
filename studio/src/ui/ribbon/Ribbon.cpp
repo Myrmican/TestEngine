@@ -3,6 +3,7 @@
 #include <ui/Toolbar.h>
 #include <ui/ribbon/Ribbon.h>
 #include <ui/ribbon/RibbonStats.h>
+#include <ui/window/MainWindow.h>
 #include <QMenu>
 #include <QFrame>
 #include <QStackedWidget>
@@ -10,13 +11,17 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QSizePolicy>
-#include <QMainWindow>
+#include <QComboBox>
+#include <QListView>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QFormLayout>
 #include <algorithm>
 #include <vector>
 
 std::vector<std::string> ribbonTabNames = { "Home", "Model", "Avatar", "Test", "Plugins", "Script", "UI" };
 
-void ConnectContextMenu(QWidget* ribbonBar, QTabBar* ribbonTabs, QMainWindow* window, QWidget* statsWidget) {
+void ConnectContextMenu(QWidget* ribbonBar, QTabBar* ribbonTabs, MainWindow* window, QWidget* statsWidget) {
     QObject::connect(ribbonBar, &QWidget::customContextMenuRequested,
         [ribbonBar, ribbonTabs, statsWidget, window](const QPoint& pos) {
             QPoint tabBarPos = ribbonBar->mapFrom(ribbonBar, pos);
@@ -73,7 +78,7 @@ void ConnectContextMenu(QWidget* ribbonBar, QTabBar* ribbonTabs, QMainWindow* wi
     );
 }
 
-QWidget* setupStats(QWidget* parent) {
+static QWidget* setupStats(QWidget* parent) {
     QWidget* statsContainer = new QWidget(parent);
     statsContainer->setObjectName("RibbonStats");
 
@@ -96,7 +101,7 @@ QWidget* setupStats(QWidget* parent) {
     return statsContainer;
 };
 
-QWidget* setupQuickActions(QWidget* parent) {
+static QWidget* setupQuickActions(QWidget* parent) {
 	QWidget* actionsContainer = new QWidget(parent);
 	actionsContainer->setObjectName("RibbonQuickActions");
 
@@ -110,8 +115,132 @@ QWidget* setupQuickActions(QWidget* parent) {
     return actionsContainer;
 }
 
+static void applyComboStyle(QComboBox* comboBox, bool darkMode) {
+    QPalette palette = comboBox->palette();
+
+    QColor background;
+    QColor hoverBackground;
+    QColor textColor;
+    QColor borderColor;
+    if (darkMode) {
+        background = QColor("#242424");
+        hoverBackground = QColor("#3a3a3a");
+        textColor = QColor("#d8d8d8");
+        borderColor = QColor("#383838");
+    }
+
+    palette.setColor(QPalette::Window, background);
+    palette.setColor(QPalette::Base, background);
+    palette.setColor(QPalette::Button, background);
+    palette.setColor(QPalette::ButtonText, textColor);
+    palette.setColor(QPalette::WindowText, textColor);
+    palette.setColor(QPalette::Text, textColor);
+    palette.setColor(QPalette::Highlight, hoverBackground);
+    palette.setColor(QPalette::HighlightedText, Qt::white);
+    palette.setColor(QPalette::Mid, borderColor);
+
+    comboBox->setPalette(palette);
+
+    if (QAbstractItemView* popupView = comboBox->view()) {
+        popupView->setPalette(palette);
+        if (QWidget* popupWin = popupView->window()) {
+            popupWin->setPalette(palette);
+        }
+    }
+}
+
+static bool validateSceneCreation(QString sceneName) {
+    if (sceneName.length() > 15 || sceneName.length() <= 5) return false;
+
+    return true;
+}
+
+static QComboBox* createSceneSwitcher(QFrame* parent) {
+    QComboBox* switcher = new QComboBox(parent);
+    switcher->setFixedSize(130, 28);
+    switcher->setIconSize(QSize(20, 20));
+    switcher->setFont(QFont("Inter", 10, QFont::Medium));
+
+    auto* listView = new QListView(switcher);
+    listView->setMouseTracking(true);
+    listView->setFrameShape(QFrame::NoFrame);
+    switcher->setView(listView);
+
+    listView->setStyleSheet(
+        "QListView {"
+        "   background-color: rgb(30, 30, 30)"
+        "}"
+    );
+
+    applyComboStyle(switcher, true);
+
+    switcher->addItem("Main");
+
+    switcher->insertSeparator(switcher->count());
+
+    switcher->addItem("New scene...");
+
+    QObject::connect(switcher, &QComboBox::currentTextChanged, switcher, [=](QString text) {
+        if (text == "New scene...") {
+            const int newIndex = switcher->count() - 2;
+
+            QDialog dialog(parent);
+            dialog.setWindowTitle("Create Project");
+            dialog.setMinimumSize(480, 250);
+            dialog.setModal(true);
+
+            QVBoxLayout* mainLayout = new QVBoxLayout(&dialog);
+            mainLayout->setContentsMargins(20, 20, 20, 20);
+            mainLayout->setSpacing(25);
+
+            QFormLayout* formLayout = new QFormLayout();
+            formLayout->setLabelAlignment(Qt::AlignLeft);
+            formLayout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
+
+            QLineEdit* nameEdit = new QLineEdit("Scene " + QString::number(newIndex + 1));
+            nameEdit->setMaxLength(15);
+            formLayout->addRow("Scene Name", nameEdit);
+
+            QLabel* sceneNameError = new QLabel("");
+            sceneNameError->setStyleSheet("color: red;");
+            sceneNameError->hide();
+
+            formLayout->addWidget(sceneNameError);
+
+            mainLayout->addLayout(formLayout);
+            mainLayout->addStretch();
+
+            auto* buttonBox = new QDialogButtonBox(&dialog);
+
+            QPushButton* cancelButton = buttonBox->addButton("Cancel", QDialogButtonBox::NoRole);
+            QPushButton* saveButton = buttonBox->addButton("Save", QDialogButtonBox::NoRole);
+
+            QObject::connect(cancelButton, &QPushButton::clicked, &dialog, &QDialog::reject);
+            QObject::connect(saveButton, &QPushButton::clicked, &dialog, &QDialog::accept);
+
+            if (QPushButton* saveButton = buttonBox->button(QDialogButtonBox::Save)) {
+                saveButton->setText("Create Scene");
+            }
+
+            mainLayout->addWidget(buttonBox);
+
+            nameEdit->setFocus();
+
+            if (dialog.exec() != QDialog::Accepted || !validateSceneCreation(nameEdit->text())) {
+                switcher->setCurrentIndex(0);
+                return nullptr;
+            }
+
+            switcher->insertItem(newIndex, nameEdit->text());
+            switcher->setCurrentIndex(newIndex);
+        }
+        });
+
+    return switcher;
+}
+
 namespace Engine {
-    Ribbon::Ribbon(QMainWindow* parent) : QFrame(parent) {
+    Ribbon::Ribbon(MainWindow* parent) : QFrame(parent) {
         setObjectName("RibbonFrame");
         setStyleSheet("QFrame { border-bottom: 1px solid #2A2A2A; background-color: #1E1E1E; }");
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
@@ -168,6 +297,8 @@ namespace Engine {
         QWidget* statsWidget = setupStats(this);
         QWidget* quickActions = setupQuickActions(this);
 
+        
+
         QHBoxLayout* topLayout = new QHBoxLayout();
         topLayout->setContentsMargins(8, 4, 8, 0);
         topLayout->setSpacing(16);
@@ -175,6 +306,7 @@ namespace Engine {
         topLayout->addWidget(quickActions);
         topLayout->addStretch();
         topLayout->addWidget(statsWidget);
+        topLayout->addWidget(createSceneSwitcher(this));
 
         for (const auto& tabName : ribbonTabNames) {
             QWidget* pageWidget = ToolManager::createTools(ribbonStack, tabName);

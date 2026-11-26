@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QMainWindow>
+#include <ui/window/MainWindow.h>
 #include <string>
 
 class QWidget;
@@ -12,10 +12,10 @@ namespace Engine {
 		~EditorPlugin();
 
 		std::string_view getName() const { return name; }
-		QMainWindow* getWindow() { return m_window; }
+		MainWindow* getWindow() { return m_window; }
 
 	private:
 		std::string_view name;
-		QMainWindow* m_window;
+		MainWindow* m_window;
 	};
 }

@@ -1,7 +1,6 @@
 #include <QTreeWidget>
 #include <QDockWidget>
 #include <QLineEdit>
-#include <QMainWindow>
 #include <QVBoxLayout>
 #include <QTimer>
 #include <QMenu>
@@ -14,6 +13,7 @@
 #include <QDoubleSpinBox>
 #include <project/Project.h>
 #include <util/Languages.h>
+#include <ui/window/MainWindow.h>
 #include <ui/docks/Properties.h>
 #include <ui/docks/Explorer.h>
 #include <engine/datamodel/Instance.h>
@@ -49,7 +49,7 @@ namespace {
     }
 }
 
-Properties::Properties(QMainWindow* window, Project* project)
+Properties::Properties(MainWindow* window, Project* project)
     : QDockWidget("Properties", window), m_project(project) {
 
     setWindowFlags(Qt::SubWindow);

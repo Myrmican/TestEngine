@@ -1,7 +1,6 @@
 #include <string>
 #include <QString>
 #include <QFileDialog>
-#include <QMainWindow>
 #include <QStandardPaths>
 #include <QDialog>
 #include <QDialogButtonBox>
@@ -22,6 +21,7 @@
 #include <project/Project.h>
 #include <ui/ProjectLoadingDialog.h>
 #include <engine/serialization/PlaceDeserializer.h>
+#include <ui/window/MainWindow.h>
 #include <boost/algorithm/string.hpp>
 #include <memory>
 
@@ -48,6 +48,8 @@ Project::Project(const QFileInfo fileInfo, const QString projectName) {
             return;
         }
 
+        this->projectPath = fileInfo.absoluteFilePath().toStdString();
+
         const QByteArray rawData = file.readAll();
         const QByteArray templateRawData = templateFile.readAll();
 
@@ -69,7 +71,7 @@ Project::Project(const QFileInfo fileInfo, const QString projectName) {
 Project::~Project() = default;
 
 namespace ProjectManager {
-    Project* ProjectManager::createNew(QMainWindow* parent) {
+    Project* ProjectManager::createNew(MainWindow* parent) {
         QDialog dialog(parent);
         dialog.setWindowTitle("Create Project");
         dialog.setMinimumSize(480, 250);
@@ -199,12 +201,13 @@ namespace ProjectManager {
         QFileInfo fileInfo(destFilePath);
         Project* newProject = new Project(fileInfo, nameEdit->text().trimmed());
         newProject->is2D = dimensionBox->currentText() == "2D";
-        newProject->projectPath = targetDir.absolutePath().toStdString();
+
+        parent->unsavedChanges = true;
 
         return newProject;
     }
 
-	Project* openFile(QMainWindow* parent) {
+	Project* openFile(MainWindow* parent) {
 		QString path = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
 
 		QString filePath = QFileDialog::getOpenFileName(parent, "Open Project", path, "Engine Files (*.tep);;Roblox Place (*.rbxlx)");
@@ -216,13 +219,16 @@ namespace ProjectManager {
         QFile* projectFile = new QFile(filePath);
 		
         Project* newProject = new Project(fileInfo);
+
+        parent->unsavedChanges = true;
+
         return newProject;
 	}
 
     Project* openProject(QString filePath, QStackedWidget* workspaceStack) {
 		QFileInfo fileInfo(filePath);
 
-		QMainWindow* window = qobject_cast<QMainWindow*>(workspaceStack->parentWidget());
+		MainWindow* window = qobject_cast<MainWindow*>(workspaceStack->parentWidget());
 
 		Project* newProject = new Project(fileInfo);
 
@@ -239,6 +245,8 @@ namespace ProjectManager {
             workspaceStack->setCurrentIndex(1);
             loadingDialog->close();
             });
+
+        window->unsavedChanges = true;
 
         return newProject;
     }

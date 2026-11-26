@@ -1,10 +1,10 @@
-#include <datamodel/instances/GuiBase.h>
+#include <datamodel/instances/GuiObject.h>
 
 namespace Engine {
-	class Frame : public GuiBase {
+	class Frame : public GuiObject {
 	public:
 		Frame();
 
-		static void properties(ClassDescriptor* desc) {};
+		static void properties(ClassDescriptor* desc);
 	};
 }

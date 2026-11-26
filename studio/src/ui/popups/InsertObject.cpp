@@ -1,5 +1,6 @@
 #include <ui/popups/InsertObject.h>
 #include <engine/core/Reflection.h>
+#include <ui/window/MainWindow.h>
 #include <ui/docks/Explorer.h>
 #include <datamodel/Instance.h>
 #include <core/InstanceHandler.h>
@@ -53,7 +54,7 @@ namespace Engine {
         QObject::connect(objectList, &QListWidget::itemPressed, this, [this, parentItem](QListWidgetItem* item) {
             QTreeWidget* treeWidget = parentItem->treeWidget();
 
-            QMainWindow* mainWindow = qobject_cast<QMainWindow*>(treeWidget->window());
+            MainWindow* mainWindow = qobject_cast<MainWindow*>(treeWidget->window());
             if (!mainWindow) return;
 
             InsertInstanceSet insertResult = insertInstance(item->text().toStdString(), parentItem, mainWindow);

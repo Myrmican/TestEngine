@@ -1,5 +1,6 @@
 #include <ui/menus/ViewMenu.h>
 #include <ui/docks/Explorer.h>
+#include <ui/window/MainWindow.h>
 #include <ui/menus/MenuManager.h>
 #include <project/Project.h>
 #include <QDockWidget>
@@ -10,7 +11,7 @@
 
 std::vector<std::string> dockNames = { "Toolbox", "Explorer", "Properties", "Output", "Assets" };
 
-static bool ToggleVisibility(QString dockName, QMainWindow* window) {
+static bool ToggleVisibility(QString dockName, MainWindow* window) {
     QDockWidget* dockWindow = window->findChild<QDockWidget*>(dockName);
     if (dockWindow == nullptr) return false;
 
@@ -20,7 +21,7 @@ static bool ToggleVisibility(QString dockName, QMainWindow* window) {
     return isVisible;
 }
 
-ViewMenu::ViewMenu(QMenuBar* menuBar, QMainWindow* window) {
+ViewMenu::ViewMenu(QMenuBar* menuBar, MainWindow* window) {
     QMenu* menu = Menu::create(menuBar, "View");
     menuBar->addMenu(menu);
 

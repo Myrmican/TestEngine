@@ -1,7 +1,6 @@
 #include <QTreeWidget>
 #include <QDockWidget>
 #include <QLineEdit>
-#include <QMainWindow>
 #include <QVBoxLayout>
 #include <QTimer>
 #include <QMenu>
@@ -26,6 +25,7 @@
 #include <memory>
 #include <asset/ExportFile.h>
 #include <engine/services/selection/Selection.h>
+#include <ui/window/MainWindow.h>
 #include <engine/core/Reflection.h>
 #include <editor/file/FileManager.h>
 #include <core/InstanceHandler.h>
@@ -62,7 +62,7 @@ namespace {
 
     //Set up context menu for right clicking in the Explorer.
     //The menu is dynamic meaning that it won't have items that makes no sense to have in the given item
-    void ConnectContextMenu(QTreeWidget* explorerTree, QMainWindow* window, Project* project, Explorer* self) {
+    void ConnectContextMenu(QTreeWidget* explorerTree, MainWindow* window, Project* project, Explorer* self) {
         QTabWidget* documentTabs = window->findChild<QTabWidget*>("DocumentTabs");
 
         QObject::connect(explorerTree, &QTreeWidget::customContextMenuRequested,
@@ -281,7 +281,7 @@ namespace Engine {
     }
 }
 
-Explorer::Explorer(QMainWindow* window, Project* project)
+Explorer::Explorer(MainWindow* window, Project* project)
     : QDockWidget("Explorer", window), m_project(project) {
 
     setWindowFlags(Qt::SubWindow);
@@ -448,7 +448,7 @@ bool Explorer::eventFilter(QObject* watched, QEvent* event) {
                 if (!instance) return false;
 
                 if (instance->getClassName() == "File") {
-                    QMainWindow* mainWindow = qobject_cast<QMainWindow*>(treeWidget->window());
+                    MainWindow* mainWindow = qobject_cast<MainWindow*>(treeWidget->window());
                     QTabWidget* documentTabs = mainWindow->findChild<QTabWidget*>("DocumentTabs");
 
                     FileManager::openFile(dynamic_cast<File*>(instance), documentTabs);

@@ -2,7 +2,6 @@
 #include <QWidget>
 #include <QDockWidget>
 #include <QStackedWidget>
-#include <QMainWindow>
 #include <QTabBar>
 #include <QMenu>
 #include <QShortcut>
@@ -11,6 +10,7 @@
 #include <ui/ribbon/Ribbon.h>
 #include <ui/menus/MenuManager.h>
 #include <editor/EngineViewport.h>
+#include <ui/window/MainWindow.h>
 
 namespace TabManager {
 	FileTabs::FileTabs(QWidget* parent) : QTabWidget(parent) {
@@ -102,7 +102,7 @@ namespace TabManager {
     }
 
     void FileTabs::handleTabClose(int index, EngineViewport* placeView, QWidget* editorPage,
-        QMainWindow* window, Project * project) {
+        MainWindow* window, Project * project) {
 
         QWidget* tabWidget = this->widget(index);
         removeTab(index);
