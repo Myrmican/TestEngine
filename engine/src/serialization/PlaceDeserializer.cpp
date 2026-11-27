@@ -6,6 +6,7 @@
 #include <pugixml.hpp>
 #include <fstream>
 #include <iostream>
+#include <filesystem>
 #include <stdexcept>
 #include <nlohmann/json.hpp>
 #include <core/Reflection.h>
@@ -24,13 +25,6 @@ json load_import_map(const std::filesystem::path& path) {
 
 json rbx_import_map = load_import_map("studio/assets/configs/rbx_import_map.json");
 
-static bool processChildren(pugi::xml_node rootNode, Engine::InstancePtr parent);
-
-static void constructScene(pugi::xml_node sceneNode, Engine::InstancePtr parent) {
-	std::string sceneId = sceneNode.attribute("id").value();
-	processChildren(sceneNode, parent);
-}
-
 static bool processChildren(pugi::xml_node rootNode, Engine::InstancePtr parent) {
 	for (pugi::xml_node node : rootNode.children()) {
 		if (node.type() != pugi::node_element) {
@@ -43,8 +37,10 @@ static bool processChildren(pugi::xml_node rootNode, Engine::InstancePtr parent)
 					continue;
 				}
 
-				constructScene(sceneNode, parent);
-				continue;
+				if (parent->getClassName() == "DataModel") {
+					processChildren(sceneNode, parent);
+					continue;
+				}
 			}
 		}
 
@@ -117,11 +113,9 @@ namespace Engine {
 		pugi::xml_document document;
 		pugi::xml_parse_result result = document.load_string(placeData.data());
 
-		if (!result) {
-			return false;
-		}
+		if (!result) return false;
 
-		pugi::xml_node root = document.child("test");
+		pugi::xml_node root = document.child("game");
 
 		for (std::string serviceName : Engine::defaultServices) {
 			Engine::InstancePtr serviceInstance = Engine::CreateInstance(serviceName);
@@ -141,13 +135,56 @@ namespace Engine {
 		pugi::xml_document defaultTemplateDocument;
 		pugi::xml_parse_result defaultTemplateResult = defaultTemplateDocument.load_string(templateData.data());
 
-		if (!robloxDocument || !defaultTemplateDocument) {
-			return false;
-		}
+		if (!robloxDocument || !defaultTemplateDocument) return false;
 
-		pugi::xml_node templateRoot = defaultTemplateDocument.child("test");
+		pugi::xml_node templateRoot = defaultTemplateDocument.child("game");
 		pugi::xml_node root = robloxDocument.child("roblox");
 
 		return processRbxlx(root, dataModel->shared_from_this(), templateRoot);
+	}
+
+	bool PlaceDeserializer::loadScene(std::string_view sceneName, std::string_view filePath, Engine::InstancePtr dataModel) {
+		const std::string pathStr(filePath);
+
+		pugi::xml_document document;
+		const pugi::xml_parse_result result = document.load_file(pathStr.c_str());
+		if (!result) return false;
+
+		pugi::xml_node root = document.child("game");
+		pugi::xml_node sceneIndex = document.child("sceneIndex");
+
+		std::string_view sceneId = "0";
+		for (pugi::xml_node sceneNode : sceneIndex.children()) {
+			if (sceneNode.type() != pugi::node_element) {
+				continue;
+			}
+
+			std::string_view nodeName = sceneNode.name();
+			if (nodeName != sceneName) continue;
+
+			std::string_view nodeId = sceneNode.attribute("id").value();
+			if (nodeId.length() == 0) continue;
+
+			sceneId = nodeId;
+		}
+
+		for (pugi::xml_node node : root.children()) {
+			if (node.type() != pugi::node_element) {
+				continue;
+			}
+
+			if (std::string_view(node.name()) == "Scenes") {
+				for (pugi::xml_node sceneNode : node.children()) {
+					if (sceneNode.type() != pugi::node_element) {
+						continue;
+					}
+
+					processChildren(sceneNode, dataModel);
+					continue;
+				}
+			}
+		}
+
+		return true;
 	}
 }

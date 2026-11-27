@@ -4,6 +4,6 @@
 
 namespace Engine {
 	bool PlaceSerializer::saveToFile(const DataModel* dataModel, const std::string_view filePath) {
-
+		return true;
 	}
 }

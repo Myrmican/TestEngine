@@ -1,5 +1,6 @@
 #pragma once
 
+#include <datamodel/Instance.h>
 #include <memory>
 #include <string>
 
@@ -16,6 +17,6 @@ namespace Engine {
 
 		static bool loadFromRoblox(std::string_view filePath, std::string_view templateData, DataModel* dataModel);
 
-		static bool loadScene(std::string_view sceneName, std::string placeData);
+		static bool loadScene(std::string_view sceneName, std::string_view filePath, InstancePtr dataModel);
 	};
 }

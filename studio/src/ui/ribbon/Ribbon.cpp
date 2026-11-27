@@ -12,6 +12,7 @@
 #include <QTabBar>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QSignalBlocker>
 #include <QSizePolicy>
 #include <QComboBox>
 #include <QListView>
@@ -188,6 +189,12 @@ static QComboBox* createSceneSwitcher(QFrame* parent) {
 
     switcher->addItem("New scene...");
 
+    QWidget* top = parent->window()->findChild<QWidget*>("ProjectEditorTopWidget");
+    Project* project = ProjectManager::getProject(top);
+
+    Engine::DataModel* dataModel = project->getEngine()->getDataModel();
+    Engine::InstancePtr dataInstance = static_cast<Engine::InstancePtr>(dataModel);
+
     QObject::connect(switcher, &QComboBox::currentTextChanged, switcher, [=](QString text) {
         if (text == "New scene...") {
             const int newIndex = switcher->count() - 2;
@@ -235,21 +242,18 @@ static QComboBox* createSceneSwitcher(QFrame* parent) {
             nameEdit->setFocus();
 
             if (dialog.exec() != QDialog::Accepted || !validateSceneCreation(nameEdit->text())) {
+                QSignalBlocker blocker(switcher);
                 switcher->setCurrentIndex(0);
-                return nullptr;
+                return;
             }
+
+            
 
             switcher->insertItem(newIndex, nameEdit->text());
             switcher->setCurrentIndex(newIndex);
         }
         else {
-            //Unload instances and load instances from the new scene
-
-            /*for (Engine::Instance* instance : ) {
-
-            }*/
-
-            //Engine::PlaceDeserializer::loadScene();
+            Engine::PlaceDeserializer::loadScene(text.toStdString(), project->projectPath, dataInstance);
         }
         });
 
@@ -313,8 +317,6 @@ namespace Engine {
 
         QWidget* statsWidget = setupStats(this);
         QWidget* quickActions = setupQuickActions(this);
-
-        
 
         QHBoxLayout* topLayout = new QHBoxLayout();
         topLayout->setContentsMargins(8, 4, 8, 0);

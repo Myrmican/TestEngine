@@ -1,4 +1,4 @@
-<test>
+<game>
 	<Scenes>
 	    <Scene id="0">
 		    <Item class="World">
@@ -115,4 +115,4 @@
 
         </Properties>
     </Item>
-</test>
+</game>
